@@ -1,34 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import * as React from "react";
+import { Routes, Route} from "react-router-dom";
+import "./App.css";
+import Home from "./screens/HomeScreen.jsx"
+import SignUp from "./screens/SignUp.jsx"
+import Login from "./screens/Login.jsx"
+import ListingPage from "./screens/ListingPage.jsx";
+import ProjectPage from "./screens/ProjectPage.jsx";
+import Settings from "./screens/Settings.jsx";
+import MyApplications from "./screens/MyApplications";
+import MyListings from "./screens/MyListings";
+import CreateListing from "./screens/CreateListing";
+import ViewApplicants from "./screens/ViewApplicants";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/listingpage" element={<ListingPage/>}/>
+        <Route path="/listingpage/projectpage" element={<ProjectPage/>}/>
+        <Route path="/listingpage/settings" element={<Settings/>}/>
+        <Route path="/listingpage/myapplications" element={<MyApplications/>}/>
+        <Route path="/listingpage/mylistings" element={<MyListings/>}/>
+        <Route path="/listingpage/createlisting" element={<CreateListing/>}/>
+        <Route path="/listingpage/viewapplicants" element={<ViewApplicants/>}/>
 
-export default App
+      </Routes>
+    </div>
+  );
+}
