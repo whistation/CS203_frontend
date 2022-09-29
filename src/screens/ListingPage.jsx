@@ -22,7 +22,7 @@ export default function ListingPage(){
           </button>
           <p></p>
           <button>
-            <Link to="/listingpage/settings">Go to settings</Link>
+            <Link to="/listingpage/settings">Settings</Link>
           </button>
           <p></p>
           <button>

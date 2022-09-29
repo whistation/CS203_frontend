@@ -10,6 +10,11 @@ export default function CreateListing() {
   
           <p>This is where project creators can create a new listing by entering project title, project description, and upload a photo of the project</p>
         </main>
+          <p></p>
+          <button>
+            Confirm project details
+          </button>
+          <p></p>
   
         <nav>
           <Link to="/listingpage/mylistings"> Back to MY LISTINGS </Link>

@@ -8,7 +8,7 @@ export default function MyListings(){
         <main>
           <h1>MY LISTINGS PAGE</h1>
             <p>
-              Here users can see a picture of the project, project title, project description, and apply for the project
+              Here users can see all the projects that they have created. 
             </p>
 
             <button>
@@ -19,7 +19,7 @@ export default function MyListings(){
             <p></p>
             <button>
               <nav>
-                <Link to="/listingpage/createlisting"> Create a listing </Link>
+                <Link to="/listingpage/createlisting"> Create a new listing </Link>
               </nav>
             </button>
         </main>
