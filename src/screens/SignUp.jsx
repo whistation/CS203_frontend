@@ -48,6 +48,7 @@ export default function SignUp() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            // backgroundColor: 'blue'
 
           }}
         >
@@ -124,8 +125,9 @@ export default function SignUp() {
               </Grid>
             </Grid>
           </Box>
+          <Copyright sx={{ mt: 5 }} />
+
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );
