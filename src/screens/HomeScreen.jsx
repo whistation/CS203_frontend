@@ -12,9 +12,9 @@ export default function Home() {
           <p>You can do this, I believe in you.</p>
         </main>
         <nav>
-          <Link to="/SignUp">Sign Up Page</Link>
+          <Link to="/signup">Sign Up Page</Link>
           <p></p>
-          <Link to="/Login">Log in Page</Link>
+          <Link to="/login">Log in Page</Link>
         </nav>
       </>
     );

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Routes, Route} from "react-router-dom";
 import "./App.css";
-import Home from "./screens/HomeScreen.jsx"
-import SignUp from "./screens/SignUp.jsx"
-import Login from "./screens/Login.jsx"
+import Home from "./screens/HomeScreen.jsx";
+import SignUp from "./screens/SignUp.jsx";
+import Login from "./screens/LogIn.jsx";
 import ListingPage from "./screens/ListingPage.jsx";
 import ProjectPage from "./screens/ProjectPage.jsx";
 import Settings from "./screens/Settings.jsx";
