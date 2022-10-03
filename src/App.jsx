@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Routes, Route} from "react-router-dom";
 import "./App.css";
-import Home from "./screens/HomeScreen.jsx";
-import SignUp from "./screens/SignUp.jsx";
-import Login from "./screens/LogIn.jsx";
+import Home from "./screens/Home.jsx"
+import SignUp from "./screens/SignUp.jsx"
+import Login from "./screens/Login.jsx"
 import ListingPage from "./screens/ListingPage.jsx";
 import ProjectPage from "./screens/ProjectPage.jsx";
 import Settings from "./screens/Settings.jsx";
@@ -11,6 +11,12 @@ import MyApplications from "./screens/MyApplications";
 import MyListings from "./screens/MyListings";
 import CreateListing from "./screens/CreateListing";
 import ViewApplicants from "./screens/ViewApplicants";
+import ResponsiveAppBar from "./ResponsiveAppBar"
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 
 export default function App() {
   return (
