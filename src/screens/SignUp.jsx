@@ -39,29 +39,29 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    // axios.post('http://localhost:8080/signup', 
-    // {
-    //   "username": data.get('email'),
-    //   "password": data.get('password'),
-    //   "firstname": data.get('firstName'),
-    //   "lastname": data.get('lastName'),
-    //   "contactNo": data.get('phoneNo'),
-    //   "authorities": "AUTH_USER"
-    // })
-    // .then((response) => {
-    //   console.log(response);
-    // }, (error) => {
-    //   console.log(error);
-    // });
-    
-    console.log({
+    axios.post('http://localhost:8080/signup', 
+    {
       "username": data.get('email'),
       "password": data.get('password'),
       "firstname": data.get('firstName'),
       "lastname": data.get('lastName'),
       "contactNo": data.get('phoneNo'),
       "authorities": "AUTH_USER"
+    }, )
+    .then((response) => {
+      console.log(response);
+    }, (error) => {
+      console.log(error);
     });
+    
+    // console.log({
+    //   "username": data.get('email'),
+    //   "password": data.get('password'),
+    //   "firstname": data.get('firstName'),
+    //   "lastname": data.get('lastName'),
+    //   "contactNo": data.get('phoneNo'),
+    //   "authorities": "AUTH_USER"
+    // });
   };
 
 
