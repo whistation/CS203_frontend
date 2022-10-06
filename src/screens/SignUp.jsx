@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {useState, useEffect} from "react";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -26,17 +28,52 @@ function Copyright(props) {
   );
 }
 
+
 const theme = createTheme();
 
 export default function SignUp() {
+  // const [phoneNumber, setPhoneNumber] =useState("");
+  // const [phoneErrorState, setPhoneErrorState] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
+    // axios.post('http://localhost:8080/signup', 
+    // {
+    //   "username": data.get('email'),
+    //   "password": data.get('password'),
+    //   "firstname": data.get('firstName'),
+    //   "lastname": data.get('lastName'),
+    //   "contactNo": data.get('phoneNo'),
+    //   "authorities": "AUTH_USER"
+    // })
+    // .then((response) => {
+    //   console.log(response);
+    // }, (error) => {
+    //   console.log(error);
+    // });
+    
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      "username": data.get('email'),
+      "password": data.get('password'),
+      "firstname": data.get('firstName'),
+      "lastname": data.get('lastName'),
+      "contactNo": data.get('phoneNo'),
+      "authorities": "AUTH_USER"
     });
   };
+
+
+  // function checkIfNumber(input){
+  //   if (isNaN(input)) {
+  //     setPhoneErrorState(true);
+  //   } else {
+  //     setPhoneNumber(input);
+  //   }
+  // }
+
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -95,17 +132,23 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
+                  helperText= "Please enter a number."
+                  id="phoneNo"
+                  label="Phone Number"
+                  name="phoneNo"
+                  autoComplete="phone number"
+                  // onChange={()=>checkIfNumber(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
                   name="password"
                   label="Password"
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
             </Grid>
