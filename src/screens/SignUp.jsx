@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -14,13 +14,31 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useState, useEffect} from "react";
 import axios from "axios";
+import Modal from '@mui/material/Modal';
+import validator from "validator";
 
+//styling for the confirmation pop-up
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid lightgreen',
+  boxShadow: 10,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
+
+//function for the copyright text at the bottom
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link to="/" color="inherit" href="https://mui.com/">
-        Our Website name
+        Lend A Hand
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -32,9 +50,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  // const [phoneNumber, setPhoneNumber] =useState("");
-  // const [phoneErrorState, setPhoneErrorState] = useState(false);
 
+//function to handle the event when we press the submit button
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -47,57 +64,100 @@ export default function SignUp() {
       "lastname": data.get('lastName'),
       "contactNo": data.get('phoneNo'),
       "authorities": "AUTH_USER"
-    }, )
+    },
+    {headers: {
+      'Access-Control-Allow-Origin': 'http://localhost:8080',
+      'Content-Type': 'application/json',
+    }})
     .then((response) => {
       console.log(response);
     }, (error) => {
       console.log(error);
     });
+
+    handleOpen();
     
-    // console.log({
-    //   "username": data.get('email'),
-    //   "password": data.get('password'),
-    //   "firstname": data.get('firstName'),
-    //   "lastname": data.get('lastName'),
-    //   "contactNo": data.get('phoneNo'),
-    //   "authorities": "AUTH_USER"
-    // });
   };
 
+//code to handle opening and closing of the confirmation pop-up
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    navigate("/");
+  };
 
-  // function checkIfNumber(input){
-  //   if (isNaN(input)) {
-  //     setPhoneErrorState(true);
-  //   } else {
-  //     setPhoneNumber(input);
-  //   }
-  // }
+//code for input validation of phone number
+  const [phoneErrorState, setPhoneErrorState] = useState(false);
+  function CheckIfNumber(props) {
+    var input = parseInt(event.target.value);
+    // useEffect(() => {
+      if (isNaN(input)) {
+        setPhoneErrorState(true);
+      } else {
+        setPhoneNumber(input);
+        setPhoneErrorState(false);
+      }
+
+    // })
+  }
+
+//code for input validation of email
+  const [emailErrorState, setEmailErrorState] = useState(false);
+  const emailErrorMessage="Enter a valid email."
+  const validateEmail = (e) => {
+    var email = e.target.value;
+
+    if (validator.isEmail(email)) {
+      setEmailErrorState(false);
+    } else {
+      setEmailErrorState(true);
+    }
+  };
+
+//code for double checking password entry
+  const [passwordNotMatch, setPasswordNotMatch] = useState(false);
+  const [password, setPassword] = useState("");
+  const passwordErrorMessage="The password does not match!"
+  const validatePassword = (e) => {
+    if (password == e.target.value) {
+      setPasswordNotMatch(false);
+    } else {
+      setPasswordNotMatch(true);
+    }
+  }
 
 
-
+// This is what is rendered
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 0,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             // backgroundColor: 'blue'
-
           }}
         >
+          {/* icon and "Sign up" header */}
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
+
+                {/* firstname field */}
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
@@ -105,9 +165,12 @@ export default function SignUp() {
                   fullWidth
                   id="firstName"
                   label="First Name"
+                  inputProps={{ maxLength: 100 }}
                   autoFocus
                 />
               </Grid>
+
+              {/* lastname field */}
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
@@ -116,8 +179,12 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  inputProps={{ maxLength: 100 }}
+
                 />
               </Grid>
+
+              {/* email field */}
               <Grid item xs={12}>
                 <TextField
                   required
@@ -126,20 +193,32 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  type="email"
+                  inputProps={{ maxLength: 320 }}
+                  helperText={emailErrorState && emailErrorMessage}
+                  error={emailErrorState}
+                  onChange={(e)=>validateEmail(e)}
                 />
               </Grid>
+
+              {/* phone number field */}
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  helperText= "Please enter a number."
+                  helperText= "Enter a Singaporean phone number."
                   id="phoneNo"
                   label="Phone Number"
                   name="phoneNo"
                   autoComplete="phone number"
-                  // onChange={()=>checkIfNumber(event.target.value)}
+                  type="tel"
+                  inputProps={{ maxLength: 8 }}
+                  onChange={CheckIfNumber}
+                  error={phoneErrorState}
                 />
               </Grid>
+
+              {/* password field */}
               <Grid item xs={12}>
                 <TextField
                   required
@@ -149,9 +228,29 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  inputProps={{ maxLength: 100 }}
+                  onChange={(e)=>setPassword(e.target.value)}
+                />
+              </Grid>
+            
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="confirmpassword"
+                  label="Confirm Password"
+                  type="password"
+                  id="confirmpassword"
+                  autoComplete="confirm-password"
+                  inputProps={{ maxLength: 100 }}
+                  helperText={passwordNotMatch && passwordErrorMessage}
+                  onChange={(e) => validatePassword(e)}
+                  error={passwordNotMatch}
                 />
               </Grid>
             </Grid>
+
+            {/* submit button */}
             <Button
               type="submit"
               fullWidth
@@ -160,6 +259,8 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
+
+            {/* stuff at the bottom */}
             <Grid container justifyContent="center">
               <Grid item>
                 <Link to="/login" variant="body2">
@@ -171,6 +272,21 @@ export default function SignUp() {
           <Copyright sx={{ mt: 5 }} />
 
         </Box>
+        
+        {/* confirmation pop up */}
+        <Modal
+          hideBackdrop
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+        >
+          <Box sx={{ ...modalStyle, width: 400 }}>
+            <h2 id="child-modal-title">Successful sign-up!</h2>
+            <Button onClick={handleClose}>Great!</Button>
+          </Box>
+        </Modal>
+
       </Container>
     </ThemeProvider>
   );
