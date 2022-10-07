@@ -90,7 +90,7 @@ export default function LogIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 2, mb: 2 }}
-              // onClick={() => navigate("/listingpage")}
+              onClick={() => navigate("/listingpage")}
             >
               Log In
             </Button>

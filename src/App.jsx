@@ -11,7 +11,6 @@ import MyApplications from "./screens/MyApplications";
 import MyListings from "./screens/MyListings";
 import CreateListing from "./screens/CreateListing";
 import ViewApplicants from "./screens/ViewApplicants";
-import ResponsiveAppBar from "./ResponsiveAppBar"
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';

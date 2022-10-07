@@ -1,141 +1,127 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
+import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import CssBaseline from "@mui/material/CssBaseline";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import FlatList from "flatlist-react";
+import { sizing } from "@mui/system";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import Listing from "./Listing";
+import ResponsiveAppBar from "../components/NavigationBar.jsx";
+import { fabClasses } from "@mui/material";
 
-const drawerWidth = 240;
 
-const SearchBar = () => (
-  <form>
-    <TextField
-      id="search-bar"
-      className="text"
-      label="Search"
-      variant="outlined"
-      placeholder="Project Title..."
-      size="small"
-      sx={{
-        width: 975,
-      }}
-    />
-    <IconButton type="submit" aria-label="search">
-      <SearchIcon style={{ fill: "blue" }} />
-    </IconButton>
-  </form>
-);
+const theme = createTheme();
 
 export default function ListingPage() {
-  //const dataSource = ["Project Title 1", "Project Title 2"];
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        textAlign: "left",
-        marginLeft: 30,
-        marginTop: 6,
-      }}
-    >
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-      >
-        <Toolbar sx={{ background: "white" }}>
-          <SearchBar />
-        </Toolbar>
-      </AppBar>
-      <Drawer
+    <ThemeProvider theme={theme}>
+      <Container
+        maxWidth={false}
+        disableGutters
         sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
+          background: "blue",
+          justifyContent: "flex-start",
+          width: "100vw",
+          marginLeft: 0
         }}
-        variant="permanent"
-        anchor="left"
       >
-        <Toolbar>
-          {" "}
-          <Typography
-            variant="h6"
-            sx={{ marginTop: 1.5, marginBottom: 1.5}}
-          >
-            Filters
+        <CssBaseline />
+        <Box
+          sx={{
+            background: "white",
+          }}
+        >
+          <Typography>test</Typography>
+          <ResponsiveAppBar/>
+        </Box>
+        <Box sx={{background: "black"}}>
+          <Typography>
+            hello
           </Typography>
-        </Toolbar>
-        <Divider />
-        <List>
-          {["Location", "Theme", "Date", "Others"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-      </Drawer>
-      <Typography variant="h5" sx={{ marginTop: 1, marginBottom: 1.5 }}>
-        Results:
-      </Typography>
-      <Box
-        component="main"
-        sx={{
-          width: 1000,
-          height: 400,
-          bgcolor: "white",
-          textAlign: "left",
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        {/* <FlatList
-        data={dataSource}
-        renderItem={({ item }) => (<Listing input={item}/>)}
-        //Setting the number of column
-        numColumns={3}
-      /> */}
-        <Listing />
-        <Box sx={{ width: 30 }} />
-        <Listing />
-        <Box sx={{ width: 30 }} />
-        <Listing />
-      </Box>
-      <Box
-        component="main"
-        sx={{
-          width: 1000,
-          height: 400,
-          bgcolor: "white",
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <Listing />
-        <Box sx={{ width: 30 }} />
-        <Listing />
-        <Box sx={{ width: 30 }} />
-        <Listing />
-      </Box>
-    </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 }
+// const SearchBar = () => (
+//   <form>
+//     <TextField
+//       id="search-bar"
+//       className="text"
+//       label="Search"
+//       variant="outlined"
+//       placeholder="Project Title..."
+//       size="small"
+//       sx={{
+//         width: 975,
+//       }}
+//     />
+//     <IconButton type="submit" aria-label="search">
+//       <SearchIcon style={{ fill: "blue" }} />
+//     </IconButton>
+//   </form>
+// );
+
+// function ElevationScroll(props) {
+//   const { children, window } = props;
+//   // Note that you normally won't need to set the window ref as useScrollTrigger
+//   // will default to window.
+//   // This is only being set here because the demo is in an iframe.
+//   const trigger = useScrollTrigger({
+//     disableHysteresis: true,
+//     threshold: 0,
+//     target: window ? window() : undefined,
+//   });
+
+//   return React.cloneElement(children, {
+//     elevation: trigger ? 4 : 0,
+//   });
+// }
+
+// ElevationScroll.propTypes = {
+//   children: PropTypes.element.isRequired,
+//   /**
+//    * Injected by the documentation to work in an iframe.
+//    * You won't need it on your project.
+//    */
+//   window: PropTypes.func,
+// };
+
+// export default function ListingPage(props) {
+//   return (
+//     <React.Fragment>
+//       <CssBaseline />
+//       <ElevationScroll {...props}>
+//         <AppBar sx={{ background: "white" }}>
+//           <Toolbar>
+//             <Typography variant="h6" component="div" sx={{ color: "black" }}>
+//               Scroll to elevate App bar
+//             </Typography>
+//           </Toolbar>
+//         </AppBar>
+//       </ElevationScroll>
+//       <Toolbar />
+//       <Toolbar sx={{ background: "black" }}>
+//         {/* <SearchBar /> */}
+//       </Toolbar>
+//       <Container>
+//         <Box sx={{ my: 2 }}>
+//           {[...new Array(30)]
+//             .map(
+//               () => `Cras mattis consectetur purus sit amet fermentum.
+// Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+// Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+// Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
+//             )
+//             .join("\n")}
+//         </Box>
+//       </Container>
+//     </React.Fragment>
+//   );
+// }
