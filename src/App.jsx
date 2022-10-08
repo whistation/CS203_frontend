@@ -11,6 +11,7 @@ import MyApplications from "./screens/MyApplications";
 import MyListings from "./screens/MyListings";
 import CreateListing from "./screens/CreateListing";
 import ViewApplicants from "./screens/ViewApplicants";
+import Test from "./screens/test.jsx";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -22,6 +23,7 @@ export default function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/test" element={<Test/>} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/listingpage" element={<ListingPage/>}/>

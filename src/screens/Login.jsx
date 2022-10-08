@@ -39,6 +39,7 @@ export default function LogIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    navigate("/listingpage");
   };
 
   return (

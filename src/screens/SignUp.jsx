@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import {Link, useNavigate} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -12,7 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import axios from "axios";
 import Modal from '@mui/material/Modal';
 import validator from "validator";
@@ -92,13 +90,12 @@ export default function SignUp() {
 
 //code for input validation of phone number
   const [phoneErrorState, setPhoneErrorState] = useState(false);
-  function CheckIfNumber(props) {
-    var input = parseInt(event.target.value);
+  function CheckIfNumber() {
+    var input = event.target.value;
     // useEffect(() => {
-      if (isNaN(input)) {
+      if (isNaN(input) || !(input[0]==8 || input[0]==6 || input[0]==9)) {
         setPhoneErrorState(true);
       } else {
-        setPhoneNumber(input);
         setPhoneErrorState(false);
       }
 
