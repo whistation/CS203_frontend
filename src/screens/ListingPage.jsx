@@ -93,7 +93,7 @@ export default function ListingPage() {
           sx={{ 
             display: "flex",
             justifyContent: "center",
-            background: "blue",
+            background: "white",
             p: 1,
             m: 3,
             marginTop: 7,
@@ -107,7 +107,7 @@ export default function ListingPage() {
             }}>
             {listings.map((listings) => (
               <Grid item key={listings} xs={12} sm={6} md={4}>
-                <Listing name={listings.name}/>
+                <Listing name={listings.name} description={listings.des}/>
               </Grid>
             ))}
           </Grid>

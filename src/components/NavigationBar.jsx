@@ -164,7 +164,7 @@ const NavigationBar = () => {
               <MenuItem>
                   <Typography textAlign="center">Profile</Typography>
               </MenuItem>
-              <MenuItem onClick={() => navigate("/settings")}>
+              <MenuItem onClick={() => navigate("/listingpage/settings")}>
                   <Typography textAlign="center">Settings</Typography>
               </MenuItem>
               <MenuItem onClick={() => navigate("/")}>

@@ -6,7 +6,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-export default function Listing({name}) {
+export default function Listing({name, description}) {
   return (
     <Card variant="outlined" sx={{ width: 300, height: 325 }}>
       <CardMedia
@@ -20,8 +20,7 @@ export default function Listing({name}) {
           {name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          This is a brief description of the project. Not all details need to be
-          here. Just the important bits.
+          {description}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end" }}>
