@@ -6,19 +6,18 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-export default function Listing(input) {
-  const title = input;
+export default function Listing({name}) {
   return (
     <Card variant="outlined" sx={{ width: 300, height: 325 }}>
       <CardMedia
         component="img"
         height="140"
-        image="/assets/image_placeholder.png"
+        image="../assets/image_placeholder.png"
         alt="image placeholder"
       />
       <CardContent sx={{ textAlign: "left" }}>
         <Typography gutterBottom variant="h5" component="div">
-          Project Title
+          {name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           This is a brief description of the project. Not all details need to be

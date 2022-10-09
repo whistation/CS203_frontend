@@ -7,48 +7,116 @@ import CssBaseline from "@mui/material/CssBaseline";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import SearchIcon from "@mui/icons-material/Search";
-import TextField from "@mui/material/TextField";
 import { sizing } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Grid from "@mui/material/Grid";
+import axios from "axios";
+import {useState, useEffect} from "react";
 
-import ResponsiveAppBar from "../components/NavigationBar.jsx";
-import { fabClasses } from "@mui/material";
-
+import NavigationBar from "../components/NavigationBar.jsx";
+import Listing from "../components/Listing.jsx";
+import Filter from "../components/Filter.jsx";
+import SearchBar from "../components/SearchBar.jsx";
 
 const theme = createTheme();
+// const listings = [
+//   {
+//       id: 1,
+//       name: "Test Project 1",
+//       des: "This is a description idk what to write im losing it",
+//       noOfParticipants: 5,
+//       lister: {id: 1, firstname: "firstname", lastname: "lastname",contactNo: "62353535"},
+//       applications: []
+//   }
+// ];
 
 export default function ListingPage() {
+  const [listings, setListings] = useState([{}]);
+
+  useEffect(() => {
+    const getAllListings = async () => {
+      const res = await axios.get("http://localhost:8080/listingpage");
+      console.log(res);
+      setListings(res.data);
+    }
+    getAllListings();
+	}, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Container
         maxWidth={false}
         disableGutters
         sx={{
-          background: "blue",
+          background: "white",
           justifyContent: "flex-start",
           width: "100vw",
-          marginLeft: 0
+          marginLeft: 0,
         }}
       >
         <CssBaseline />
         <Box
+          disableGutters
           sx={{
             background: "white",
           }}
         >
-          <Typography>test</Typography>
-          <ResponsiveAppBar/>
+          <NavigationBar />
         </Box>
-        <Box sx={{background: "black"}}>
-          <Typography>
-            hello
-          </Typography>
+        <Box sx={{height: "10"}}/>
+        <Box
+          sx={{
+            background: "white",
+            m: 1,
+            marginTop: 8,
+          }}
+        >
+          <SearchBar />
         </Box>
+        <Box
+          sx={{
+            background: "white",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            m: 1,
+            p: 2,
+          }}
+        >
+          <Filter name={"Location"}/>
+          <Filter name={"Duration"}/>
+          <Filter name={"Start Date"}/>
+          <Filter name={"End Date"}/>
+        </Box>
+        <Container  
+          sx={{ 
+            display: "flex",
+            justifyContent: "center",
+            background: "blue",
+            p: 1,
+            m: 3,
+            marginTop: 7,
+            minHeight: 1000,
+             }}
+          maxWidth={false}
+        >
+          <Grid container directoin="row" justifyContent="center" spacing={4} sx={{ 
+            width: "100vw", 
+            background: "white"
+            }}>
+            {listings.map((listings) => (
+              <Grid item key={listings} xs={12} sm={6} md={4}>
+                <Listing name={listings.name}/>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
       </Container>
     </ThemeProvider>
   );
 }
+
 // const SearchBar = () => (
 //   <form>
 //     <TextField

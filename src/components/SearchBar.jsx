@@ -1,8 +1,11 @@
 import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
 import * as React from "react";
 
-const SearchBar = () => (
-    <form>
+export default function SearchBar() {
+  return (
+    <form >
       <TextField
         id="search-bar"
         className="text"
@@ -11,7 +14,7 @@ const SearchBar = () => (
         placeholder="Project Title..."
         size="small"
         sx={{
-          width: 975,
+          width: 1225,
         }}
       />
       <IconButton type="submit" aria-label="search">
@@ -19,5 +22,4 @@ const SearchBar = () => (
       </IconButton>
     </form>
   );
-
-export default SearchBar;
+}

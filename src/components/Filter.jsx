@@ -1,23 +1,34 @@
-import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
-import { Card, CardContent } from '@mui/material';
-import MailIcon from '@mui/icons-material/MailOutline';
-import CategoryIcon from '@mui/icons-material/LocalOffer';
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
-export const Filter = () => (
-    <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
-        <CardContent>
-            <SavedQueriesList />
-            <FilterLiveSearch />
-            <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
-                <FilterListItem label="Yes" value={{ has_newsletter: true }} />
-                <FilterListItem label="No" value={{ has_newsletter: false }} />
-            </FilterList>
-            <FilterList label="Category" icon={<CategoryIcon />}>
-                <FilterListItem label="Tests" value={{ category: 'tests' }} />
-                <FilterListItem label="News" value={{ category: 'news' }} />
-                <FilterListItem label="Deals" value={{ category: 'deals' }} />
-                <FilterListItem label="Tutorials" value={{ category: 'tutorials' }} />
-            </FilterList>
-        </CardContent>
-    </Card>
-);
+export default function Filter({name}) {
+  const [age, setAge] = React.useState('');
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
+  return (
+    <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">{name}</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={age}
+          label="age"
+          onChange={handleChange}
+          size="sm"
+        >
+          <MenuItem value={10}>placeholder 1</MenuItem>
+          <MenuItem value={20}>placeholder 2</MenuItem>
+          <MenuItem value={30}>placeholder 3</MenuItem>
+        </Select>
+      </FormControl>
+    </Box>
+  );
+}
