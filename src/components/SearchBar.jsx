@@ -14,7 +14,7 @@ export default function SearchBar() {
         placeholder="Project Title..."
         size="small"
         sx={{
-          width: 1225,
+          width: "92vw",
         }}
       />
       <IconButton type="submit" aria-label="search">
