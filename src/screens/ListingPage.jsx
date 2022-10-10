@@ -101,7 +101,7 @@ export default function ListingPage() {
              }}
           maxWidth={false}
         >
-          <Grid container directoin="row" justifyContent="flex-start" spacing={4} sx={{ 
+          <Grid container direction="row" justifyContent="flex-start" spacing={4} sx={{ 
             width: "100vw", 
             background: "white"
             }}>
