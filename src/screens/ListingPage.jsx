@@ -49,6 +49,7 @@ export default function ListingPage() {
         disableGutters
         sx={{
           background: "white",
+          direction: "column",
           justifyContent: "flex-start",
           width: "100vw",
           marginLeft: 0,

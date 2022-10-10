@@ -5,8 +5,10 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import {useNavigate} from "react-router-dom";
 
 export default function Listing({name, description}) {
+  const navigate = useNavigate();
   return (
     <Card variant="outlined" sx={{ width: 300, height: 350 }}>
       <CardMedia
@@ -26,7 +28,7 @@ export default function Listing({name, description}) {
       <CardActions sx={{ justifyContent: "flex-end" }}>
         {/* <Button size="small">Share</Button> */}
         {/* <Link to="/listingpage/projectpage"> */}
-          <Button size="small">Apply </Button>
+          <Button size="small" onClick={() => navigate("/listingpage/projectpage")} >Apply </Button>
         {/* </Link> */}
       </CardActions>
     </Card>
