@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 
 export default function Listing({name, description}) {
   return (
-    <Card variant="outlined" sx={{ width: 300, height: 325 }}>
+    <Card variant="outlined" sx={{ width: 300, height: 350 }}>
       <CardMedia
         component="img"
         height="140"
