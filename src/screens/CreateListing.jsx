@@ -200,7 +200,7 @@ export default function SignInSide() {
               Create New Listing
             </Typography>
 
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 autoFocus
                 margin="normal"
