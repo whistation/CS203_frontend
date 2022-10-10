@@ -52,7 +52,6 @@ export default function ListingPage() {
           direction: "column",
           justifyContent: "flex-start",
           width: "100vw",
-          marginLeft: 0,
         }}
       >
         <CssBaseline />
@@ -68,8 +67,7 @@ export default function ListingPage() {
         <Box
           sx={{
             background: "white",
-            m: 1,
-            marginTop: 8,
+            marginTop: 11,
           }}
         >
           <SearchBar />
@@ -91,16 +89,14 @@ export default function ListingPage() {
           <Filter name={"End Date"}/>
         </Box>
         <Container  
+          disableGutters
           sx={{ 
             display: "flex",
             justifyContent: "center",
             background: "white",
-            p: 1,
-            m: 3,
-            marginTop: 7,
-            minHeight: 1000,
+            marginTop: 10,
+            marginBottom: 10,
              }}
-          maxWidth={false}
         >
           <Grid container direction="row" justifyContent="flex-start" spacing={4} sx={{ 
             width: "100vw", 
