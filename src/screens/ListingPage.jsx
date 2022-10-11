@@ -104,7 +104,7 @@ export default function ListingPage() {
             }}>
             {listings.map((listings) => (
               <Grid item key={listings} xs={12} sm={6} md={4}>
-                <Listing name={listings.name} description={listings.des}/>
+                <Listing name={listings.name} description={listings.des} id={listings.id}/>
               </Grid>
             ))}
           </Grid>

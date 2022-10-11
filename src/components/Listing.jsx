@@ -36,7 +36,7 @@ function RandomBackground() {
   )
 }
 
-export default function Listing({name, description}) {
+export default function Listing({name, description, id}) {
   const navigate = useNavigate();
   return (
     <Card variant="outlined" sx={{ width: 300, height: 350 }}>
@@ -57,7 +57,9 @@ export default function Listing({name, description}) {
       <CardActions sx={{ justifyContent: "flex-end" }}>
         {/* <Button size="small">Share</Button> */}
         {/* <Link to="/listingpage/projectpage"> */}
-          <Button size="small" onClick={() => navigate("/listingpage/projectpage")} >Apply </Button>
+          <Button size="small" onClick={() => useNavigate("/listingpage/projectpage", {
+						listingId: id,
+					})} >Apply </Button>
         {/* </Link> */}
       </CardActions>
     </Card>
