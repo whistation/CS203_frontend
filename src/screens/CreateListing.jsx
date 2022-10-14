@@ -4,8 +4,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -16,6 +14,9 @@ import placeholder from '../assets/image_placeholder.png';
 import { styled } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
 import {useState, useEffect} from "react";
+import Modal from '@mui/material/Modal';
+import {useNavigate} from "react-router-dom";
+
 
 import bgrnd1 from "../assets/backgroundpic1.jpg";
 import bgrnd2 from "../assets/backgroundpic2.jpg";
@@ -122,6 +123,21 @@ const ImageMarked = styled('span')(({ theme }) => ({
 //create theme
 const theme = createTheme();
 
+//styling for the confirmation pop-up
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid lightgreen',
+  boxShadow: 10,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
+
 //exporting the actual app!
 export default function SignInSide() {
   const handleSubmit = (event) => {
@@ -131,6 +147,20 @@ export default function SignInSide() {
       email: data.get('email'),
       password: data.get('password'),
     });
+  };
+
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    navigate("/listingpage/mylistings");
+  };
+  const handleClose2 = () => {
+    setOpen(false);
+    navigate("/listingpage/createlisting");
   };
 
   return (
@@ -231,9 +261,24 @@ export default function SignInSide() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={()=>handleOpen()}
               >
                 Create
               </Button>
+
+              <Modal
+                hideBackdrop
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="child-modal-title"
+                aria-describedby="child-modal-description"
+              >
+                <Box sx={{ ...modalStyle, width: 400 }}>
+                  <h2 id="child-modal-title">Confirm creation?</h2>
+                  <Button onClick={handleClose}>Yes!</Button>
+                  <Button onClick={handleClose2}>No!</Button>
+                </Box>
+              </Modal>
 
             </Box>
           </Box>

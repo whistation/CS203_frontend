@@ -3,20 +3,35 @@ import "./General.css";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ApprovalIcon from '@mui/icons-material/Approval';
+import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import Modal from '@mui/material/Modal';
+
+//styling for the confirmation pop-up
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid lightgreen',
+  boxShadow: 10,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
 
 const theme = createTheme();
 
 export default function ProjectPage(){
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -24,6 +39,16 @@ export default function ProjectPage(){
       email: data.get('email'),
       password: data.get('password'),
     });
+  };
+
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    navigate("/listingpage");
   };
 
   return(
@@ -81,9 +106,23 @@ export default function ProjectPage(){
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={() => handleOpen()}
             >
                 Apply
             </Button>
+
+            <Modal
+              hideBackdrop
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="child-modal-title"
+              aria-describedby="child-modal-description"
+            >
+              <Box sx={{ ...modalStyle, width: 400 }}>
+                <h2 id="child-modal-title">Successful application!</h2>
+                <Button onClick={handleClose}>Great!</Button>
+              </Box>
+            </Modal>
 
               </Box>
 

@@ -9,7 +9,7 @@ export default function ViewApplicants() {
           <h1>LISTING PREVIEW + VIEW CURRENT APPLICANTS</h1>
   
           <p>
-            Project creators can preview how their listing will look like, and view the current applicants of the listing.
+            Project creators can preview how their listing will look like, edit the listing they created, and view the current applicants of the listing.
           </p>
           <p>
             Contact details of the applicants will be provided for project creators to contact them on their own. 
