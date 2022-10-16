@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import "./General.css";
-import { CssBaseline } from "@mui/material";
+import CssBaseline from '@mui/material/CssBaseline';
 import HomeBar from "../components/Homebar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { styled } from '@mui/material/styles';
@@ -52,19 +52,33 @@ export default function Home() {
         </Container>
       </ThemeProvider>
       <Grid container sx={{ height: '100vh', width: '100vw'}}>
-            <Grid item xs = {12}>
-              <div style={{ backgroundImage:`url(${bg})`,backgroundRepeat:"no-repeat",backgroundSize:"contain", 
-        height:3000,width: '100vw'}}>
-          
-              </div>
+        <CssBaseline/>
+            <Grid item     
+              xs = {12}      
+              sx={{
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundColor:"blue",
+                backgroundImage: `url(${bg})`,
+                height: "100%"
+              }}>
+                <Typography 
+                  component="h1" 
+                  variant="h1"
+                  color="white"
+                  sx={{
+                    position: 'relative',
+                    pt: 50,
+                    fontWeight: 'bold',
+                  }}>
+                  Lend a Hand
+                </Typography>
             </Grid>
             <Grid item xs = {12}>
               <h2> About us</h2>
             </Grid>
       </Grid>
-      <main>
-        <h1>Lend a Hand</h1>
-      </main>
+
     </>
   );
 }
