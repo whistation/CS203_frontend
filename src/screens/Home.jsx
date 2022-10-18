@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-scroll";
+// yall might need to npm add react-scroll im not sure
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -12,8 +13,21 @@ import Grid from '@mui/material/Grid';
 
 import bg from "../assets/backgroundpic7.jpg";
 import { maxWidth } from "@mui/system";
+import { Button } from "@mui/material";
 
 const theme = createTheme();
+
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      Lend a Hand
+      {' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
 const Image = styled('span')(({ theme }) => ({
   position: 'absolute',
@@ -58,7 +72,7 @@ export default function Home() {
               sx={{
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundColor:"blue",
+                backgroundColor:"white",
                 backgroundImage: `url(${bg})`,
                 height: "100%"
               }}>
@@ -74,9 +88,34 @@ export default function Home() {
                   Lend a Hand
                 </Typography>
             </Grid>
-            <Grid item xs = {12}>
-              <h2> About us</h2>
+            <Grid container sx={{ height: '9vh', width: '100vw'}} id="aboutUs">
+              <CssBaseline>
+                <Grid item xs = {12} sx ={{backgroundColor:"lightgray"}}>
+                  <h2> About us </h2>
+                </Grid>
+              </CssBaseline> 
             </Grid>
+            <Grid item xs={3} ></Grid>
+            <Grid item xs={6}>
+              <h4>
+                Lend a Hand is a platform for Singaporeans 
+                seeking volunteers or interested to volunteer for green 
+                projects.
+              </h4>
+              <p>
+                Every initiative, regardless of scale, is important to combat 
+                climate change. As such, we at Lend a Hand aim to provide a platform 
+                to lower the barrier of entry and allow ordinary Singaporeans to fuel smaller-scale 
+                green projects to help make a difference in fighting climate 
+                change.
+              </p>
+            </Grid>
+            <Grid item xs={3}></Grid>
+            <Grid item xs={3} sx={{ height: '8vh'}}></Grid>
+            <Grid item xs={6} sx={{ height: '8vh'}}>
+              <Copyright sx={{ mt: 4, mb: 4 }} />
+            </Grid>
+            <Grid item xs={3} sx={{ height: '8vh'}}></Grid>
       </Grid>
 
     </>
