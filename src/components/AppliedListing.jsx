@@ -98,10 +98,10 @@ export default function AppliedListing({name, description, id}) {
             <Box sx={{ ...modalStyle, width: 400 }}>
               <h2> Confirm withdrawal?</h2>
               <Button onClick={handleClose}>
-                nah this is a mazza
+                Yes
               </Button>
-              <Button onClick={handleClose}>
-                yessir
+              <Button onClick={handleClose} alignItems="flex-end">
+                No
               </Button>
             </Box>
           </Modal>

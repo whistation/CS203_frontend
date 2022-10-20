@@ -52,14 +52,14 @@ export default function MyApplications() {
         sx={{ 
           display: "flex",
           justifyContent: "center",
-          background: "yellow",
+          background: "white",
           marginTop: 15,
           marginBottom: 10,
            }}
         >
           
           <Grid container 
-          sx={{width:'100vw', background:'blue'}}
+          sx={{width:'100vw', background:'white'}}
           >
             {listings.map((listings) => (
               <Grid item key={listings} xs={12} sm={6} md={4}>
