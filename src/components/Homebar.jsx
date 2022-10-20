@@ -2,11 +2,10 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const HomeBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -30,7 +29,7 @@ const HomeBar = () => {
   const navigate = useNavigate();
 
   return (
-    <AppBar position="fixed" sx={{background: "white"}}>
+    <AppBar position="fixed" sx={{ background: "white" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -67,25 +66,25 @@ const HomeBar = () => {
               textDecoration: 'none',
             }}
           >
-            
+
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}/>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} />
 
           <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'flex' } }}>
-              <Button
-                onClick={() => navigate("/signup")}
-                sx={{ my: 2, color: 'grey', display: 'block' }}
-              >
-                Sign up
-              </Button>
+            <Button
+              onClick={() => navigate("/signup")}
+              sx={{ my: 2, color: 'grey', display: 'block' }}
+            >
+              Sign up
+            </Button>
           </Box>
           <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'flex' } }}>
-              <Button
-                onClick={() => navigate("/login")}
-                sx={{ my: 2, color: 'grey', display: 'block' }}
-              >
-                Log in
-              </Button>
+            <Button
+              onClick={() => navigate("/login")}
+              sx={{ my: 2, color: 'grey', display: 'block' }}
+            >
+              Log in
+            </Button>
           </Box>
         </Toolbar>
       </Container>

@@ -63,7 +63,7 @@ export default function ListingPage() {
         >
           <NavigationBar />
         </Box>
-        <Box sx={{height: "10"}}/>
+        <Box sx={{height: "10", background:"gray"}}/>
         <Box
           sx={{
             background: "white",
