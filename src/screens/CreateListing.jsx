@@ -187,6 +187,7 @@ export default function SignInSide() {
             focusRipple
             key={image.title}
             style={{
+              
               width: image.width,
             }}
           >

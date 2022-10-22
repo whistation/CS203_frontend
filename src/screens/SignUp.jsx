@@ -15,7 +15,7 @@ import axios from "axios";
 import Modal from '@mui/material/Modal';
 import validator from "validator";
 
-//styling for the confirmation pop-up
+//styling for the pop-ups
 const modalStyle = {
   position: 'absolute',
   top: '50%',
@@ -23,7 +23,6 @@ const modalStyle = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid lightgreen',
   boxShadow: 10,
   pt: 2,
   px: 4,
@@ -54,7 +53,7 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    axios.post('http://localhost:8080/signup', 
+    const input =
     {
       "username": data.get('email'),
       "password": data.get('password'),
@@ -62,19 +61,33 @@ export default function SignUp() {
       "lastname": data.get('lastName'),
       "contactNo": data.get('phoneNo'),
       "authorities": "AUTH_USER"
-    },
-    {headers: {
-      'Access-Control-Allow-Origin': 'http://localhost:8080',
-      'Content-Type': 'application/json',
-    }})
-    .then((response) => {
-      console.log(response);
-    }, (error) => {
-      console.log(error);
-    });
+    }
 
-    handleOpen();
-    
+    if (input.username.length === 0 | input.password.length === 0 | 
+        input.firstname.length === 0 | input.lastname.length === 0 | input.contactNo.length === 0 ) {
+          console.log("some fields are empty!");
+          handleBlankOpen();
+          
+    } else {
+        axios.post('http://localhost:8080/signup', 
+        {
+          "username": data.get('email'),
+          "password": data.get('password'),
+          "firstname": data.get('firstName'),
+          "lastname": data.get('lastName'),
+          "contactNo": data.get('phoneNo'),
+        },
+        {headers: {
+          'Access-Control-Allow-Origin': 'http://localhost:8080',
+          'Content-Type': 'application/json',
+        }})
+        .then((response) => {
+          console.log(response);
+          handleOpen();
+        }, (error) => {
+          console.log(error);
+        });
+    }
   };
 
 //code to handle opening and closing of the confirmation pop-up
@@ -86,6 +99,15 @@ export default function SignUp() {
   const handleClose = () => {
     setOpen(false);
     navigate("/");
+  };
+
+  //code to handle opening and closing of the please do not leave blank pop-up
+  const [blankOpen, setBlankOpen] = useState(false);
+  const handleBlankOpen = () => {
+    setBlankOpen(true);
+  };
+  const handleBlankClose = () => {
+    setBlankOpen(false);
   };
 
 //code for input validation of phone number
@@ -278,9 +300,23 @@ export default function SignUp() {
           aria-labelledby="child-modal-title"
           aria-describedby="child-modal-description"
         >
-          <Box sx={{ ...modalStyle, width: 400 }}>
+          <Box sx={{ ...modalStyle, border: '2px solid lightgreen', width: 400 }}>
             <h2 id="child-modal-title">Successful sign-up!</h2>
             <Button onClick={handleClose}>Great!</Button>
+          </Box>
+        </Modal>
+        
+        {/* Please do not leave fields blank pop up */}
+        <Modal
+          hideBackdrop
+          open={blankOpen}
+          onClose={handleBlankClose}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+        >
+          <Box sx={{ ...modalStyle, border: '2px solid red', width: 400 }}>
+            <h2 id="child-modal-title">Please do not leave any fields blank!</h2>
+            <Button onClick={handleBlankClose}>Got it!</Button>
           </Box>
         </Modal>
 

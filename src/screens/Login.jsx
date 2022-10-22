@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import validator from "validator";
+import Modal from '@mui/material/Modal';
 import {useState} from "react";
 
 function Copyright(props) {
@@ -26,6 +27,20 @@ function Copyright(props) {
     </Typography>
   );
 }
+
+//styling for the pop-ups
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 10,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
 
 const theme = createTheme();
 
@@ -44,15 +59,52 @@ export default function LogIn() {
     }
   };
 
+  //code to handle the event when we press the log in button
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    navigate("/listingpage");
+
+    const input = 
+    {
+      "username": data.get('email'),
+      "password": data.get('password'),
+    }
+
+    console.log(input);
+
+    //if some of the fields are empty prompt user to fill them, else handle auth
+    if (input.username.length === 0 | input.password.length === 0) {
+        console.log("some fields are empty!");
+        handleBlankOpen();
+    } else {
+        axios.get("http://localhost:8080/listingpage",
+        {headers: {
+          'Access-Control-Allow-Origin': 'http://localhost:8080',
+          'Content-Type': 'application/json',
+        }},
+        {withCredentials: true,
+          auth: 
+          {
+            "username": input.username,
+            "password": input.password,
+          }
+        })
+        .then((response) => {
+          console.log("hi");
+          console.log(response);
+        })
+    }
+
+  };
+
+  //code to handle opening and closing of the please do not leave blank pop-up
+  const [blankOpen, setBlankOpen] = useState(false);
+  const handleBlankOpen = () => {
+    setBlankOpen(true);
+  };
+  const handleBlankClose = () => {
+    setBlankOpen(false);
   };
 
   return (
@@ -110,16 +162,10 @@ export default function LogIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 2, mb: 2 }}
-              onClick={() => navigate("/listingpage")}
             >
               Log In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+            <Grid container justifyContent="center">
               <Grid item>
                 <Link to="/signup" href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
@@ -129,6 +175,21 @@ export default function LogIn() {
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
+        
+        {/* Please do not leave fields blank pop up */}
+        <Modal
+          hideBackdrop
+          open={blankOpen}
+          onClose={handleBlankClose}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+        >
+          <Box sx={{ ...modalStyle, border: '2px solid red', width: 400 }}>
+            <h2 id="child-modal-title">Please do not leave any fields blank!</h2>
+            <Button onClick={handleBlankClose}>Got it!</Button>
+          </Box>
+        </Modal>
+
       </Container>
     </ThemeProvider>
   );
