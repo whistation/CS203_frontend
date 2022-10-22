@@ -71,7 +71,6 @@ export default function LogIn() {
       "username": data.get('email'),
       "password": data.get('password'),
     }
-
     console.log(input);
 
     //if some of the fields are empty prompt user to fill them, else handle auth
@@ -87,15 +86,18 @@ export default function LogIn() {
           }
         })
         .then((response) => {
+          //successful log in
           console.log("successful log in!");
+          localStorage.setItem("username", JSON.stringify(input.username));
+          console.log(localStorage.getItem("username"));
           handleLogInOpen();
+
         }, (error) => {
+          //unsuccessful log in
           console.log("unsuccessful log in :(");
           handleFailedOpen();
         });
-        
     }
-
   };
 
   //code to handle opening and closing of the please do not leave blank pop-up
