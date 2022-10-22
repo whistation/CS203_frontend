@@ -31,12 +31,13 @@ function Copyright(props) {
 //styling for the pop-ups
 const modalStyle = {
   position: 'absolute',
-  top: '50%',
+  top: '40%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  boxShadow: 10,
+  boxShadow: 5,
+  borderRadius: 10,
   pt: 2,
   px: 4,
   pb: 3,
@@ -79,21 +80,20 @@ export default function LogIn() {
         handleBlankOpen();
     } else {
         axios.get("http://localhost:8080/listingpage",
-        {headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:8080',
-          'Content-Type': 'application/json',
-        }},
-        {withCredentials: true,
-          auth: 
+        {auth: 
           {
             "username": input.username,
             "password": input.password,
           }
         })
         .then((response) => {
-          console.log("hi");
-          console.log(response);
-        })
+          console.log("successful log in!");
+          handleLogInOpen();
+        }, (error) => {
+          console.log("unsuccessful log in :(");
+          handleFailedOpen();
+        });
+        
     }
 
   };
@@ -107,13 +107,32 @@ export default function LogIn() {
     setBlankOpen(false);
   };
 
+  //code to handle opening and closing of the successful log in pop-up
+  const [logInOpen, setLogInOpen] = useState(false);
+  const handleLogInOpen = () => {
+    setLogInOpen(true);
+  };
+  const handleLogInClose = () => {
+    setLogInOpen(false);
+    navigate("/listingpage");
+  };
+
+  //code to handle opening and closing of the failed log in pop-up
+  const [failedOpen, setFailedOpen] = useState(false);
+  const handleFailedOpen = () => {
+    setFailedOpen(true);
+  };
+  const handleFailedClose = () => {
+    setFailedOpen(false);
+  };
+
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -184,9 +203,37 @@ export default function LogIn() {
           aria-labelledby="child-modal-title"
           aria-describedby="child-modal-description"
         >
-          <Box sx={{ ...modalStyle, border: '2px solid red', width: 400 }}>
+          <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400, }}>
             <h2 id="child-modal-title">Please do not leave any fields blank!</h2>
             <Button onClick={handleBlankClose}>Got it!</Button>
+          </Box>
+        </Modal>
+        
+        {/* successful log in pop up */}
+        <Modal
+          hideBackdrop
+          open={logInOpen}
+          onClose={handleLogInClose}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+        >
+          <Box sx={{ ...modalStyle, border: '2px solid lightgreen', width: 400 }}>
+            <h2 id="child-modal-title">Successful Log In!</h2>
+            <Button onClick={handleLogInClose}>Take me to greatness</Button>
+          </Box>
+        </Modal>
+
+        {/* failed log in pop up */}
+        <Modal
+          hideBackdrop
+          open={failedOpen}
+          onClose={handleFailedClose}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+        >
+          <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400}}>
+            <h2 id="child-modal-title">Unsuccessful log in. Email or password is incorrect!</h2>
+            <Button onClick={handleFailedClose}>Try Again</Button>
           </Box>
         </Modal>
 

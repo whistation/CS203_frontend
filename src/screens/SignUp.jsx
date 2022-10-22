@@ -24,6 +24,7 @@ const modalStyle = {
   width: 400,
   bgcolor: 'background.paper',
   boxShadow: 10,
+  borderRadius: 10,
   pt: 2,
   px: 4,
   pb: 3,
@@ -314,7 +315,7 @@ export default function SignUp() {
           aria-labelledby="child-modal-title"
           aria-describedby="child-modal-description"
         >
-          <Box sx={{ ...modalStyle, border: '2px solid red', width: 400 }}>
+          <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400 }}>
             <h2 id="child-modal-title">Please do not leave any fields blank!</h2>
             <Button onClick={handleBlankClose}>Got it!</Button>
           </Box>
