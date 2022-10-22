@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -13,6 +11,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
+import validator from "validator";
+import {useState} from "react";
 
 function Copyright(props) {
   return (
@@ -27,10 +27,23 @@ function Copyright(props) {
   );
 }
 
-
 const theme = createTheme();
 
 export default function LogIn() {
+
+  //code for input validation of email
+  const [emailErrorState, setEmailErrorState] = useState(false);
+  const emailErrorMessage="Enter a valid email."
+  const validateEmail = (e) => {
+    var email = e.target.value;
+
+    if (validator.isEmail(email)) {
+      setEmailErrorState(false);
+    } else {
+      setEmailErrorState(true);
+    }
+  };
+
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -52,7 +65,6 @@ export default function LogIn() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            // backgroundColor:'blue'
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -62,6 +74,8 @@ export default function LogIn() {
             Log in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            
+            {/* email field */}
             <TextField
               margin="normal"
               required
@@ -71,7 +85,13 @@ export default function LogIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              inputProps={{ maxLength: 320 }}
+              helperText={emailErrorState && emailErrorMessage}
+              error={emailErrorState}
+              onChange={(e)=>validateEmail(e)}
             />
+
+            {/* password field */}
             <TextField
               margin="normal"
               required
@@ -81,6 +101,8 @@ export default function LogIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              inputProps={{ maxLength: 100 }}
+
             />
 
             <Button
