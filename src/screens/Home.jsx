@@ -103,6 +103,9 @@ export default function Home() {
           <p>
             {ourMission}
           </p>
+          <p>
+            Sign up for an account today! With an account, you can not only volunteer for existing projects but also list green projects of your own.
+          </p>
         </Grid>
         <Grid item xs={3}></Grid>
         <Grid item xs={3} sx={{ height: '8vh' }}></Grid>

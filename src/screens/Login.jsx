@@ -19,7 +19,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link to="/" color="inherit" href="https://mui.com/">
-        Our Website Name
+        Lend a Hand
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -82,10 +82,7 @@ export default function LogIn() {
               id="password"
               autoComplete="current-password"
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
+
             <Button
               type="submit"
               fullWidth
