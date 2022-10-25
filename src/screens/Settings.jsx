@@ -1,7 +1,7 @@
 import * as React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./General.css";
-import {useState} from "react";
+import { useState } from "react";
 import axios from "axios";
 
 import Avatar from '@mui/material/Avatar';
@@ -78,7 +78,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 3, background: "cyan" }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -100,189 +100,195 @@ function a11yProps(index) {
 }
 
 export default function Settings() {
-    const [value, setValue] = React.useState(0);
-    const handleChange = (event, newValue) => {setValue(newValue);};
+  const [value, setValue] = React.useState(0);
+  const handleChange = (event, newValue) => { setValue(newValue); };
 
-    const putApplication = async (userId, listingId) => {
-          const IpAddresss = 0;
-          const res = await axios.put("/user/update/name/${userId}",{
-          data : {firstname: "firstname", lastname: "lastname"},
-          params: {userId: userId},
-          auth: {username: "admin@lendahand.com", password: "password"}
-          })
-      };
+  const putApplication = async (userId, listingId) => {
+    const IpAddresss = 0;
+    const res = await axios.put("/user/update/name/${userId}", {
+      data: { firstname: "firstname", lastname: "lastname" },
+      params: { userId: userId },
+      auth: { username: "admin@lendahand.com", password: "password" }
+    })
+  };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
 
-        const input = {
-            "password": data.get('password'),
-            "firstname": data.get('firstName'),
-            "lastname": data.get('lastName'),
-            "contactNo": data.get('phoneNo'),
-            "authorities": "AUTH_USER" }
+    const input = {
+      "password": data.get('password'),
+      "firstname": data.get('firstName'),
+      "lastname": data.get('lastName'),
+      "contactNo": data.get('phoneNo'),
+      "authorities": "AUTH_USER"
+    }
 
-        if (input.password.length != 0 | input.firstname.length != 0 | input.lastname.length != 0 | input.contactNo.length != 0 ) {
-              axios.post('http://localhost:8080/user/update/name/${userId}',
-              {
-                "username": data.get('email'),
-                "password": data.get('password'),
-                "firstname": data.get('firstName'),
-                "lastname": data.get('lastName'),
-                "contactNo": data.get('phoneNo'),
-              },
-              {headers: {
-  //               'Access-Control-Allow-Origin': 'http://localhost:8080',
-                'Content-Type': 'application/json',
-              }})
-              .then((response) => {
-                console.log(response);
-                handleOpen();
-              }, (error) => {
-                console.log(error);
-              });
+    if (input.password.length != 0 | input.firstname.length != 0 | input.lastname.length != 0 | input.contactNo.length != 0) {
+      axios.post('http://localhost:8080/user/update/name/${userId}',
+        {
+          "username": data.get('email'),
+          "password": data.get('password'),
+          "firstname": data.get('firstName'),
+          "lastname": data.get('lastName'),
+          "contactNo": data.get('phoneNo'),
+        },
+        {
+          headers: {
+            //               'Access-Control-Allow-Origin': 'http://localhost:8080',
+            'Content-Type': 'application/json',
           }
-        }
+        })
+        .then((response) => {
+          console.log(response);
+          handleOpen();
+        }, (error) => {
+          console.log(error);
+        });
+    }
+  }
 
-      //code to handle opening and closing of the confirmation pop-up
-        const navigate = useNavigate();
-        const [open, setOpen] = useState(false);
-        const handleOpenUserMenu = (event) => {
-                  setAnchorElUser(event.currentTarget);
-                };
-        const handleOpen = () => {
-          setOpen(true);
-        };
-        const handleClose = () => {
-          setOpen(false);
-          navigate("/");
-        };
+  //code to handle opening and closing of the confirmation pop-up
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    navigate("/");
+  };
 
-        //code to handle opening and closing of the please do not leave blank pop-up
-        const [blankOpen, setBlankOpen] = useState(false);
-        const handleBlankOpen = () => {
-          setBlankOpen(true);
-        };
-        const handleBlankClose = () => {
-          setBlankOpen(false);
-        };
+  //code to handle opening and closing of the please do not leave blank pop-up
+  const [blankOpen, setBlankOpen] = useState(false);
+  const handleBlankOpen = () => {
+    setBlankOpen(true);
+  };
+  const handleBlankClose = () => {
+    setBlankOpen(false);
+  };
 
 
-      //code for input validation of phone number
-        const [phoneErrorState, setPhoneErrorState] = useState(false);
-        function CheckIfNumber() {
-          var input = event.target.value;
-          // useEffect(() => {
-            if (isNaN(input) || !(input[0]==8 || input[0]==6 || input[0]==9)) {
-              setPhoneErrorState(true);
-            } else {
-              setPhoneErrorState(false);
-            }
-        }
+  //code for input validation of phone number
+  const [phoneErrorState, setPhoneErrorState] = useState(false);
+  function CheckIfNumber() {
+    var input = event.target.value;
+    // useEffect(() => {
+    if (isNaN(input) || !(input[0] == 8 || input[0] == 6 || input[0] == 9)) {
+      setPhoneErrorState(true);
+    } else {
+      setPhoneErrorState(false);
+    }
+  }
 
-      //code for input validation of email
-        const [emailErrorState, setEmailErrorState] = useState(false);
-        const emailErrorMessage = "Enter a valid email."
-        const validateEmail = (e) => {
-          var email = e.target.value;
-          if (validator.isEmail(email)) {
-            setEmailErrorState(false);
-          } else {
-            setEmailErrorState(true);
-          }
-        }
+  //code for input validation of email
+  const [emailErrorState, setEmailErrorState] = useState(false);
+  const emailErrorMessage = "Enter a valid email."
+  const validateEmail = (e) => {
+    var email = e.target.value;
+    if (validator.isEmail(email)) {
+      setEmailErrorState(false);
+    } else {
+      setEmailErrorState(true);
+    }
+  }
 
-      //code for double checking password entry
-        const [passwordNotMatch, setPasswordNotMatch] = useState(false);
-        const [password, setPassword] = useState("");
-        const passwordErrorMessage="The password does not match!"
-        const validatePassword = (e) => {
-          if (password == e.target.value) {
-            setPasswordNotMatch(false);
-          } else {
-            setPasswordNotMatch(true);
-          }
-        }
+  //code for double checking password entry
+  const [passwordNotMatch, setPasswordNotMatch] = useState(false);
+  const [password, setPassword] = useState("");
+  const passwordErrorMessage = "The password does not match!"
+  const validatePassword = (e) => {
+    if (password == e.target.value) {
+      setPasswordNotMatch(false);
+    } else {
+      setPasswordNotMatch(true);
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
-        <Container maxWidth={false} disableGutters sx={{   background: "white",   direction: "row",   justifyContent: "flex-start",   width: "100vw", display:"flex", flexDirection:"row"}}>
-        <Container maxWidth={false} disableGutters sx={{   background: "white",   direction: "column",   justifyContent: "flex-start",   width: "20vw", }}>
-              <CssBaseline />
-                      <Box disableGutters sx={{   background: "white", }}>
-                        <NavigationBar />
-                      </Box>
-                      <Box sx={{height: "10", background:"gray"}}/>
-                      <Box sx={{   background: "white",   marginTop: 11, }}>
-                      </Box>
-            <Tabs
-                orientation="vertical"
-                variant="scrollable"
-                value={value}
-                onChange={handleChange}
-                sx={{ borderRight: 1, borderColor: 'divider'}}
-                      >
-                       <Tab label="Profile" {...a11yProps(0)}  />
-                        <Tab label="Privacy" {...a11yProps(1)} />
-                        <Tab label="Manage" {...a11yProps(2)} disabled/>
-            </Tabs>
+      <Container maxWidth={false} disableGutters sx={{ background: "white", direction: "row", justifyContent: "flex-start", width: "100vw", display: "flex", flexDirection: "row" }}>
+        <Container maxWidth={false} disableGutters sx={{ background: "white", direction: "column", justifyContent: "flex-start", width: "20vw", }}>
+          <CssBaseline />
+          <Box disableGutters sx={{ background: "white", }}>
+            <NavigationBar />
+          </Box>
+          <Box sx={{ height: "10", background: "gray" }} />
+          <Box sx={{ background: "white", marginTop: 11, }}>
+          </Box>
+          <Tabs
+            orientation="vertical"
+            variant="scrollable"
+            value={value}
+            onChange={handleChange}
+            sx={{ borderRight: 1, borderColor: 'divider' }}
+          >
+            <Tab label="Profile" {...a11yProps(0)} />
+            <Tab label="Privacy" {...a11yProps(1)} />
+            <Tab label="Manage" {...a11yProps(2)} disabled />
+          </Tabs>
         </Container>
-        <Container maxWidth={false} disableGutters sx={{   background: "white",   direction: "column",   justifyContent: "center",   width: "100vw", }}>
-                <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', }}>
-                              <TabPanel value={value} index={0}>
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 2 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" sx={{ width: 100, height: 100 }}/>
-                                </IconButton>
-                                <Typography component="h1" variant="h5"> Welcome back, loser </Typography>
+        <Container maxWidth={false} disableGutters sx={{ background: "white", direction: "column", justifyContent: "center", width: "100vw", }}>
+          <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', }}>
+            <Container>
+              <TabPanel value={value} index={0}>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 2 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" sx={{ width: 100, height: 100 }} />
+                </IconButton>
+                <Typography component="h1" variant="h5"> Welcome back, loser </Typography>
 
-                                <Typography variant="body2" sx={{p:2}}> Edit your info and settings to make Lend a Hand work better for you. <a href='#'>Learn more </a></Typography>
+                <Typography variant="body2" sx={{ p: 2 }}> Edit your info and settings to make Lend a Hand work better for you. <a href='#'>Learn more </a></Typography>
 
-                                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                                    <Grid container spacing={5} direction="column" justifyContent="center" alignItems="stretch" >
-                                        <Grid item spacing={2}>
-                                            <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="First Name" inputProps={{ maxLength: 100 }} autoFocus/>
-                                            <TextField required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="family-name" inputProps={{ maxLength: 100 }}/>
-                                           <TextField required fullWidth id="phoneNo" label="Phone Number" name="phoneNo" autoComplete="phone number" type="tel" inputProps={{ maxLength: 8 }} onChange={CheckIfNumber} error={phoneErrorState}/>
-                                        </Grid>
-                                        <Grid item xs zeroMinWidth>
-                                            <Grid item xs={12} sm container>
-                                                <Grid item xs container direction="left" spacing={2}> </Grid>
-                                                <Grid item>
-                                                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Save Changes </Button>
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                              </TabPanel>
-
-                              <TabPanel value={value} index={1}>
-                                <Typography variant="h5" sx={{p:2}}> Change your password. </Typography>
-                                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                                    <Grid container spacing={5} direction="column" justifyContent="center" alignItems="stretch">
-                                        <Grid item spacing={2}>
-                                            <TextField required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password" inputProps={{ maxLength: 100 }} onChange={(e)=>setPassword(e.target.value)}/>
-                                            <TextField required fullWidth name="confirmpassword" label="Confirm Password" type="password" id="confirmpassword" autoComplete="confirm-password" inputProps={{ maxLength: 100 }} helperText={passwordNotMatch && passwordErrorMessage} onChange={(e) => validatePassword(e)} error={passwordNotMatch}/>
-                                        </Grid>
-                                        <Grid item xs zeroMinWidth>
-                                            <Grid item xs={12} sm container>
-                                                <Grid item xs container direction="left" spacing={2}> </Grid>
-                                                <Grid item>
-                                                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Save Changes </Button>
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                              </TabPanel>
-
-                              <TabPanel value={value} index={2}>
-                                Item Three
-                              </TabPanel>
+                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                  <Grid container spacing={5} direction="column" justifyContent="center" alignItems="stretch" >
+                    <Grid item spacing={2}>
+                      <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="First Name" inputProps={{ maxLength: 100 }} autoFocus />
+                      <TextField required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="family-name" inputProps={{ maxLength: 100 }} />
+                      <TextField required fullWidth id="phoneNo" label="Phone Number" name="phoneNo" autoComplete="phone number" type="tel" inputProps={{ maxLength: 8 }} onChange={CheckIfNumber} error={phoneErrorState} />
+                    </Grid>
+                    <Grid item xs zeroMinWidth>
+                      <Grid item xs={12} sm container>
+                        <Grid item xs container direction="left" spacing={2}> </Grid>
+                        <Grid item>
+                          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Save Changes </Button>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
                 </Box>
+              </TabPanel>
+
+              <TabPanel value={value} index={1}>
+                <Typography variant="h5" sx={{ p: 2 }}> Change your password. </Typography>
+                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                  <Grid container spacing={5} direction="column" justifyContent="center" alignItems="stretch">
+                    <Grid item spacing={2}>
+                      <TextField required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password" inputProps={{ maxLength: 100 }} onChange={(e) => setPassword(e.target.value)} />
+                      <TextField required fullWidth name="confirmpassword" label="Confirm Password" type="password" id="confirmpassword" autoComplete="confirm-password" inputProps={{ maxLength: 100 }} helperText={passwordNotMatch && passwordErrorMessage} onChange={(e) => validatePassword(e)} error={passwordNotMatch} />
+                    </Grid>
+                    <Grid item xs zeroMinWidth>
+                      <Grid item xs={12} sm container>
+                        <Grid item xs container direction="left" spacing={2}> </Grid>
+                        <Grid item>
+                          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Save Changes </Button>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </TabPanel>
+
+
+              <TabPanel value={value} index={2}>
+                Item Three
+              </TabPanel>
+            </Container>
+          </Box>
         </Container>
-    </Container>
+      </Container>
     </ThemeProvider>);
 }
 
