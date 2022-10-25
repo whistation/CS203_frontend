@@ -1,5 +1,6 @@
 {
   "name": "cs203-frontend",
+  "start": "HOST=127.0.0.1 react-scripts start",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -18,6 +19,7 @@
     "antd": "^4.17.1",
     "axios": "^1.1.2",
     "base-64": "^1.0.0",
+    "esbuild-windows-64": "^0.15.12",
     "flatlist-react": "^1.5.0",
     "mui": "^0.0.1",
     "navigator": "^1.0.1",
