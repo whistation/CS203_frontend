@@ -29,37 +29,21 @@ export default function MyApplications() {
   return (
     <>
       <ThemeProvider theme={theme}>
+        <NavigationBar/>
       <Container
-          maxWidth={false}
-          sx={{
-            background: "white",
-            direction: "column",
-            justifyContent: "flex-start",
-            width: "100vw",
-          }}
-        >
-          <CssBaseline />
-          <Box
-            sx={{
-              background: "white",
-            }}
-          >
-            <NavigationBar/>
-          </Box>
-        </Container>
-        <Container
         disableGutters
         sx={{ 
           display: "flex",
           justifyContent: "center",
+          alignItems: "baseline",
           background: "white",
-          marginTop: 15,
           marginBottom: 10,
+          height:"70vh"
            }}
         >
-          
           <Grid container 
-          sx={{width:'100vw', background:'white'}}
+          rowSpacing={4}
+          sx={{width:'100vw', background:'white', alignItems: "baseline",}}
           >
             {listings.map((listings) => (
               <Grid item key={listings} xs={12} sm={6} md={4}>
