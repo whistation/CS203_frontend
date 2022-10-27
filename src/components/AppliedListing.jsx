@@ -5,8 +5,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import {useNavigate} from "react-router-dom";
-import {useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 
@@ -26,7 +26,7 @@ const bgrnds = [
 function RandomBackground() {
   const [currentBgrndIndex, setCurrentBgrndIndex] = useState(Math.floor(Math.random() * bgrnds.length))
   const changeBgrnd = () => {
-    const randomNumber = Math.floor(Math.random()*bgrnds.length);
+    const randomNumber = Math.floor(Math.random() * bgrnds.length);
     setCurrentBgrndIndex(randomNumber);
     console.log(Math.random());
   }
@@ -54,11 +54,11 @@ const modalStyle = {
 
 
 
-export default function AppliedListing({name, description, id}) {
+export default function Listing({ name, description, id }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const navigate = useNavigate();
 
   return (
     <Card variant="outlined" sx={{ width: 300, height: 350 }}>
@@ -76,35 +76,37 @@ export default function AppliedListing({name, description, id}) {
           {description}
         </Typography>
       </CardContent>
-      <CardActions sx={{ justifyContent: "flex-end"}}>
+      <CardActions sx={{ justifyContent: "flex-end" }}>
         {/* <Button size="small">Share</Button> */}
         {/* <Link to="/listingpage/projectpage"> */}
-          <Button size="small" onClick={() => useNavigate("/listingpage/projectpage", {
-						listingId: id,
-					  })} >View project
-          </Button>
+        <Button size="small" onClick={() => navigate("/listingpage/projectpage", {
+          state: {
+            listingId: id,
+          }
+        })} >View project
+        </Button>
         {/* </Link> */}
       </CardActions >
-      <CardActions sx={{ justifyContent: "flex-end"}}>
+      <CardActions sx={{ justifyContent: "flex-end" }}>
         <Button size="small" onClick={handleOpen} >
           Withdraw
-          </Button>
-          <Modal
+        </Button>
+        <Modal
           hideBackdrop
-          open = {open}
-          onClose = {handleClose}
-          aria-labelledby ="modal-modal-title"
-          >
-            <Box sx={{ ...modalStyle, width: 400 }}>
-              <h2> Confirm withdrawal?</h2>
-              <Button onClick={handleClose}>
-                Yes
-              </Button>
-              <Button onClick={handleClose} alignItems="flex-end">
-                No
-              </Button>
-            </Box>
-          </Modal>
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+        >
+          <Box sx={{ ...modalStyle, width: 400 }}>
+            <h2> Confirm withdrawal?</h2>
+            <Button onClick={handleClose}>
+              Yes
+            </Button>
+            <Button onClick={handleClose} alignItems="flex-end">
+              No
+            </Button>
+          </Box>
+        </Modal>
       </CardActions>
     </Card>
   );
