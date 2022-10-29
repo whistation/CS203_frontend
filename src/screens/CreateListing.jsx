@@ -16,46 +16,13 @@ import ButtonBase from '@mui/material/ButtonBase';
 import {useState, useEffect} from "react";
 import Modal from '@mui/material/Modal';
 import {useNavigate} from "react-router-dom";
-
-
-import bgrnd1 from "../assets/backgroundpic1.jpg";
-import bgrnd2 from "../assets/backgroundpic2.jpg";
-import bgrnd3 from "../assets/backgroundpic3.jpg";
-import bgrnd4 from "../assets/backgroundpic4.jpg";
-import bgrnd5 from "../assets/backgroundpic5.jpg";
-import bgrnd6 from "../assets/backgroundpic6.jpg";
-import bgrnd7 from "../assets/backgroundpic7.jpg";
-import bgrnd8 from "../assets/backgroundpic8.jpg";
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 
 //Everything related to the Add Image button
-const bgrnds = [
-  bgrnd1, bgrnd2, bgrnd3, bgrnd4, bgrnd5, bgrnd6, bgrnd7, bgrnd8
-]
-
-function RandomBackground() {
-  const [currentBgrndIndex, setCurrentBgrndIndex] = useState(Math.floor(Math.random() * bgrnds.length))
-  const changeBgrnd = () => {
-    const randomNumber = Math.floor(Math.random()*bgrnds.length);
-    setCurrentBgrndIndex(randomNumber);
-    console.log(Math.random());
-  }
-  useEffect(() => changeBgrnd(), [])
-
-  return (
-    bgrnds[currentBgrndIndex]
-  )
-}
-
-const images = [
-  {
-    url: placeholder,
-    title: 'Add an image of your project!',
-    width: '100%',
-    height: '100%',
-  },
-];
-
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
   height: '100vh',
@@ -139,26 +106,59 @@ const modalStyle = {
 };
 
 //exporting the actual app!
-export default function SignInSide() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+export default function CreateListing() {
+
+  //code to handle image upload
+  const [pictureURL, setPictureURL] = useState(placeholder);
+  const handleUpload = (e) => {
+    setPictureURL(URL.createObjectURL(e.target.files[0]));
+    console.log(URL.createObjectURL(e.target.files[0]));
+  }
+
+  //project title and description data
+  const [data, setData] = useState(0);
+
+  //project location data
+  const [location, setLocation] = useState('');
+  const handleLocation = (event) => {
+    setLocation(event.target.value);
+    console.log(location);
   };
 
+  //project tag data
+  const [tag, setTag] = React.useState('');
+  const handleTag = (event) => {
+    setTag(event.target.value);
+  };
+
+  //project commitment length data
+  const [commitment, setCommitment] = React.useState('');
+  const handleCommitment = (event) => {
+    setCommitment(event.target.value);
+  };
+
+  //Handling creation of listing
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const handleOpen = () => {
+  const handleOpen = (event) => {
+    event.preventDefault();
+    setData(new FormData(event.currentTarget));
     setOpen(true);
   };
-  const handleClose = () => {
+
+  const handleConfirm = () => {
+    console.log({
+      name: data.get('title'),
+      des: data.get('description'),
+      location: location,
+      tag: tag,
+      commitment: commitment,
+      picture: pictureURL
+    });
     setOpen(false);
     navigate("/listingpage/mylistings");
   };
-  const handleClose2 = () => {
+  const handleCancel = () => {
     setOpen(false);
     navigate("/listingpage/createlisting");
   };
@@ -174,24 +174,22 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            // backgroundImage: `url(${placeholder})`,
-            // backgroundRepeat: 'no-repeat',
-            // backgroundColor: (t) =>
-            //   t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         >
-          {images.map((image) => (
+          {/* upload image button */}
           <ImageButton
             focusRipple
-            key={image.title}
             style={{
-              
-              width: image.width,
+              width: "100%"
             }}
+            variant="contained" 
+            component="label"
+
           >
-            <ImageSrc style={{ backgroundImage: `url(${RandomBackground()})` }} />
+            <input hidden accept="image/*" multiple type="file" onChange={handleUpload}/>
+            <ImageSrc style={{ backgroundImage: `url(${pictureURL})` }}/>
             <ImageBackdrop className="MuiImageBackdrop-root" />
             <Image>
               <Typography
@@ -205,12 +203,12 @@ export default function SignInSide() {
                   pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
                 }}
               >
-                {image.title}
+                Add an image of your project!
+                
                 <ImageMarked className="MuiImageMarked-root" />
               </Typography>
             </Image>
           </ImageButton>
-      ))}
         </Grid>
     
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -231,7 +229,12 @@ export default function SignInSide() {
               Create New Listing
             </Typography>
 
-            <Box noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box 
+              component="form" 
+              noValidate 
+              onSubmit={handleOpen} 
+              sx={{ mt: 1, backgroundColor:"lightblue"}} >
+              {/* Project title field */}
               <TextField
                 autoFocus
                 margin="normal"
@@ -243,6 +246,8 @@ export default function SignInSide() {
                 autoComplete="title"
                 helperText="Enter a title for your project."
               />
+
+              {/* Project description field */}
               <TextField
                 margin="normal"
                 required
@@ -253,16 +258,53 @@ export default function SignInSide() {
                 id="description"
                 autoComplete="description"
                 multiline={true}
-                inputProps={{maxlength: 750}}
-                helperText="Describe the project, and the kind of volunteers you are seeking."
+                inputProps={{maxLength: 750}}
+                maxRows={5}
+                helperText="Describe the project, and the kind of volunteers you are seeking. (Max 750 characters)"
               />
 
+              <Grid container justifyContent="center" spacing={3} sx={{mt: 0, mb:1}}>
+                <Grid item>
+                      <Box sx={{ minWidth: 120 }}>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">Location</InputLabel>
+                          <Select
+                            labelId="location"
+                            id="location"
+                            value={location}
+                            label="location"
+                            onChange={handleLocation}
+                          >
+                            <MenuItem value={"north"}>North</MenuItem>
+                            <MenuItem value={"south"}>South</MenuItem>
+                            <MenuItem value={"east"}>East</MenuItem>
+                            <MenuItem value={"west"}>West</MenuItem> 
+                          </Select>
+                        </FormControl>
+                      </Box>
+                </Grid>
+
+                {/* <Grid item>
+                  <LocationSelect >
+
+                  </LocationSelect>
+                </Grid>
+
+                <Grid item>
+                  <LocationSelect >
+
+                  </LocationSelect> */}
+                {/* </Grid> */}
+
+              </Grid>
+
+
+              {/* create button */}
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={()=>handleOpen()}
               >
                 Create
               </Button>
@@ -270,14 +312,14 @@ export default function SignInSide() {
               <Modal
                 hideBackdrop
                 open={open}
-                onClose={handleClose}
+                onClose={handleConfirm}
                 aria-labelledby="child-modal-title"
                 aria-describedby="child-modal-description"
               >
                 <Box sx={{ ...modalStyle, width: 400 }}>
                   <h2 id="child-modal-title">Confirm creation?</h2>
-                  <Button onClick={handleClose}>Yes!</Button>
-                  <Button onClick={handleClose2}>No!</Button>
+                  <Button onClick={handleConfirm}>Yes!</Button>
+                  <Button onClick={handleCancel}>No!</Button>
                 </Box>
               </Modal>
 

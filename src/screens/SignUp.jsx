@@ -70,14 +70,15 @@ export default function SignUp() {
           handleBlankOpen();
           
     } else {
-        axios.post('http://localhost:8080/signup', 
+        axios.post('http://localhost:8080/newuser', 
         {
           "username": data.get('email'),
           "password": data.get('password'),
           "firstname": data.get('firstName'),
           "lastname": data.get('lastName'),
           "contactNo": data.get('phoneNo'),
-        },
+        }
+        ,
         {headers: {
           'Access-Control-Allow-Origin': 'http://localhost:8080',
           'Content-Type': 'application/json',
@@ -99,7 +100,7 @@ export default function SignUp() {
   };
   const handleClose = () => {
     setOpen(false);
-    navigate("/");
+    navigate("/login");
   };
 
   //code to handle opening and closing of the please do not leave blank pop-up
@@ -303,7 +304,7 @@ export default function SignUp() {
         >
           <Box sx={{ ...modalStyle, border: '2px solid lightgreen', width: 400 }}>
             <h2 id="child-modal-title">Successful sign-up!</h2>
-            <Button onClick={handleClose}>Great!</Button>
+            <Button onClick={handleClose}>Take me to the log in page!</Button>
           </Box>
         </Modal>
         
