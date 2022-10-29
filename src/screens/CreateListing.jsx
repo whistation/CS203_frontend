@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Link} from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -20,7 +19,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-
+import axios from "axios";
 
 //Everything related to the Add Image button
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -110,9 +109,16 @@ export default function CreateListing() {
 
   //code to handle image upload
   const [pictureURL, setPictureURL] = useState(placeholder);
+  const [picture, setPicture] = useState(0);
+  const image = new FormData();
   const handleUpload = (e) => {
     setPictureURL(URL.createObjectURL(e.target.files[0]));
-    console.log(URL.createObjectURL(e.target.files[0]));
+    
+    image.append("image", e.target.files[0]);
+    console.log(e.target.files[0]);
+    console.log(image.get('image'));
+    
+    setPicture(e.target.files[0]);
   }
 
   //project title and description data
@@ -122,7 +128,6 @@ export default function CreateListing() {
   const [location, setLocation] = useState('');
   const handleLocation = (event) => {
     setLocation(event.target.value);
-    console.log(location);
   };
 
   //project tag data
@@ -143,9 +148,21 @@ export default function CreateListing() {
   const handleOpen = (event) => {
     event.preventDefault();
     setData(new FormData(event.currentTarget));
-    setOpen(true);
+
+    //verify that the fields are not empty
+    if (
+      // pictureURL==="/src/assets/image_placeholder.png" | 
+      location.length===0 | tag.length===0 
+        | commitment.length===0 | data.get('title').length===0 | data.get('description').length===0) {
+      console.log("some fields are empty!");
+      handleBlankOpen();
+    } else {
+      setOpen(true);
+    }
   };
 
+  //fires when user confirms listing creation
+  const userid = localStorage.getItem("userid");
   const handleConfirm = () => {
     console.log({
       name: data.get('title'),
@@ -153,14 +170,46 @@ export default function CreateListing() {
       location: location,
       tag: tag,
       commitment: commitment,
-      picture: pictureURL
     });
-    setOpen(false);
-    navigate("/listingpage/mylistings");
+    console.log(localStorage.getItem("username"));
+    console.log(localStorage.getItem("password"));
+
+      axios.post("http://localhost:8080/listingpage/newlisting?userId=" + userid + "&tagName=" + tag,
+      {
+        name: data.get('title'),
+        des: data.get('description'),
+        commitment: commitment,
+        location: location,
+      }
+      ,
+      {auth:
+        {
+          "username": localStorage.getItem("username"),
+          "password": localStorage.getItem("password"),
+        }
+      })
+      .then((response) => {
+        console.log("axios success")
+        console.log(response);
+        setOpen(false);
+        navigate("/listingpage/mylistings");
+      }, (error) => {
+        console.log(error);
+      });
+
   };
   const handleCancel = () => {
     setOpen(false);
     navigate("/listingpage/createlisting");
+  };
+
+  //code to handle opening and closing of the please do not leave blank pop-up
+  const [blankOpen, setBlankOpen] = useState(false);
+  const handleBlankOpen = () => {
+    setBlankOpen(true);
+  };
+  const handleBlankClose = () => {
+    setBlankOpen(false);
   };
 
   return (
@@ -211,7 +260,14 @@ export default function CreateListing() {
           </ImageButton>
         </Grid>
     
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid 
+          item 
+          xs={12} 
+          sm={8} 
+          md={5} 
+          component={Paper} 
+          elevation={6} 
+          square>
           <Box
             sx={{
               my: 8,
@@ -233,7 +289,7 @@ export default function CreateListing() {
               component="form" 
               noValidate 
               onSubmit={handleOpen} 
-              sx={{ mt: 1, backgroundColor:"lightblue"}} >
+              sx={{ mt: 1}} >
               {/* Project title field */}
               <TextField
                 autoFocus
@@ -264,6 +320,8 @@ export default function CreateListing() {
               />
 
               <Grid container justifyContent="center" spacing={3} sx={{mt: 0, mb:1}}>
+                
+                {/* location select */}
                 <Grid item>
                       <Box sx={{ minWidth: 120 }}>
                         <FormControl fullWidth>
@@ -284,18 +342,53 @@ export default function CreateListing() {
                       </Box>
                 </Grid>
 
-                {/* <Grid item>
-                  <LocationSelect >
-
-                  </LocationSelect>
+                {/* tag select */}
+                <Grid item>
+                      <Box sx={{ minWidth: 120 }}>
+                        <FormControl fullWidth>
+                          <InputLabel>Tag</InputLabel>
+                          <Select
+                            labelId="tag"
+                            id="tag"
+                            value={tag}
+                            label="tag"
+                            onChange={handleTag}
+                          >
+                            <MenuItem value={"Coastal"}>Coastal</MenuItem>
+                            <MenuItem value={"Marine"}>Marine</MenuItem>
+                            <MenuItem value={"Jungle"}>Jungle</MenuItem>
+                            <MenuItem value={"Clean Energy"}>Clean Energy</MenuItem> 
+                            <MenuItem value={"Agriculture"}>Agriculture</MenuItem>
+                            <MenuItem value={"Recycling and Waste"}>Recycling and Waste</MenuItem>
+                            <MenuItem value={"Others"}>Others</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Box>
                 </Grid>
 
+                {/* commitment select */}
                 <Grid item>
-                  <LocationSelect >
-
-                  </LocationSelect> */}
-                {/* </Grid> */}
-
+                      <Box sx={{ minWidth: 120 }}>
+                        <FormControl fullWidth>
+                          <InputLabel>Time</InputLabel>
+                          <Select
+                            labelId="commitment"
+                            id="commitment"
+                            value={commitment}
+                            label="commitment"
+                            onChange={handleCommitment}
+                          >
+                            <MenuItem value={"ad-hoc"}>Ad-Hoc</MenuItem>
+                            <MenuItem value={"1 week"}>1 week</MenuItem>
+                            <MenuItem value={"1 month"}>1 month</MenuItem>
+                            <MenuItem value={"3 months"}>3 months</MenuItem> 
+                            <MenuItem value={"6 months"}>6 months</MenuItem>
+                            <MenuItem value={"1 year"}>1 year</MenuItem>
+                            <MenuItem value={"long-term"}>Long-Term</MenuItem> 
+                          </Select>
+                        </FormControl>
+                      </Box>
+                </Grid>
               </Grid>
 
 
@@ -309,6 +402,7 @@ export default function CreateListing() {
                 Create
               </Button>
 
+              {/* confirmation pop up */}
               <Modal
                 hideBackdrop
                 open={open}
@@ -323,6 +417,19 @@ export default function CreateListing() {
                 </Box>
               </Modal>
 
+              {/* Please do not leave fields blank pop up */}
+              <Modal
+                hideBackdrop
+                open={blankOpen}
+                onClose={handleBlankClose}
+                aria-labelledby="child-modal-title"
+                aria-describedby="child-modal-description"
+              >
+                <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400 }}>
+                  <h2 id="child-modal-title">Remember to add an image, and do not leave any fields blank!</h2>
+                  <Button onClick={handleBlankClose}>Got it!</Button>
+                </Box>
+              </Modal>
             </Box>
           </Box>
         </Grid>

@@ -62,11 +62,19 @@ export default function LogIn() {
 
   //code to handle the event when we press the log in button
   const navigate = useNavigate();
+  const [Input, setInput] = useState(0);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const input = 
+    setInput(
+    {
+      "username": data.get('email'),
+      "password": data.get('password'),
+    }
+    );
+
+    const input =     
     {
       "username": data.get('email'),
       "password": data.get('password'),
@@ -74,7 +82,7 @@ export default function LogIn() {
     console.log(input);
 
     //if some of the fields are empty prompt user to fill them, else handle auth
-    if (input.username.length === 0 | input.password.length === 0) {
+    if (JSON.stringify(input.username).length === 0 | JSON.stringify(input.password).length === 0) {
         console.log("some fields are empty!");
         handleBlankOpen();
     } else {
@@ -88,8 +96,6 @@ export default function LogIn() {
         .then((response) => {
           //successful log in
           console.log("successful log in!");
-          localStorage.setItem("username", JSON.stringify(input.username));
-          console.log(localStorage.getItem("username"));
           handleLogInOpen();
 
         }, (error) => {
@@ -115,6 +121,16 @@ export default function LogIn() {
     setLogInOpen(true);
   };
   const handleLogInClose = () => {
+    //store username and userid in the local storage
+    axios.get("http://localhost:8080/user?username=" + Input.username,
+    ).then((response) => {
+      console.log("Testing JSON extraction")
+      localStorage.setItem("userid", JSON.stringify(response.data.id))
+    });
+
+    localStorage.setItem("username", JSON.stringify(Input.username));
+    localStorage.setItem("password", JSON.stringify(Input.password));
+
     setLogInOpen(false);
     navigate("/listingpage");
   };

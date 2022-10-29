@@ -31,6 +31,10 @@ const theme = createTheme();
 // ];
 
 export default function ListingPage() {
+  console.log("I am in the listing page");
+  console.log(localStorage.getItem("username"));
+  console.log(localStorage.getItem("userid"));
+  console.log(localStorage.getItem("password"));
   const [listings, setListings] = useState([{}]);
 
   useEffect(() => {
