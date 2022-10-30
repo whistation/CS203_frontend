@@ -125,11 +125,12 @@ export default function LogIn() {
     axios.get("http://localhost:8080/user?username=" + Input.username,
     ).then((response) => {
       console.log("Testing JSON extraction")
-      localStorage.setItem("userid", JSON.stringify(response.data.id))
+      localStorage.setItem("userid", response.data.id)
+      localStorage.setItem("firstname", response.data.firstname)
     });
 
-    localStorage.setItem("username", JSON.stringify(Input.username));
-    localStorage.setItem("password", JSON.stringify(Input.password));
+    localStorage.setItem("username", Input.username);
+    localStorage.setItem("password", Input.password);
 
     setLogInOpen(false);
     navigate("/listingpage");

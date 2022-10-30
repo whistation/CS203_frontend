@@ -111,40 +111,33 @@ export default function Settings() {
       auth: { username: "admin@lendahand.com", password: "password" }
     })
   };
-
-  const handleSubmit = (event) => {
+  const handleNameChangePasswordSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
     const input = {
-      "password": data.get('password'),
-      "firstname": data.get('firstName'),
-      "lastname": data.get('lastName'),
-      "contactNo": data.get('phoneNo'),
-      "authorities": "AUTH_USER"
+      "newpassword": data.get('newpassword')
     }
 
-    if (input.password.length != 0 | input.firstname.length != 0 | input.lastname.length != 0 | input.contactNo.length != 0) {
-      axios.post('http://localhost:8080/user/update/name/${userId}',
-        {
-          "username": data.get('email'),
-          "password": data.get('password'),
-          "firstname": data.get('firstName'),
-          "lastname": data.get('lastName'),
-          "contactNo": data.get('phoneNo'),
-        },
-        {
-          headers: {
-            //               'Access-Control-Allow-Origin': 'http://localhost:8080',
-            'Content-Type': 'application/json',
-          }
-        })
-        .then((response) => {
-          console.log(response);
-          handleOpen();
-        }, (error) => {
-          console.log(error);
-        });
+    if (JSON.stringify(input.newpassword).length === 0) {
+      console.log("some fields are empty!");
+      handleBlankOpen();
+    } else {
+      axios.post(
+          'http://localhost:8080/resetting/password/' + localStorage.getItem("userid"),
+          {auth:
+                {
+                  "username": localStorage.getItem("username"),
+                  "password": localStorage.getItem("password"),
+                }
+          })
+          .then((response) => {
+            console.log("successful update!");
+            handleLogInOpen();
+
+          }, (error) => {
+            console.log("unsuccessful update");
+            handleFailedOpen();
+          });
     }
   }
 
@@ -211,38 +204,47 @@ export default function Settings() {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth={false} disableGutters sx={{ background: "white", direction: "row", justifyContent: "flex-start", width: "100vw", display: "flex", flexDirection: "row" }}>
-        <Container maxWidth={false} disableGutters sx={{ background: "white", direction: "column", justifyContent: "flex-start", width: "20vw", }}>
-          <CssBaseline />
-          <Box disableGutters sx={{ background: "white", }}>
-            <NavigationBar />
-          </Box>
-          <Box sx={{ height: "10", background: "gray" }} />
-          <Box sx={{ background: "white", marginTop: 11, }}>
-          </Box>
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={value}
-            onChange={handleChange}
-            sx={{ borderRight: 1, borderColor: 'divider' }}
-          >
+        <CssBaseline />
+        <Box disableGutters sx={{ background: "white", }}>
+          <NavigationBar />
+        </Box>
+        <Container disableGutters sx={{ background: "white", direction: "column", justifyContent: "flex-start", width: "20vw", height: '80vh'}}>
+          <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange} sx={{ borderRight: 1, borderColor: 'divider' }}>
             <Tab label="Profile" {...a11yProps(0)} />
             <Tab label="Privacy" {...a11yProps(1)} />
-            <Tab label="Manage" {...a11yProps(2)} disabled />
+            <Tab label="Preferences" {...a11yProps(2)} disabled />
+            <Tab label="Report" {...a11yProps(3)} disabled />
+            <br ></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <Tab label="About" {...a11yProps(4)} disabled />
           </Tabs>
         </Container>
-        <Container maxWidth={false} disableGutters sx={{ background: "white", direction: "column", justifyContent: "center", width: "100vw", }}>
-          <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', }}>
-            <Container>
+        {/*<Container maxWidth={false} disableGutters sx={{ background: "white", direction: "column", justifyContent: "center", width: "100vw", }}>*/}
+          {/*<Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', }}>*/}
+            <Container disableGutters sx={{ background: "white" }}>
               <TabPanel value={value} index={0}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 2 }}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" sx={{ width: 100, height: 100 }} />
                 </IconButton>
-                <Typography component="h1" variant="h5"> Welcome back, loser </Typography>
+                <Typography component="h1" variant="h5"> Welcome back, {localStorage.getItem('firstname')}. </Typography>
 
                 <Typography variant="body2" sx={{ p: 2 }}> Edit your info and settings to make Lend a Hand work better for you. <a href='#'>Learn more </a></Typography>
 
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Box component="form" noValidate onSubmit={handleNameChangePasswordSubmit} sx={{ mt: 3 }}>
                   <Grid container spacing={5} direction="column" justifyContent="center" alignItems="stretch" >
                     <Grid item spacing={2}>
                       <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="First Name" inputProps={{ maxLength: 100 }} autoFocus />
@@ -262,11 +264,13 @@ export default function Settings() {
               </TabPanel>
 
               <TabPanel value={value} index={1}>
-                <Typography variant="h5" sx={{ p: 2 }}> Change your password. </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Typography component="h1" variant="h5" sx={{ p: 2 }}> Change your password </Typography>
+                <Typography variant="body2" sx={{p: 1}}> Choose a strong password and don't reuse it for other accounts. <a href='#'>Learn more </a></Typography>
+                <Box component="form" noValidate onSubmit={handleNameChangePasswordSubmit} sx={{ mt: 3 }}>
                   <Grid container spacing={5} direction="column" justifyContent="center" alignItems="stretch">
                     <Grid item spacing={2}>
-                      <TextField required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password" inputProps={{ maxLength: 100 }} onChange={(e) => setPassword(e.target.value)} />
+                      <TextField required fullWidth name="password" label="Current Password" type="password" id="password" autoComplete="new-password" inputProps={{ maxLength: 100 }} onChange={(e) => setPassword(e.target.value)} />
+                      <TextField required fullWidth name="password" label="New Password" type="password" id="password" autoComplete="new-password" inputProps={{ maxLength: 100 }} onChange={(e) => setPassword(e.target.value)} />
                       <TextField required fullWidth name="confirmpassword" label="Confirm Password" type="password" id="confirmpassword" autoComplete="confirm-password" inputProps={{ maxLength: 100 }} helperText={passwordNotMatch && passwordErrorMessage} onChange={(e) => validatePassword(e)} error={passwordNotMatch} />
                     </Grid>
                     <Grid item xs zeroMinWidth>
@@ -281,13 +285,12 @@ export default function Settings() {
                 </Box>
               </TabPanel>
 
-
               <TabPanel value={value} index={2}>
                 Item Three
               </TabPanel>
             </Container>
-          </Box>
-        </Container>
+          {/*</Box>*/}
+        {/*</Container>*/}
       </Container>
     </ThemeProvider>);
 }
