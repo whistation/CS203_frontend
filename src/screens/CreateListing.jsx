@@ -20,6 +20,8 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
+import {decode as base64_decode, encode as base64_encode} from 'base-64';
+
 
 //Everything related to the Add Image button
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -109,16 +111,13 @@ export default function CreateListing() {
 
   //code to handle image upload
   const [pictureURL, setPictureURL] = useState(placeholder);
-  const [picture, setPicture] = useState(0);
-  const image = new FormData();
+
+  var image = new FormData();
+  
   const handleUpload = (e) => {
     setPictureURL(URL.createObjectURL(e.target.files[0]));
-    
     image.append("image", e.target.files[0]);
-    console.log(e.target.files[0]);
-    console.log(image.get('image'));
     
-    setPicture(e.target.files[0]);
   }
 
   //project title and description data
@@ -151,7 +150,7 @@ export default function CreateListing() {
 
     //verify that the fields are not empty
     if (
-      // pictureURL==="/src/assets/image_placeholder.png" | 
+      pictureURL==="/src/assets/image_placeholder.png" | 
       location.length===0 | tag.length===0 
         | commitment.length===0 | data.get('title').length===0 | data.get('description').length===0) {
       console.log("some fields are empty!");
@@ -160,6 +159,12 @@ export default function CreateListing() {
       setOpen(true);
     }
   };
+
+  //user authentication details
+  const usernameTemp = localStorage.getItem("username");
+  const username = usernameTemp.substring(1, usernameTemp.length - 1);
+  const passwordTemp = localStorage.getItem("password");
+  const password = passwordTemp.substring(1, passwordTemp.length - 1);
 
   //fires when user confirms listing creation
   const userid = localStorage.getItem("userid");
@@ -171,29 +176,51 @@ export default function CreateListing() {
       tag: tag,
       commitment: commitment,
     });
-    console.log(localStorage.getItem("username"));
-    console.log(localStorage.getItem("password"));
 
+    //axios post call for listing details
       axios.post("http://localhost:8080/listingpage/newlisting?userId=" + userid + "&tagName=" + tag,
       {
-        name: data.get('title'),
-        des: data.get('description'),
-        commitment: commitment,
-        location: location,
-      }
-      ,
-      {auth:
+        "name": data.get('title'),
+        "des": data.get('description'),
+        "commitment": commitment,
+        "location": location
+      },
+      {
+        auth: 
         {
-          "username": localStorage.getItem("username"),
-          "password": localStorage.getItem("password"),
+          "username": username,
+          "password": password
         }
-      })
+      }
+      )
       .then((response) => {
-        console.log("axios success")
+        console.log("axios post details success");
         console.log(response);
-        setOpen(false);
-        navigate("/listingpage/mylistings");
+        const listingid = response.data.id;
+
+        //axios post call for image upload
+        axios({
+          method: "post",
+          url: "http://localhost:8080/listingpage/newlisting/imageupload?id=" + listingid,
+          data: image,
+          headers: 
+            { 
+              "Authentication": "Basic YWRtaW5AbGVuZGFoYW5kLmNvbTpwYXNzd29yZA==",
+              "Content-Type": "multipart/form-data",
+            },
+        }
+        ).then((response) => {
+          console.log("axios post image success");
+          console.log(response);
+          setOpen(false);
+          navigate("/listingpage/mylistings");
+        }, (error) => {
+          console.log("axios post image fail");
+          console.log(error);
+        })
+
       }, (error) => {
+        console.log("axios post details fail");
         console.log(error);
       });
 
