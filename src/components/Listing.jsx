@@ -36,7 +36,7 @@ function RandomBackground() {
   )
 }
 
-export default function Listing({name, description, id}) {
+export default function Listing({name, description, id, buttonName}) {
   const navigate = useNavigate();
   return (
     <Card variant="outlined" sx={{ width: 300, height: 370 }}>
@@ -60,7 +60,7 @@ export default function Listing({name, description, id}) {
             state: {
 						listingId: id,
             }
-					})} >Apply </Button>
+					})} >{buttonName} </Button>
       </CardActions>
     </Card>
   );

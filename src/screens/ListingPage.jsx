@@ -11,7 +11,7 @@ import { sizing } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
@@ -39,18 +39,17 @@ export default function ListingPage() {
 
   useEffect(() => {
     const getAllListings = async () => {
-      const res = await axios.get("http://localhost:8080/listingpage",
-        {auth: 
-          {
-            "username": 'admin@lendahand.com',
-            "password": 'password',
-          }
-        });
+      const res = await axios.get("http://localhost:8080/listingpage", {
+        auth: {
+          username: "admin@lendahand.com",
+          password: "password",
+        },
+      });
       console.log(res);
       setListings(res.data);
-    }
+    };
     getAllListings();
-	}, []);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -73,7 +72,7 @@ export default function ListingPage() {
         >
           <NavigationBar />
         </Box>
-        <Box sx={{height: "10", background:"gray"}}/>
+        <Box sx={{ height: "10", background: "gray" }} />
         <Box
           sx={{
             background: "white",
@@ -93,28 +92,39 @@ export default function ListingPage() {
             p: 2,
           }}
         >
-          <Filter name={"Location"}/>
-          <Filter name={"Duration"}/>
-          <Filter name={"Start Date"}/>
-          <Filter name={"End Date"}/>
+          <Filter name={"Location"} />
+          <Filter name={"Duration"} />
+          <Filter name={"Start Date"} />
+          <Filter name={"End Date"} />
         </Box>
-        <Container  
+        <Container
           disableGutters
-          sx={{ 
+          sx={{
             display: "flex",
             justifyContent: "center",
             background: "white",
             marginTop: 10,
             marginBottom: 10,
-             }}
+          }}
         >
-          <Grid container direction="row" justifyContent="flex-start" spacing={4} sx={{ 
-            width: "100vw", 
-            background: "white"
-            }}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            spacing={4}
+            sx={{
+              width: "100vw",
+              background: "white",
+            }}
+          >
             {listings.map((listings) => (
               <Grid item key={listings} xs={12} sm={6} md={4}>
-                <Listing name={listings.name} description={listings.des} id={listings.id}/>
+                <Listing
+                  name={listings.name}
+                  description={listings.des}
+                  id={listings.id}
+                  buttonName={"apply"}
+                />
               </Grid>
             ))}
           </Grid>

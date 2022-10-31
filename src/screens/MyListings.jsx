@@ -116,6 +116,7 @@ export default function MyListings() {
                   name={listings.name}
                   description={listings.des}
                   id={listings.id}
+                  buttonName={"edit"}
                 />
               </Grid>
             ))}
