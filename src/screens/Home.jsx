@@ -63,8 +63,7 @@ export default function Home() {
           >
             <HomeBar />
           </Box>
-        </Container>
-      </ThemeProvider>
+        
       <Grid container sx={{ height: '100vh', width: '100vw' }}>
         <CssBaseline />
         <Grid item
@@ -114,7 +113,8 @@ export default function Home() {
         </Grid>
         <Grid item xs={3} sx={{ height: '8vh' }}></Grid>
       </Grid>
-
+      </Container>
+      </ThemeProvider>
     </>
   );
 }
