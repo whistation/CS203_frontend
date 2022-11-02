@@ -48,7 +48,7 @@ export default function Home() {
         <Container
           maxWidth={false}
           sx={{
-            background: "white",
+            background: "green",
             direction: "column",
             justifyContent: "flex-start",
             width: "100vw",
@@ -64,7 +64,6 @@ export default function Home() {
             <HomeBar />
           </Box>
         </Container>
-      </ThemeProvider>
       <Grid container sx={{ height: '100vh', width: '100vw' }}>
         <CssBaseline />
         <Grid item
@@ -88,6 +87,7 @@ export default function Home() {
             Lend a Hand
           </Typography>
         </Grid>
+
         <Grid container sx={{ height: '9vh', width: '100vw' }} id="aboutUs">
           <CssBaseline>
             <Grid item xs={12} sx={{ backgroundColor: "lightgray" }}>
@@ -95,8 +95,8 @@ export default function Home() {
             </Grid>
           </CssBaseline>
         </Grid>
-        <Grid item xs={3} ></Grid>
-        <Grid item xs={6}>
+        <Grid item xs={3} sx={{ backgroundColor: "white" }}></Grid>
+        <Grid item xs={6} sx={{ backgroundColor: "white" }}>
           <h4>
             {aboutUs}
           </h4>
@@ -107,14 +107,16 @@ export default function Home() {
             Sign up for an account today! With an account, you can not only volunteer for existing projects but also list green projects of your own.
           </p>
         </Grid>
-        <Grid item xs={3}></Grid>
-        <Grid item xs={3} sx={{ height: '8vh' }}></Grid>
-        <Grid item xs={6} sx={{ height: '8vh' }}>
+        <Grid item xs={3} sx={{ backgroundColor: "white" }}></Grid>
+        <Grid item xs={3} sx={{ height: '8vh', backgroundColor: "white" }}></Grid>
+        <Grid item xs={6} sx={{ height: '8vh', backgroundColor: "white"}}>
           <Copyright sx={{ mt: 4, mb: 4 }} />
         </Grid>
-        <Grid item xs={3} sx={{ height: '8vh' }}></Grid>
+        <Grid item xs={3} sx={{ height: '8vh', backgroundColor: "white"}}></Grid>
+        
       </Grid>
-
+      
+</ThemeProvider>
     </>
   );
 }

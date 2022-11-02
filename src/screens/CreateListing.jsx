@@ -12,7 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import placeholder from '../assets/image_placeholder.png';
 import { styled } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import Modal from '@mui/material/Modal';
 import {useNavigate} from "react-router-dom";
 import FormControl from '@mui/material/FormControl';
@@ -20,6 +20,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
+
 
 //Everything related to the Add Image button
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -109,17 +110,24 @@ export default function CreateListing() {
 
   //code to handle image upload
   const [pictureURL, setPictureURL] = useState(placeholder);
-  const [picture, setPicture] = useState(0);
+
   const image = new FormData();
+  const [picture, setPicture] = useState(null);
+
   const handleUpload = (e) => {
     setPictureURL(URL.createObjectURL(e.target.files[0]));
-    
-    image.append("image", e.target.files[0]);
-    console.log(e.target.files[0]);
-    console.log(image.get('image'));
-    
+    // image.append("pic", e.target.files[0]);
+    // console.log("what is this image?");
+    // console.log(image.get("pic"));
     setPicture(e.target.files[0]);
+    
   }
+  // console.log("what is this image? outside handleUpload, hi!");
+  // console.log(image.get("pic"));
+  console.log("what is stored in the picture variable?");
+  console.log(picture);
+  image.append("image", picture);
+  console.log(image.get("image"));
 
   //project title and description data
   const [data, setData] = useState(0);
@@ -151,7 +159,7 @@ export default function CreateListing() {
 
     //verify that the fields are not empty
     if (
-      // pictureURL==="/src/assets/image_placeholder.png" | 
+      pictureURL==="/src/assets/image_placeholder.png" | 
       location.length===0 | tag.length===0 
         | commitment.length===0 | data.get('title').length===0 | data.get('description').length===0) {
       console.log("some fields are empty!");
@@ -160,6 +168,12 @@ export default function CreateListing() {
       setOpen(true);
     }
   };
+
+  //user authentication details
+  const usernameTemp = localStorage.getItem("username");
+  const username = usernameTemp.substring(1, usernameTemp.length - 1);
+  const passwordTemp = localStorage.getItem("password");
+  const password = passwordTemp.substring(1, passwordTemp.length - 1);
 
   //fires when user confirms listing creation
   const userid = localStorage.getItem("userid");
@@ -171,29 +185,54 @@ export default function CreateListing() {
       tag: tag,
       commitment: commitment,
     });
-    console.log(localStorage.getItem("username"));
-    console.log(localStorage.getItem("password"));
 
+    //axios post call for listing details
       axios.post("http://localhost:8080/listingpage/newlisting?userId=" + userid + "&tagName=" + tag,
       {
-        name: data.get('title'),
-        des: data.get('description'),
-        commitment: commitment,
-        location: location,
-      }
-      ,
-      {auth:
+        "name": data.get('title'),
+        "des": data.get('description'),
+        "commitment": commitment,
+        "location": location
+      },
+      {
+        auth: 
         {
-          "username": localStorage.getItem("username"),
-          "password": localStorage.getItem("password"),
+          "username": username,
+          "password": password
         }
-      })
+      }
+      )
       .then((response) => {
-        console.log("axios success")
+        console.log("axios post details success");
         console.log(response);
-        setOpen(false);
-        navigate("/listingpage/mylistings");
+        const listingid = response.data.id;
+        console.log("here is the image");
+        console.log(image.get("image"));
+
+        //axios post call for image upload
+        console.log(listingid);
+        console.log(response.data.id);
+
+        axios.post('127.0.0.1:8080/listingpage/createlisting/imageupload?id=' + listingid, 
+          image, 
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': 'Basic YWRtaW5AbGVuZGFoYW5kLmNvbTpwYXNzd29yZA==', 
+            }
+          }
+        ).then((response) => {
+          console.log("axios post image success");
+          console.log(response);
+          setOpen(false);
+          navigate("/listingpage/mylistings");
+        }, (error) => {
+          console.log("axios post image fail");
+          console.log(error);
+        })
+
       }, (error) => {
+        console.log("axios post details fail");
         console.log(error);
       });
 
