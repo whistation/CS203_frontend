@@ -1,3 +1,4 @@
+//createlisting.jsx
 import * as React from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -116,16 +117,10 @@ export default function CreateListing() {
 
   const handleUpload = (e) => {
     setPictureURL(URL.createObjectURL(e.target.files[0]));
-    // image.append("pic", e.target.files[0]);
-    // console.log("what is this image?");
-    // console.log(image.get("pic"));
     setPicture(e.target.files[0]);
     
   }
-  // console.log("what is this image? outside handleUpload, hi!");
-  // console.log(image.get("pic"));
-  console.log("what is stored in the picture variable?");
-  console.log(picture);
+
   image.append("image", picture);
   console.log(image.get("image"));
 
@@ -176,6 +171,8 @@ export default function CreateListing() {
   const password = passwordTemp.substring(1, passwordTemp.length - 1);
 
   //fires when user confirms listing creation
+  const [listingid, setListingid] = useState(-1);
+
   const userid = localStorage.getItem("userid");
   const handleConfirm = () => {
     console.log({
@@ -205,20 +202,19 @@ export default function CreateListing() {
       .then((response) => {
         console.log("axios post details success");
         console.log(response);
-        const listingid = response.data.id;
+
+        //axios post call for image upload
+        console.log(response.data.id);
         console.log("here is the image");
         console.log(image.get("image"));
 
-        //axios post call for image upload
-        console.log(listingid);
-        console.log(response.data.id);
-
-        axios.post('127.0.0.1:8080/listingpage/createlisting/imageupload?id=' + listingid, 
+        axios.post('http://127.0.0.1:8080/listingpage/newlisting/imageupload?id=' + response.data.id, 
           image, 
           {
             headers: {
               'Content-Type': 'multipart/form-data',
               'Authorization': 'Basic YWRtaW5AbGVuZGFoYW5kLmNvbTpwYXNzd29yZA==', 
+              'Access-Control-Allow-Origin': 'http://127.0.0.1:8080',
             }
           }
         ).then((response) => {
@@ -226,15 +222,18 @@ export default function CreateListing() {
           console.log(response);
           setOpen(false);
           navigate("/listingpage/mylistings");
+          
         }, (error) => {
           console.log("axios post image fail");
           console.log(error);
         })
 
+
       }, (error) => {
         console.log("axios post details fail");
         console.log(error);
       });
+
 
   };
   const handleCancel = () => {
