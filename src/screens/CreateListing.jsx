@@ -23,6 +23,7 @@ import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
 
 
+
 //Everything related to the Add Image button
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
@@ -165,13 +166,10 @@ export default function CreateListing() {
   };
 
   //user authentication details
-  const usernameTemp = localStorage.getItem("username");
-  const username = usernameTemp.substring(1, usernameTemp.length - 1);
-  const passwordTemp = localStorage.getItem("password");
-  const password = passwordTemp.substring(1, passwordTemp.length - 1);
+  const username = localStorage.getItem("username");
+  const password = localStorage.getItem("password");
 
   //fires when user confirms listing creation
-  const [listingid, setListingid] = useState(-1);
 
   const userid = localStorage.getItem("userid");
   const handleConfirm = () => {
