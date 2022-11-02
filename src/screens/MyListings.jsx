@@ -1,5 +1,5 @@
 import * as React from "react";
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -41,17 +41,19 @@ export default function MyListings() {
   useEffect(() => {
     console.log(username);
     const getAllListings = async () => {
-      const res = await axios.get(`http://localhost:8080/localhost:8080/listingpage`, {
-        auth: {
-          username: "admin@lendahand.com",
-          password: "password",
-        }
-      },
+      const res = await axios.get(
+        `http://localhost:8080/localhost:8080/listingpage`,
+        {
+          auth: {
+            username: "admin@lendahand.com",
+            password: "password",
+          },
+        },
         {
           data: {
             username: "username",
           },
-        },
+        }
       );
       console.log(res);
       setListings(res.data);
@@ -80,7 +82,7 @@ export default function MyListings() {
         >
           <NavigationBar />
         </Box>
-        <Box sx={{ height: "10", background: "gray" }} />
+        <Box sx={{ height: "70px", background: "white" }} />
         <Container
           sx={{
             background: "white",
@@ -88,7 +90,7 @@ export default function MyListings() {
             flexDirection: "row",
             justifyContent: "flex-end",
             alignItems: "center",
-            mt: 3,
+            mt: 1,
             p: 2,
           }}
         >
