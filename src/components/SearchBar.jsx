@@ -16,6 +16,7 @@ export default function SearchBar() {
         sx={{
           width: "92vw",
         }}
+
       />
       <IconButton type="submit" aria-label="search">
         <SearchIcon style={{ fill: "blue" }} />

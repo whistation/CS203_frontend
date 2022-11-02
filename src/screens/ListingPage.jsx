@@ -36,6 +36,7 @@ export default function ListingPage() {
   console.log(localStorage.getItem("userid"));
   console.log(localStorage.getItem("password"));
   const [listings, setListings] = useState([{}]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const getAllListings = async () => {
@@ -93,9 +94,8 @@ export default function ListingPage() {
           }}
         >
           <Filter name={"Location"} />
-          <Filter name={"Duration"} />
-          <Filter name={"Start Date"} />
-          <Filter name={"End Date"} />
+          <Filter name={"Commitment"} />
+          <Filter name={"Tag"} />
         </Box>
         <Container
           disableGutters
