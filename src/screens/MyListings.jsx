@@ -31,18 +31,28 @@ const theme = createTheme();
 //       applications: []
 //   }
 // ];
+console.log(localStorage.getItem("username"));
 
 export default function MyListings() {
   const [listings, setListings] = useState([{}]);
+  const usernameTemp = localStorage.getItem("username");
+  const username = usernameTemp.substring(1, usernameTemp.length - 1);
 
   useEffect(() => {
+    console.log(username);
     const getAllListings = async () => {
-      const res = await axios.get("http://localhost:8080/listingpage", {
+      const res = await axios.get(`http://localhost:8080/localhost:8080/listingpage`, {
         auth: {
           username: "admin@lendahand.com",
           password: "password",
+        }
+      },
+        {
+          data: {
+            username: "username",
+          },
         },
-      });
+      );
       console.log(res);
       setListings(res.data);
     };
