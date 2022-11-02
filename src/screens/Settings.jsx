@@ -119,7 +119,7 @@ export default function Settings() {
       console.log("some fields are invalid!");
 
     } else {
-      axios.put('http://localhost:8080/user/reseting/profile/' + localStorage.getItem("userid"),
+      axios.put('http://localhost:8080/user/resetting/profile/' + localStorage.getItem("userid"),
           {
             "firstname": input.firstname,
             "lastname": input.lastname,
@@ -145,26 +145,33 @@ export default function Settings() {
     }
   };
 
-  const handleNameChangePasswordSubmit = (event) => {
-    const formData = new FormData(event.currentTarget)
-    if (data.get("newpassword").length < 8 || data.get("newpassword").length !== data.get("confirmpassword").length || !isStrongPassword(data.get("newpassword"))) {
-      console.log("some fields are invalid!");
-      // handleBlankOpen();
+  const handleChangePasswordSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget)
+    const input =
+        {
+          "password": data.get('password')
+        }
 
-    } else {
+    if (input.password !== null) {
+      console.log(input.password)
       axios.put('http://localhost:8080/user/resetting/password/' + localStorage.getItem("userid"),
           {
-            "password": data.get('password'),
+            "password": input.password
           },
-          {auth:
+          {
+            auth:
                 {
                   username: localStorage.getItem("username"),
                   password: localStorage.getItem("password")
-                }},
-          {headers: {
+                }
+          },
+          {
+            headers: {
               'Access-Control-Allow-Origin': 'http://localhost:8080',
               'Content-Type': 'application/json',
-            }})
+            }
+          })
           .then((response) => {
             console.log(response);
             localStorage.setItem("password", response.data.password)
@@ -172,6 +179,11 @@ export default function Settings() {
           }, (error) => {
             console.log(error);
           });
+    } else {
+      console.log("some fields are invalid!");
+      console.log(input.password);
+      // handleBlankOpen();
+
     }
 
   }
@@ -309,7 +321,7 @@ export default function Settings() {
               <Typography component="h1" variant="h5" sx={{p: 2}}> Change your password </Typography>
               <Typography variant="body2" sx={{p: 1}}> Choose a strong password and don't reuse it for other
                 accounts. <a href='#'>Learn more </a></Typography>
-              <Box component="form" noValidate onSubmit={handleNameChangePasswordSubmit} sx={{mt: 3}}>
+              <Box component="form" noValidate onSubmit={handleChangePasswordSubmit} sx={{mt: 3}}>
                 <Grid container spacing={5} direction="column" justifyContent="center" alignItems="stretch">
                   <Grid item spacing={2}>
                     <TextField required fullWidth name="password" label="New Password" type="password" id="password"
