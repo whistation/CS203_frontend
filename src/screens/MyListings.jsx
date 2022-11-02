@@ -81,14 +81,14 @@ export default function MyListings() {
           <NavigationBar />
         </Box>
         <Box sx={{ height: "10", background: "gray" }} />
-        <Box
+        <Container
           sx={{
             background: "white",
             display: "flex",
             flexDirection: "row",
             justifyContent: "flex-end",
             alignItems: "center",
-            m: 1,
+            mt: 3,
             p: 2,
           }}
         >
@@ -99,7 +99,7 @@ export default function MyListings() {
           >
             Create New Listing
           </Button>
-        </Box>
+        </Container>
         <Container
           disableGutters
           sx={{
