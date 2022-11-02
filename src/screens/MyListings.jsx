@@ -40,7 +40,7 @@ export default function MyListings() {
   useEffect(() => {
     console.log(username);
     const getAllListings = async () => {
-      const res = await axios.get(`http://localhost:8080/localhost:8080/listingpage`, {
+      const res = await axios.get(`http://localhost:8080/listingpage`, {
         auth: {
           username: "admin@lendahand.com",
           password: "password",
@@ -57,6 +57,7 @@ export default function MyListings() {
     };
     getAllListings();
   }, []);
+  
   const navigate = useNavigate();
   return (
     <ThemeProvider theme={theme}>

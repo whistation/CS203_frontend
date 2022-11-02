@@ -21,8 +21,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
-
-
+import imageCompression from 'browser-image-compression'; 
 
 //Everything related to the Add Image button
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -107,23 +106,36 @@ const modalStyle = {
   pb: 3,
 };
 
+
+
 //exporting the actual app!
 export default function CreateListing() {
 
-  //code to handle image upload
-  const [pictureURL, setPictureURL] = useState(placeholder);
+    //code to handle image upload
+    const [pictureURL, setPictureURL] = useState(placeholder);
 
-  const image = new FormData();
-  const [picture, setPicture] = useState(null);
-
-  const handleUpload = (e) => {
-    setPictureURL(URL.createObjectURL(e.target.files[0]));
-    setPicture(e.target.files[0]);
-    
-  }
-
-  image.append("image", picture);
-  console.log(image.get("image"));
+    const image = new FormData();
+    const [picture, setPicture] = useState(null);
+  
+      const handleUpload = (e) => {
+      setPictureURL(URL.createObjectURL(e.target.files[0]));
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true
+      }
+      const compressedImage = imageCompression(e.target.files[0], options);
+      var file = new File([compressedImage], "file");
+      setPicture(file);
+    }
+  
+    image.append("image", picture);
+    console.log("picture");
+    console.log(picture);
+    console.log("image");
+    console.log(image.get("image"));
+  
+  
 
   //project title and description data
   const [data, setData] = useState(0);

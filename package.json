@@ -19,6 +19,7 @@
     "antd": "^4.17.1",
     "axios": "^1.1.2",
     "base-64": "^1.0.0",
+    "browser-image-compression": "^2.0.0",
     "compressorjs": "^1.1.1",
     "esbuild-windows-64": "^0.15.12",
     "flatlist-react": "^1.5.0",
