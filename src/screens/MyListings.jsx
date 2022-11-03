@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const theme = createTheme();
 // const listings = [
@@ -31,14 +32,21 @@ const theme = createTheme();
 //       applications: []
 //   }
 // ];
-console.log(localStorage.getItem("username"));
 
 export default function MyListings() {
   const [listings, setListings] = useState([{}]);
   const username = localStorage.getItem("username");
 
+  const handleImage = (byte, type) => {
+    var blob = new Blob([byte], { type: type });
+    var imageUrl = URL.createObjectURL(blob).substring(5);
+    console.log("This is imageurl");
+    console.log(imageUrl);
+    
+    return imageUrl;
+  }
+
   useEffect(() => {
-    console.log(username);
     const getAllListings = async () => {
       const res = await axios.get(`http://localhost:8080/listingpage`, {
         auth: {
@@ -52,12 +60,17 @@ export default function MyListings() {
           },
         }
       );
-      console.log(res);
+      console.log(res.data);
       setListings(res.data);
     };
     getAllListings();
+    console.log(handleImage(listings[0].photo.picByte, listings[0].photo.type));
+    console.log("listings");
+    console.log(listings);
+    // console.log(listings[0].photo.picByte);
+    // console.log(listings[0].photo.type);
   }, []);
-  
+
   const navigate = useNavigate();
   return (
     <ThemeProvider theme={theme}>
@@ -121,12 +134,24 @@ export default function MyListings() {
             }}
           >
             {listings.map((listings) => (
-              <Grid item key={listings} xs={12} sm={6} md={4}>
+              <Grid item key={listings.id} xs={12} sm={6} md={4}>
                 <Listing
                   name={listings.name}
                   description={listings.des}
                   id={listings.id}
                   buttonName={"edit"}
+                  img = {handleImage(listings.photo.picByte, listings.photo.type)}
+                  // img={()=> {
+                  //   console.log(listings.id);
+                  //   console.log(listings.photo.picByte);
+                  //   const imageBytes = listings.photo.picByte;
+                  //   const type = listings.photo.type;
+                  //   var blob = new Blob([imageBytes], { type: type });
+                  //   var imageUrl = URL.createObjectURL(blob);
+                  //   console.log("This is imageurl");
+                  //   console.log(imageUrl);
+                  //   return imageUrl;
+                  // }}
                 />
               </Grid>
             ))}

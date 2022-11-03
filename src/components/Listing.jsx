@@ -36,14 +36,16 @@ function RandomBackground() {
   )
 }
 
-export default function Listing({name, description, id, buttonName}) {
+export default function Listing({name, description, id, buttonName, img}) {
   const navigate = useNavigate();
+  console.log("Is img a string?");
+  console.log(img);
   return (
     <Card variant="outlined" sx={{ width: 300, height: 370 }}>
       <CardMedia
         component="img"
         height="140"
-        image={RandomBackground()}
+        image= {img}
         alt="image placeholder"
       />
       <CardContent sx={{ textAlign: "left" }}>

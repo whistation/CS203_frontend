@@ -1,4 +1,3 @@
-//createlisting.jsx
 import * as React from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -182,7 +181,6 @@ export default function CreateListing() {
   const password = localStorage.getItem("password");
 
   //fires when user confirms listing creation
-
   const userid = localStorage.getItem("userid");
   const handleConfirm = () => {
     console.log({
