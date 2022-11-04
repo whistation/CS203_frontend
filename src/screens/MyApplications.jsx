@@ -20,7 +20,7 @@ export default function MyApplications() {
   useEffect(() => {
     const userId = localStorage.getItem("userid");
     const getAllApps = async () => {
-      const res = await axios.get(`http://localhost:8080/user/applications?userId=${userId}`,
+      const res = await axios.get("http://localhost:8080/user/applications?userId=" + userId,
         {
           auth:
           {
@@ -33,9 +33,13 @@ export default function MyApplications() {
             'Access-Control-Allow-Origin': 'http://localhost:8080',
             'Content-Type': 'application/json',
           }
-        });
-      console.log(res);
-      setListings(res.data);
+        }).then((res) => {
+          console.log("get applicants success", res);
+          setListings(res.data);
+          
+        }, (error) => {
+          console.log("get applicants failed", error);
+        })
     }
     getAllApps();
   }, []);
