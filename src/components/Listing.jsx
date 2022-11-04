@@ -39,7 +39,7 @@ function RandomBackground() {
 export default function Listing({name, description, id, buttonName, img}) {
   const navigate = useNavigate();
   console.log("Is img a string?");
-  console.log(img);
+  //console.log(img);
   return (
     <Card variant="outlined" sx={{ width: 300, height: 370 }}>
       <CardMedia

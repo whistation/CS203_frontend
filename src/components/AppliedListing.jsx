@@ -54,8 +54,6 @@ const modalStyle = {
   pb: 3,
 };
 
-
-
 export default function Listing({ name, description, id }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

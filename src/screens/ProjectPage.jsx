@@ -72,9 +72,9 @@ export default function ProjectPage({ route, navigation }) {
   //   return res.data;
   // };
   const postApplication = async (userId, listingId) => {
-    const IpAddress = 0; //replace with your own ipaddress
+    const Ipstateress = 0; //replace with your own ipstateress
     const res = await axios.post(
-      `https://cors-anywhere.herokuapp.com/http://${IpAddress}:8080/listingpage/${listingId}/apply`,
+      "http://localhost:8080/listingpage/"+listingId+"/apply",
       {
         data: {
           message: "this is a test message",
@@ -94,12 +94,22 @@ export default function ProjectPage({ route, navigation }) {
     );
   };
 
-  const withdrawApplication = () => {
-    axios.delete(`http://localhost:8080/listingpage/application/removal/${listingId}`)
+  const withdrawApplication = (userId) => {
+    axios.delete("http://localhost:8080/listingpage/application/removal/" + userId,
+    {auth: 
+      {
+        "username": "admin@lendahand.com",
+        "password": "password"
+      }
+    }
+    ).then((res) => {
+      console.log("application deleted")
+    })
   }
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [state, setState] = useState(true);
   const handleSubmit = () => {
     setOpen(true);
     const userId = 1;
@@ -124,15 +134,13 @@ export default function ProjectPage({ route, navigation }) {
 
   const handleWithdraw = () => {
     setOpen(true);
-    const userId = userid;
-    const listingId = location.state.listingId;
-    withdrawApplication();
+    setstate(false);
+    const userId = localStorage.getItem("userid");
+    withdrawApplication(userId);
   }
 
-  const n = false;
   const userid = localStorage.getItem("userid");
   
-
   return (
     <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
       <CssBaseline />
@@ -193,17 +201,17 @@ export default function ProjectPage({ route, navigation }) {
             {listing.noOfParticipants}
           </Typography>
 
-          {n ?
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={() => handleSubmit()}
+              onClick={() => handleSubmit() }
             >
               Apply
             </Button>
-            :
+            
             <Button
               type="submit"
               fullWidth
@@ -213,7 +221,7 @@ export default function ProjectPage({ route, navigation }) {
             >
               Withdraw
             </Button>
-          }
+          
 
           <Modal
             hideBackdrop
@@ -223,7 +231,11 @@ export default function ProjectPage({ route, navigation }) {
             aria-describedby="child-modal-description"
           >
             <Box sx={{ ...modalStyle, width: 400 }}>
+              {state ? 
               <h2 id="child-modal-title">Successful application!</h2>
+              :
+              <h2 id="child-modal-title">Successful withdrawal!</h2>
+              }
               <Button onClick={handleClose}>Great!</Button>
             </Box>
           </Modal>

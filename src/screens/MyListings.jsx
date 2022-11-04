@@ -64,7 +64,7 @@ export default function MyListings() {
       setListings(res.data);
     };
     getAllListings();
-    console.log(handleImage(listings[0].photo.picByte, listings[0].photo.type));
+    // console.log(handleImage(listings[0].photo.picByte, listings[0].photo.type));
     console.log("listings");
     console.log(listings);
     // console.log(listings[0].photo.picByte);
@@ -140,7 +140,7 @@ export default function MyListings() {
                   description={listings.des}
                   id={listings.id}
                   buttonName={"edit"}
-                  img = {handleImage(listings.photo.picByte, listings.photo.type)}
+                  // img = {handleImage(listings.photo.picByte, listings.photo.type)}
                   // img={()=> {
                   //   console.log(listings.id);
                   //   console.log(listings.photo.picByte);
