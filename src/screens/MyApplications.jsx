@@ -20,7 +20,7 @@ export default function MyApplications() {
   useEffect(() => {
     const userId = localStorage.getItem("userid");
     const getAllApps = async () => {
-      const res = await axios.get(`http://localhost:8080/${userId}/applications`,
+      const res = await axios.get(`http://localhost:8080/user/applications?userId=${userId}`,
         {
           auth:
           {
@@ -85,7 +85,11 @@ export default function MyApplications() {
             >
               {listings.map((listings) => (
                 <Grid item key={listings} xs={12} sm={6} md={4}>
-                  <Listing name={listings.name} description={listings.des} id={listings.id} />
+                  <Listing name={listings.name} 
+                  description={listings.des} 
+                  id={listings.id} 
+                  buttonName={"view"}
+                  />
                 </Grid>
               ))}
             </Grid>
