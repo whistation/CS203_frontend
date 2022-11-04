@@ -116,24 +116,36 @@ export default function CreateListing() {
     const image = new FormData();
     const [picture, setPicture] = useState(null);
   
-      const handleUpload = (e) => {
+      async function handleUpload(e){
       setPictureURL(URL.createObjectURL(e.target.files[0]));
       const options = {
         maxSizeMB: 1,
         maxWidthOrHeight: 1920,
         useWebWorker: true
       }
-      const compressedImage = imageCompression(e.target.files[0], options);
-      var file = new File([compressedImage], "file");
-      setPicture(file);
+      const imageFile = e.target.files[0];
+      console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+
+      try {
+        const compressedFile = await imageCompression(imageFile, options);
+        console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+        console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+     
+        setPicture(compressedFile); 
+
+      } catch (error) {
+        console.log(error);
+      }
+
+      // const compressedImage = imageCompression(e.target.files[0], options);
+      // var file = new File([compressedImage], "file");
+      // setPicture(file);
     }
-  
     image.append("image", picture);
-    console.log("picture");
-    console.log(picture);
-    console.log("image");
-    console.log(image.get("image"));
-  
+    console.log("what u wanted")
+    console.log(pictureURL);
+    console.log("The picture in image formdata", image.get("image"));
+
   
 
   //project title and description data
@@ -214,6 +226,7 @@ export default function CreateListing() {
         //axios post call for image upload
         console.log(response.data.id);
         console.log("here is the image");
+        console.log(image);
         console.log(image.get("image"));
 
         axios.post('http://127.0.0.1:8080/listingpage/newlisting/imageupload?id=' + response.data.id, 

@@ -10,7 +10,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import placeholder from '../assets/image_placeholder.png';
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Modal from '@mui/material/Modal';
 import {Navigate, useNavigate} from "react-router-dom";
 import FormControl from '@mui/material/FormControl';
@@ -43,7 +43,7 @@ const modalStyle = {
 var urlcreated = false;
 
 //get the listing id
-const listingid = 8;
+const listingid = 17;
 
 //exporting the actual app!
 export default function ViewApplicants() {
@@ -78,6 +78,54 @@ export default function ViewApplicants() {
     })
   };
 
+
+
+  //variable to set the imageurl for the picture
+  const [imageurl, setImageurl] = useState(placeholder);
+
+  //api call to get the image 
+  React.useEffect(() => {
+    // Runs after the first render() lifecycle
+
+    axios.get("http://localhost:8080/listingpage/"+ listingid + "/image",
+    ).then((res) => {
+      console.log("successfully got the image");
+      console.log(res);
+      // console.log(res.headers.get("content-type"));
+
+      const imagedata = res.data;
+      const contenttype = res.headers.get("content-type");
+
+      // console.log(imagedata);
+      // console.log(contenttype);
+
+      var blob = new Blob([imagedata], { type: contenttype });
+      console.log(imagedata)
+
+      var url = (URL || webkitURL).createObjectURL(blob);
+      const substringurl = url.substring(5);
+
+      console.log("logging the url before substring");
+      console.log(url);
+      
+      var xing = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png";
+      setImageurl(url);
+      console.log("logging the url after substring");
+      console.log(substringurl);
+
+      urlcreated = true;
+
+      console.log(urlcreated);
+
+    }, (error) => {
+      console.log("image get failed");
+      console.log(error);
+    })
+  }, []);
+  console.log("logging imageurl (outside useeffect)");
+  console.log(imageurl);
+
+
   //variables to set the project title, description, location, tag, commitment displayed
   const [title, setTitle] = useState("Project title");
   const [description, setDescription] = useState("Project description");
@@ -85,13 +133,10 @@ export default function ViewApplicants() {
   const [tag, setTag] = useState("Tag");
   const [commitment, setCommitment] = useState("Commitment");
 
-  //variable to set the imageurl for the picture
-  const [imageurl, setImageurl] = useState(`url(${placeholder})`);
-
   //variable to hold the array of applicants
   var applicants = {};
 
-  //api call to get the applicants, listing details and listing image
+  //api call to get the applicants, listing details
   axios.get("http://localhost:8080/listingpage/" + listingid, //need to pass in the relevant listingid in this url 
     {auth: 
       {
@@ -109,18 +154,6 @@ export default function ViewApplicants() {
     setLocation(response.data.location);
     setTag(response.data.tag.value);
     setCommitment(response.data.commitment);
-    
-    //set the imageurl to display
-    if (urlcreated == false) {
-      var blob = new Blob([response.data.photo.picByte], { type: response.data.photo.type });
-      var url = URL.createObjectURL(blob);
-      const feederUrl = url.substring(5);
-      var xing = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png";
-      setImageurl(`url(${feederUrl})`);
-      console.log("logging the url");
-
-      urlcreated = true;
-    }
 
     //set the array of applicants
     applicants = response.data.applications;
@@ -129,8 +162,6 @@ export default function ViewApplicants() {
     console.log("unsuccessful get of listing data");
     console.log(error);
   });
-
-  console.log(imageurl);
 
 
   
@@ -148,7 +179,7 @@ export default function ViewApplicants() {
           sx={{
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            backgroundImage: imageurl
+            backgroundImage: `url(${imageurl})`
           }}
         >
         </Grid>
