@@ -72,27 +72,31 @@ export default function ProjectPage({ route, navigation }) {
   //   return res.data;
   // };
   const postApplication = async (userId, listingId) => {
-      const IpAddress = 0; //replace with your own ipaddress
-      const res = await axios.post(
-        `https://cors-anywhere.herokuapp.com/http://${IpAddress}:8080/listingpage/${listingId}/apply`,
-        {
-          data: {
-            message: "this is a test message",
-          },
+    const IpAddress = 0; //replace with your own ipaddress
+    const res = await axios.post(
+      `https://cors-anywhere.herokuapp.com/http://${IpAddress}:8080/listingpage/${listingId}/apply`,
+      {
+        data: {
+          message: "this is a test message",
         },
-        {
-          params: {
-            userId: userId,
-          },
+      },
+      {
+        params: {
+          userId: userId,
         },
-        {
-          auth: {
-            username: "admin@lendahand.com",
-            password: "password",
-          },
+      },
+      {
+        auth: {
+          username: "admin@lendahand.com",
+          password: "password",
         },
-      );
+      },
+    );
   };
+
+  const withdrawApplication = () => {
+    axios.delete(`http://localhost:8080/listingpage/application/removal/${listingId}`)
+  }
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -117,6 +121,17 @@ export default function ProjectPage({ route, navigation }) {
     const listingId = location.state.listingId;
     postApplication(userId, listingId);
   };
+
+  const handleWithdraw = () => {
+    setOpen(true);
+    const userId = userid;
+    const listingId = location.state.listingId;
+    withdrawApplication();
+  }
+
+  const n = false;
+  const userid = localStorage.getItem("userid");
+  
 
   return (
     <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
@@ -178,15 +193,27 @@ export default function ProjectPage({ route, navigation }) {
             {listing.noOfParticipants}
           </Typography>
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={() => handleSubmit()}
-          >
-            Apply
-          </Button>
+          {n ?
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => handleSubmit()}
+            >
+              Apply
+            </Button>
+            :
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => handleWithdraw()}
+            >
+              Withdraw
+            </Button>
+          }
 
           <Modal
             hideBackdrop
