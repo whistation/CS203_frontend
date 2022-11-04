@@ -10,11 +10,9 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import placeholder from '../assets/image_placeholder.png';
-import { styled } from '@mui/material/styles';
-import ButtonBase from '@mui/material/ButtonBase';
 import {useState} from "react";
 import Modal from '@mui/material/Modal';
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -41,7 +39,11 @@ const modalStyle = {
   pb: 3,
 };
 
+//boolean to ensure that the url is not assigned more than once
+var urlcreated = false;
 
+//get the listing id
+const listingid = 8;
 
 //exporting the actual app!
 export default function ViewApplicants() {
@@ -55,17 +57,83 @@ export default function ViewApplicants() {
     setOpen(false);
   };
 
+  //function that fires when the user confirms that they want to delete the listing
+  const navigate = useNavigate();
   const handleDelete = () => {
-    console.log("handle delete");
+    axios.delete("http://localhost:8080/listingpage/removal/" + listingid, //add the appropriate listingid
+    {auth: 
+      {
+        "username": "admin@lendahand.com",
+        "password": "password"
+      }
+    }).then((res) => {
+      console.log("successful deletion!");
+      console.log(res);
+      handleClose();
+      navigate("/listingpage/mylistings");
+
+    }, (error) => {
+      console.log("unsuccessful deletion");
+      console.log(error);
+    })
   };
 
-  //code to set the project title, description, location, tag, commitment displayed
+  //variables to set the project title, description, location, tag, commitment displayed
   const [title, setTitle] = useState("Project title");
   const [description, setDescription] = useState("Project description");
   const [location, setLocation] = useState("Location");
   const [tag, setTag] = useState("Tag");
   const [commitment, setCommitment] = useState("Commitment");
 
+  //variable to set the imageurl for the picture
+  const [imageurl, setImageurl] = useState(`url(${placeholder})`);
+
+  //variable to hold the array of applicants
+  var applicants = {};
+
+  //api call to get the applicants, listing details and listing image
+  axios.get("http://localhost:8080/listingpage/" + listingid, //need to pass in the relevant listingid in this url 
+    {auth: 
+      {
+        "username": "admin@lendahand.com",
+        "password": "password"
+      }
+    }
+  ).then((response) => {
+    // console.log("successfully got the listing data");
+    // console.log(response);
+
+    //set listing details
+    setTitle(response.data.name);
+    setDescription(response.data.des);
+    setLocation(response.data.location);
+    setTag(response.data.tag.value);
+    setCommitment(response.data.commitment);
+    
+    //set the imageurl to display
+    if (urlcreated == false) {
+      var blob = new Blob([response.data.photo.picByte], { type: response.data.photo.type });
+      var url = URL.createObjectURL(blob);
+      const feederUrl = url.substring(5);
+      var xing = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png";
+      setImageurl(`url(${feederUrl})`);
+      console.log("logging the url");
+
+      urlcreated = true;
+    }
+
+    //set the array of applicants
+    applicants = response.data.applications;
+
+  }, (error) => {
+    console.log("unsuccessful get of listing data");
+    console.log(error);
+  });
+
+  console.log(imageurl);
+
+
+  
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh', width: '100vw'}}>
@@ -80,11 +148,11 @@ export default function ViewApplicants() {
           sx={{
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            backgroundImage: `url(${placeholder})`
+            backgroundImage: imageurl
           }}
         >
         </Grid>
-        
+
         {/* text component on the right */}
         <Grid 
           item 
@@ -138,9 +206,11 @@ export default function ViewApplicants() {
               </Typography>
               <Box 
               width="535px"
-              sx={{py:1, px:1, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll"}}>
+              height="120px"
+              sx={{py:1, px:1, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll", overflowY:"scroll", display:"flex", flexDirection:"column"}}>
                 <Typography sx={{color:"#838383"}} align="left" variant="subtitle1" component="div">
                   {description}
+
                 </Typography>
               </Box>
 
@@ -201,7 +271,7 @@ export default function ViewApplicants() {
               </Button>
 
 
-              {/* Confirmation pop up */}
+              {/* Delete confirmation pop up */}
               <Modal
                 hideBackdrop
                 open={open}
