@@ -38,6 +38,10 @@ export default function ProjectPage() {
   //get the listingid 
   const listingId = 14;
 
+  //get the userId
+  const userId = localStorage.getItem("userid");
+  console.log(userId);
+
   //storing the listing and listing details
   const [listing, setListing] = useState([]);
   const [tag, setTag] = useState("");
@@ -107,29 +111,6 @@ export default function ProjectPage() {
 
   }, []);
 
-  const postApplication = async (userId, listingId) => {
-    const Ipstateress = 0; //replace with your own ipstateress
-    const res = await axios.post(
-      "http://localhost:8080/listingpage/"+listingId+"/apply",
-      {
-        data: {
-          message: "this is a test message",
-        },
-      },
-      {
-        params: {
-          userId: userId,
-        },
-      },
-      {
-        auth: {
-          username: "admin@lendahand.com",
-          password: "password",
-        },
-      },
-    );
-  };
-
   const withdrawApplication = (userId) => {
     axios.delete("http://localhost:8080/listingpage/application/removal/" + userId,
     {auth: 
@@ -146,10 +127,25 @@ export default function ProjectPage() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState(true);
+
   const handleSubmit = () => {
-    setOpen(true);
-    const userId = 1;
-    postApplication(userId, listingId);
+    axios.post(
+      "http://localhost:8080/listingpage/"+listingId+"/newapplication?userId=" + userId,
+      {
+        "message":"string"
+      },
+      {
+        auth: {
+          username: "admin@lendahand.com",
+          password: "password",
+        },
+      },
+    ).then((response) => {
+      console.log("post application success!", response);
+      setOpen(true);
+    }, (error) => {
+      console.log("post application failed!", error);
+    });
   };
   const handleClose = () => {
     setOpen(false);
@@ -259,7 +255,7 @@ export default function ProjectPage() {
 
 
              {/* location, tags, committment */}
-          <Box container justifyContent="center" spacing={3} sx={{mb:1, mt:3}}>
+            <Box container justifyContent="center" spacing={3} sx={{mb:1, mt:3}}>
             
             <Grid container justifyContent="center" spacing={3} sx={{mt: 0, mb:1,}}>
               
