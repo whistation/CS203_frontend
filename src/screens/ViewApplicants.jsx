@@ -43,9 +43,6 @@ const modalStyle = {
   pb: 3,
 };
 
-//boolean to ensure that the url is not assigned more than once
-var urlcreated = false;
-
 //get the listing id
 const listingid = 1;
 
@@ -65,7 +62,7 @@ export default function ViewApplicants() {
   //function that fires when the user confirms that they want to delete the listing
   const navigate = useNavigate();
   const handleDelete = () => {
-    axios.delete("http://localhost:8080/listingpage/removal/" + listingId, //add the appropriate listingid
+    axios.delete("http://localhost:8080/listingpage/removal/" + listingid, //add the appropriate listingid
     {auth: 
       {
         "username": "admin@lendahand.com",
@@ -134,7 +131,7 @@ export default function ViewApplicants() {
     })
 
     //api call to get the applicants, listing details
-    axios.get("http://localhost:8080/listingpage/" + listingId, //need to pass in the relevant listingid in this url 
+    axios.get("http://localhost:8080/listingpage/" + listingid, //need to pass in the relevant listingid in this url 
       {auth: 
         {
           "username": "admin@lendahand.com",
