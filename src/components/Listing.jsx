@@ -37,27 +37,14 @@ function RandomBackground() {
   )
 }
 
-export default function Listing({name, description, id, buttonName, imgByte, imgType}) {
-  const [imgURL, setImgURL] = useState(`url(${placeholder})`);
-  useEffect(() => {
-    const handleImage = (byte, type) => {
-      var blob = new Blob([byte], { type: type });
-      var imageUrl = URL.createObjectURL(blob).substring(5);
-      console.log("This is imageurl");
-      console.log(imageUrl);
-      setImgURL(`url(${imageUrl})`);
-    }
-    handleImage({imgByte}, {imgType});
-  }, []);
+export default function Listing({name, description, id, buttonName}) {
   const navigate = useNavigate();
-  console.log("Is img a string?");
-  //console.log(img);
   return (
     <Card variant="outlined" sx={{ width: 300, height: 370 }}>
       <CardMedia
         component="img"
         height="140"
-        image= {imgURL}
+        image= {RandomBackground()}
         alt="image placeholder"
       />
       <CardContent sx={{ textAlign: "left" }}>
@@ -69,7 +56,6 @@ export default function Listing({name, description, id, buttonName, imgByte, img
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end" }}>
-        {/* <Button size="small">Share</Button> */}
           <Button size="small" onClick={() => navigate("/listingpage/projectpage", {
             state: {
 						listingId: id,
