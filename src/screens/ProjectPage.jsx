@@ -15,6 +15,7 @@ import { Component } from "react";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import placeholder from '../assets/image_placeholder.png';
 
 //styling for the confirmation pop-up
 const modalStyle = {
@@ -33,20 +34,22 @@ const modalStyle = {
 
 const theme = createTheme();
 
-export default function ProjectPage({ route, navigation }) {
-  // useEffect(() => {
-  //   console.log(route.params);
-  // }, []);
+export default function ProjectPage() {
+  //get the listingid 
+  const listingId = 14;
 
+  //storing the listing and listing details
   const [listing, setListing] = useState({});
+  const [name, setName] = useState("");
   const location = useLocation();
+
+  //variable to set the imageurl for the picture
+  const [imageurl, setImageurl] = useState(placeholder);
 
   useEffect(() => {
     //get listing id from route and call
-    const listingId = location.state.listingId;
-
     const getListing = async (listingId) => {
-      const res = await axios.get(
+      axios.get(
         `http://localhost:8080/listingpage/${listingId}`,
         {
           auth: {
@@ -54,23 +57,56 @@ export default function ProjectPage({ route, navigation }) {
             password: "password",
           },
         }
-      );
-      setListing(res.data);
+      ).then((response) => {
+        setListing(response.data);
+        console.log("get listing details success", response);
+
+      }, (error) => {
+        console.log("failed to get listing details", error)
+      });
     };
     getListing(listingId);
+    setName("" + listing.lister.firstname + " " + listing.lister.lastname);
+
+    //api call to get the image 
+    axios.get("http://localhost:8080/listingpage/"+ listingId + "/image",
+    {
+      responseType: "arraybuffer"
+    }
+    ).then((res) => {
+      console.log("successfully got the image");
+      console.log(res);
+      // console.log(res.headers.get("content-type"));
+
+      const imagedata = res.data;
+      const contenttype = res.headers.get("content-type");
+
+      // console.log(imagedata);
+      // console.log(contenttype);
+
+      var blob = new Blob([imagedata], { type: contenttype });
+      console.log(imagedata)
+
+      var url = (URL || webkitURL).createObjectURL(blob);
+      const substringurl = url.substring(5);
+
+      console.log("logging the url before substring");
+      console.log(url);
+      
+      setImageurl(url);
+      console.log("logging the url after substring");
+      console.log(substringurl);
+
+    }, (error) => {
+      console.log("image get failed");
+      console.log(error);
+    })
+
   }, []);
 
-  //  **get user
-  //const getUser = async (userId) => {
-  //   const res = await axios.get(`http://localhost:8080//user/${userId}`,
-  //   {
-  //     auth: {
-  //       username: "admin@lendahand.com",
-  //       password: "password",
-  //     },
-  //   });
-  //   return res.data;
-  // };
+
+
+
   const postApplication = async (userId, listingId) => {
     const Ipstateress = 0; //replace with your own ipstateress
     const res = await axios.post(
@@ -113,7 +149,6 @@ export default function ProjectPage({ route, navigation }) {
   const handleSubmit = () => {
     setOpen(true);
     const userId = 1;
-    const listingId = location.state.listingId;
     postApplication(userId, listingId);
   };
   const handleClose = () => {
@@ -128,7 +163,7 @@ export default function ProjectPage({ route, navigation }) {
     //   password: data.get("password"),
     // });
     const userId = 1;
-    const listingId = location.state.listingId;
+    // const listingId = location.state.listingId;
     postApplication(userId, listingId);
   };
 
@@ -144,13 +179,15 @@ export default function ProjectPage({ route, navigation }) {
   return (
     <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
       <CssBaseline />
+
+
       <Grid
         item
         xs={false}
         sm={4}
         md={7}
         sx={{
-          backgroundImage: "url(https://source.unsplash.com/random)",
+          backgroundImage: `url(${imageurl})`,
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
@@ -163,7 +200,7 @@ export default function ProjectPage({ route, navigation }) {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Box
           sx={{
-            my: 8,
+            my: 4,
             mx: 4,
             display: "flex",
             flexDirection: "column",
@@ -173,33 +210,53 @@ export default function ProjectPage({ route, navigation }) {
           <Avatar sx={{ m: 1, bgcolor: "secondary.main", alignSelf: "center" }}>
             <ApprovalIcon />
           </Avatar>
-          <Typography component="h1" variant="h5" sx={{ alignSelf: "center" }}>
+
+          <Typography component="h1" variant="h4" sx={{ alignSelf: "center" }}>
             Apply for a project
           </Typography>
 
-          <Typography variant="h6" sx={{ mt: 3 }}>
-            Project Title
-          </Typography>
+          <Box 
+              noValidate 
+              sx={{ mt: 2}} 
+              // backgroundColor="red"
+          >
+            {/* project title field */}
+            <Typography sx={{color:"#212121",ml:0.5, mt:2}} align="left" variant="h6"  component="div">
+              Project Owner
+            </Typography>
+            <Box 
+              width="535px"
+              sx={{py:1, px:1, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll"}}>
+                <Typography sx={{color:"#838383"}} align="left" variant="subtitle1" component="div">
+                  {name}
+                </Typography>
+            </Box>
 
-          <Typography variant="body" sx={{ mt: 1 }}>
-            {listing.name}
-          </Typography>
+            {/* project title field */}
+            <Typography sx={{color:"#212121",ml:0.5, mt:2}} align="left" variant="h6"  component="div">
+              Project Title
+            </Typography>
+            <Box 
+              width="535px"
+              sx={{py:1, px:1, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll"}}>
+                <Typography sx={{color:"#838383"}} align="left" variant="subtitle1" component="div">
+                  {listing.name}
+                </Typography>
+            </Box>
 
-          <Typography variant="h6" sx={{ mt: 3 }}>
-            Project description
-          </Typography>
-
-          <Typography variant="body" align="left" sx={{ mt: 1 }}>
-            {listing.des}
-          </Typography>
-
-          <Typography variant="h6" sx={{ mt: 3 }}>
-            No. of Participants Required
-          </Typography>
-
-          <Typography variant="body" sx={{ mt: 1 }}>
-            {listing.noOfParticipants}
-          </Typography>
+            {/* project description field */}
+            <Typography sx={{color:"#212121",ml:0.5, mt:2}} align="left" variant="h6"  component="div">
+              Project description
+            </Typography>
+            <Box 
+            width="535px"
+            height="120px"
+            sx={{py:1, px:1, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll", overflowY:"scroll", display:"flex", flexDirection:"column"}}>
+              <Typography  sx={{color:"#838383"}} align="left" variant="subtitle1" component="div">
+                {listing.des}
+              </Typography>
+            </Box>
+          </Box>
 
 
             <Button
@@ -244,5 +301,4 @@ export default function ProjectPage({ route, navigation }) {
     </Grid>
   );
 }
-//<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-//</Grid>
+

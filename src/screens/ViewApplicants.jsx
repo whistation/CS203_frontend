@@ -126,10 +126,6 @@ export default function ViewApplicants() {
       console.log("logging the url after substring");
       console.log(substringurl);
 
-      urlcreated = true;
-
-      console.log(urlcreated);
-
     }, (error) => {
       console.log("image get failed");
       console.log(error);
