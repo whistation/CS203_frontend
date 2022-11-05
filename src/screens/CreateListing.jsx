@@ -142,8 +142,6 @@ export default function CreateListing() {
       // setPicture(file);
     }
     image.append("image", picture);
-    console.log("what u wanted")
-    console.log(pictureURL);
     console.log("The picture in image formdata", image.get("image"));
 
   
@@ -224,12 +222,13 @@ export default function CreateListing() {
         console.log(response);
 
         //axios post call for image upload
+        const listingid = response.data.id
         console.log(response.data.id);
         console.log("here is the image");
         console.log(image);
         console.log(image.get("image"));
 
-        axios.post('http://127.0.0.1:8080/listingpage/newlisting/imageupload?id=' + response.data.id, 
+        axios.post('http://127.0.0.1:8080/listingpage/newlisting/imageupload?id=' + listingid, 
           image, 
           {
             headers: {
@@ -239,14 +238,36 @@ export default function CreateListing() {
             }
           }
         ).then((response) => {
+
           console.log("axios post image success");
           console.log(response);
           setOpen(false);
           navigate("/listingpage/mylistings");
           
-        }, (error) => {
-          console.log("axios post image fail");
-          console.log(error);
+        }
+        ).catch(function(error) {
+          if (error.response.status == 500) {
+
+            axios.delete("http://localhost:8080/listingpage/removal/" + listingid, 
+            {auth: 
+              {
+                "username": "admin@lendahand.com",
+                "password": "password"
+              }
+            }
+            ).then((res) => {
+              console.log("successful deletion!");
+              console.log(res);
+              handleClose();
+              navigate("/listingpage/mylistings");
+        
+            }, (error) => {
+              console.log("unsuccessful deletion");
+              console.log(error);
+            });
+            handleCancel();
+            handleErrorOpen();
+          }
         })
 
 
@@ -269,6 +290,15 @@ export default function CreateListing() {
   };
   const handleBlankClose = () => {
     setBlankOpen(false);
+  };
+
+  //code to handle opening and closing of the 500 error pop up
+  const [errorOpen, setErrorOpen] = useState(false);
+  const handleErrorOpen = () => {
+    setErrorOpen(true);
+  };
+  const handleErrorClose = () => {
+    setErrorOpen(false);
   };
 
   return (
@@ -487,6 +517,19 @@ export default function CreateListing() {
                 <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400 }}>
                   <h2 id="child-modal-title">Remember to add an image, and do not leave any fields blank!</h2>
                   <Button onClick={handleBlankClose}>Got it!</Button>
+                </Box>
+              </Modal>
+
+              <Modal
+                hideBackdrop
+                open={errorOpen}
+                onClose={handleErrorClose}
+                aria-labelledby="child-modal-title"
+                aria-describedby="child-modal-description"
+              >
+                <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400 }}>
+                  <h2 id="child-modal-title">We have trouble uploading ur image to the server, try giving us a smaller one please!</h2>
+                  <Button onClick={handleErrorClose}>Got it!</Button>
                 </Box>
               </Modal>
             </Box>
