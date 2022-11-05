@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, setState } from "react";
-import { Buffer } from "buffer";
+//import { Buffer } from "buffer";
 
 import placeholder from "../assets/image_placeholder.png";
 import bgrnd1 from "../assets/backgroundpic1.jpg";

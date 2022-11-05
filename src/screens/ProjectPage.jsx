@@ -35,12 +35,41 @@ const modalStyle = {
 const theme = createTheme();
 
 export default function ProjectPage() {
-  //get the listingid 
-  const listingId = 35;
 
   //get the userId
   const userId = localStorage.getItem("userid");
   console.log(userId);
+
+  //get the listingid 
+  const listingId = 2;
+
+  //get the applicationid
+  var [appId, setAppId] = useState([]);
+  useEffect(() => {
+    const getAppId = async () => {
+      const aid = await axios.get(
+        "http://localhost:8080/user/applications?userId=" + userId +
+        "&listingId=" + listingId,
+        {
+          auth:
+          {
+            username: localStorage.getItem("username"),
+            password: localStorage.getItem("password")
+          }
+        },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:8080',
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+      console.log("appid", aid.data);
+      setAppId((aid.data)[0].id);
+      console.log("please work",appId);
+    }
+    getAppId();
+  }, []);
 
   //storing the listing and listing details
   const [listing, setListing] = useState([]);
@@ -141,7 +170,7 @@ export default function ProjectPage() {
   };
 
   const handleWithdraw = () => {
-    axios.delete("http://localhost:8080/listingpage/application/removal/" + userId,
+    axios.delete("http://localhost:8080/listingpage/application/removal/" + appId,
     {auth: 
       {
         "username": "admin@lendahand.com",
@@ -158,6 +187,10 @@ export default function ProjectPage() {
     })
   }
   
+  // apply/withdraw button render condition
+  const hold = false;
+  const hold2 = true;
+
   return (
     <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
       <CssBaseline />
@@ -287,20 +320,20 @@ export default function ProjectPage() {
             </Box>
           </Box>
 
-         
-
-          {/* apply button */}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={() => handleSubmit() }
-            >
-              Apply
-            </Button>
-            
-          {/* withdraw button */}
+          {/*appId != null? */}
+           {hold2 ? 
+           // apply button
+           <Button
+           type="submit"
+           fullWidth
+           variant="contained"
+           sx={{ mt: 3, mb: 2 }}
+           onClick={() => handleSubmit() }
+         >
+           Apply
+         </Button> 
+           : 
+           //withdraw button
             <Button
               type="submit"
               fullWidth
@@ -310,7 +343,8 @@ export default function ProjectPage() {
             >
               Withdraw
             </Button>
-        
+           }
+
 
           <Modal
             hideBackdrop
