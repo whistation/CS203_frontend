@@ -19,6 +19,9 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 
 
 //create theme
@@ -81,10 +84,20 @@ export default function ViewApplicants() {
   //variable to set the imageurl for the picture
   const [imageurl, setImageurl] = useState(placeholder);
 
-  //api call to get the image 
-  React.useEffect(() => {
-    // Runs after the first render() lifecycle
+  //variables to set the project title, description, location, tag, commitment displayed
+  const [title, setTitle] = useState("Project title");
+  const [description, setDescription] = useState("Project description");
+  const [location, setLocation] = useState("Location");
+  const [tag, setTag] = useState("Tag");
+  const [commitment, setCommitment] = useState("Commitment");
 
+  //variable to hold the array of applicants
+  const [applicants, setApplicants] = useState([]);
+
+  //useEffect for the api calls
+  React.useEffect(() => {
+
+    //api call to get the image 
     axios.get("http://localhost:8080/listingpage/"+ listingid + "/image",
     {
       responseType: "arraybuffer"
@@ -109,7 +122,6 @@ export default function ViewApplicants() {
       console.log("logging the url before substring");
       console.log(url);
       
-      var xing = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png";
       setImageurl(url);
       console.log("logging the url after substring");
       console.log(substringurl);
@@ -122,49 +134,44 @@ export default function ViewApplicants() {
       console.log("image get failed");
       console.log(error);
     })
-  }, []);
-  console.log("logging imageurl (outside useeffect)");
-  console.log(imageurl);
 
-
-  //variables to set the project title, description, location, tag, commitment displayed
-  const [title, setTitle] = useState("Project title");
-  const [description, setDescription] = useState("Project description");
-  const [location, setLocation] = useState("Location");
-  const [tag, setTag] = useState("Tag");
-  const [commitment, setCommitment] = useState("Commitment");
-
-  //variable to hold the array of applicants
-  var applicants = {};
-
-  //api call to get the applicants, listing details
-  axios.get("http://localhost:8080/listingpage/" + listingid, //need to pass in the relevant listingid in this url 
-    {auth: 
-      {
-        "username": "admin@lendahand.com",
-        "password": "password"
+    //api call to get the applicants, listing details
+    axios.get("http://localhost:8080/listingpage/" + listingid, //need to pass in the relevant listingid in this url 
+      {auth: 
+        {
+          "username": "admin@lendahand.com",
+          "password": "password"
+        }
       }
-    }
-  ).then((response) => {
-    // console.log("successfully got the listing data");
-    // console.log(response);
+    ).then((response) => {
+      // console.log("successfully got the listing data");
+      // console.log(response);
 
-    //set listing details
-    setTitle(response.data.name);
-    setDescription(response.data.des);
-    setLocation(response.data.location);
-    setTag(response.data.tag.value);
-    setCommitment(response.data.commitment);
+      //set listing details
+      setTitle(response.data.name);
+      setDescription(response.data.des);
+      setLocation(response.data.location);
+      setTag(response.data.tag.value);
+      setCommitment(response.data.commitment);
 
-    //set the array of applicants
-    applicants = response.data.applications;
+      //set the array of applicants
+      console.log("applications", response.data.applications);
+      var applications = response.data.applications;
+      var people = [];
+      applications.map((data, index) => {
+        people[index] = data.applicant;
+      })
 
-  }, (error) => {
-    console.log("unsuccessful get of listing data");
-    console.log(error);
-  });
+      setApplicants(people);
+      console.log("people", people);
+
+    }, (error) => {
+      console.log("unsuccessful get of listing data");
+      console.log(error);
+    });
 
 
+  }, []);
   
   return (
     <ThemeProvider theme={theme}>
@@ -197,7 +204,7 @@ export default function ViewApplicants() {
           <Box
             // backgroundColor="blue"
             sx={{
-              my: 8,
+              my: 4,
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
@@ -206,7 +213,7 @@ export default function ViewApplicants() {
           >
           
           {/* listing preview portion */}
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{m:1, bgcolor: 'secondary.main' }}>
               <VisibilityIcon />
             </Avatar>
 
@@ -292,6 +299,31 @@ export default function ViewApplicants() {
                   </Grid>
                 </Box>
 
+                <Typography sx={{color:"#212121",ml:0.5,mt:3}} align="left" variant="h6"  component="div">
+                  Applicant details:
+                </Typography>
+                <Box container sx={{ border:"1px solid grey", borderRadius: 1.5, backgroundColor:"blue"}}>
+                <List item sx={{
+                  width: '100%',
+                  maxWidth: 535,
+                  bgcolor: 'background.paper',
+                  position: 'relative',
+                  overflow: 'auto',
+                  maxHeight: 200,
+                  '& ul': { padding: 0 },
+                }}>
+                  {applicants.map((value, index) => (
+                    <ListItem
+                      key={index}
+                    >
+                      {/* <Typography>
+                        
+                      </Typography> */}
+                      <ListItemText primary={`Name: ${value.firstname} ${value.lastname}`} secondary={`ContactNo: ${value.contactNo}`} />
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
               {/* delete button */}
               <Button
                 fullWidth

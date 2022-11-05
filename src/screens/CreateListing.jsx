@@ -169,7 +169,7 @@ export default function CreateListing() {
     setCommitment(event.target.value);
   };
 
-  //Handling creation of listing
+  //This code fires when the user confirms that they want to create a listing
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleOpen = (event) => {
@@ -249,7 +249,8 @@ export default function CreateListing() {
         }
         ).catch(function(error) {
           if (error.response.status == 500) {
-
+            
+            //if the image posting is not successful, delete the listing details that have been posted before the listing image
             axios.delete("http://localhost:8080/listingpage/removal/" + listingid, 
             {auth: 
               {
@@ -267,6 +268,8 @@ export default function CreateListing() {
               console.log("unsuccessful deletion");
               console.log(error);
             });
+
+            //after deleting, close the confirmation pop up and open the error pop up
             handleCancel();
             handleErrorOpen();
           }
@@ -280,6 +283,8 @@ export default function CreateListing() {
 
 
   };
+
+  //this code fires when the user clicks cancel on the confirmation pop up
   const handleCancel = () => {
     setOpen(false);
     navigate("/listingpage/createlisting");

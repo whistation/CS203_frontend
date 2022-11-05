@@ -60,7 +60,7 @@ export default function MyListings() {
           },
         }
       );
-      console.log(res.data);
+      console.log("res.data", res.data);
       setListings(res.data);
     };
     getAllListings();
