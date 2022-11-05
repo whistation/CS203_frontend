@@ -46,10 +46,11 @@ const modalStyle = {
 var urlcreated = false;
 
 //get the listing id
+const listingid = 1;
+
 
 //exporting the actual app!
 export default function ViewApplicants() {
-  const listingId = 14;
 
   //code to handle opening and closing of the confirmation pop-up
   const [open, setOpen] = useState(false);
@@ -98,7 +99,7 @@ export default function ViewApplicants() {
   React.useEffect(() => {
 
     //api call to get the image 
-    axios.get("http://localhost:8080/listingpage/1/image",
+    axios.get("http://localhost:8080/listingpage/"+ listingid+ "/image",
     {
       responseType: "arraybuffer"
     }
