@@ -19,41 +19,28 @@ import { useNavigate } from "react-router-dom";
 
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
+import Listing2 from "../components/Listing2.jsx";
 import { ConstructionOutlined } from "@mui/icons-material";
 
 const theme = createTheme();
-// const listings = [
-//   {
-//       id: 1,
-//       name: "Test Project 1",
-//       des: "This is a description idk what to write im losing it",
-//       noOfParticipants: 5,
-//       lister: {id: 1, firstname: "firstname", lastname: "lastname",contactNo: "62353535"},
-//       applications: []
-//   }
-// ];
 
 export default function MyListings() {
   const [listings, setListings] = useState([{}]);
   const username = localStorage.getItem("username");
-
-  const handleImage = (byte, type) => {
-    var blob = new Blob([byte], { type: type });
-    var imageUrl = URL.createObjectURL(blob).substring(5);
-    console.log("This is imageurl");
-    console.log(imageUrl);
-    
-    return imageUrl;
-  }
+  var [imageData, setImageData] = useState([]);
+  var [contentType, setContentType] = useState("");
 
   useEffect(() => {
+    console.log("call listing");
     const getAllListings = async () => {
-      const res = await axios.get(`http://localhost:8080/listingpage`, {
-        auth: {
-          username: "admin@lendahand.com",
-          password: "password",
-        }
-      },
+      const res = await axios.get(
+        "http://localhost:8080/listingpage",
+        {
+          auth: {
+            username: "admin@lendahand.com",
+            password: "password",
+          },
+        },
         {
           data: {
             username: "username",
@@ -62,11 +49,51 @@ export default function MyListings() {
       );
       console.log("res.data", res.data);
       setListings(res.data);
+
+      console.log("hello");
+      console.log(res.data);
+      setListings(res.data);
+      console.log("listings");
+      console.log(listings);
+      //console.log(listings[0]);
+      //console.log("this is photo");
+      //console.log(listings[0].photo);
+      // console.log("this is picbyte");
+      //console.log(listings[0].photo.picByte);
+      // console.log(handleImage(listings[0].photo.picByte, listings[0].photo.type));
+      console.log("this is shuyi");
     };
+    console.log("call listing");
     getAllListings();
+
     // console.log(handleImage(listings[0].photo.picByte, listings[0].photo.type));
     console.log("listings");
     console.log(listings);
+
+    const getImage = async () => {
+      const res = await axios.get("http://localhost:8080/listingpage/1/image", 
+      {
+        responseType: "arraybuffer",
+      },
+      {
+        auth: {
+          username: "admin@lendahand.com",
+          password: "password",
+        },
+      });
+      const imagedata = res.data;
+      setImageData(imagedata);
+      console.log("logging image in mylistings");
+      console.log(imagedata);
+      console.log(imageData);
+      const contenttype = res.headers.get("content-type");
+      setContentType(contenttype);
+      console.log(contenttype);
+      //console.log(res.data);
+    };
+    getImage();
+    //console.log(handleImage(listings[0].photo.picByte, listings[0].photo.type));
+
     // console.log(listings[0].photo.picByte);
     // console.log(listings[0].photo.type);
   }, []);
@@ -133,27 +160,18 @@ export default function MyListings() {
               background: "white",
             }}
           >
+            {console.log(imageData)}
             {listings.map((listings) => (
               <Grid item key={listings.id} xs={12} sm={6} md={4}>
-                <Listing
+                <Listing2
                   name={listings.name}
                   description={listings.des}
                   id={listings.id}
-                  buttonName={"edit"}
-                  // img = {handleImage(listings.photo.picByte, listings.photo.type)}
-                  // img={()=> {
-                  //   console.log(listings.id);
-                  //   console.log(listings.photo.picByte);
-                  //   const imageBytes = listings.photo.picByte;
-                  //   const type = listings.photo.type;
-                  //   var blob = new Blob([imageBytes], { type: type });
-                  //   var imageUrl = URL.createObjectURL(blob);
-                  //   console.log("This is imageurl");
-                  //   console.log(imageUrl);
-                  //   return imageUrl;
-                  // }}
+                  buttonName={"view"}
+                  image={{imageData}}
+                  contentType={{contentType}}
                 />
-              </Grid>
+              </Grid> 
             ))}
           </Grid>
         </Container>
@@ -238,3 +256,16 @@ export default function MyListings() {
 //     </React.Fragment>
 //   );
 // }
+
+// img = {handleImage(listings.photo.picByte, listings.photo.type)}
+// img={()=> {
+//   console.log(listings.id);
+//   console.log(listings.photo.picByte);
+//   const imageBytes = listings.photo.picByte;
+//   const type = listings.photo.type;
+//   var blob = new Blob([imageBytes], { type: type });
+//   var imageUrl = URL.createObjectURL(blob);
+//   console.log("This is imageurl");
+//   console.log(imageUrl);
+//   return imageUrl;
+// }}

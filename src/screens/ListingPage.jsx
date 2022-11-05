@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
+import Listing2 from "../components/Listing2.jsx";
 import Filter from "../components/Filter.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 
@@ -32,11 +33,12 @@ const theme = createTheme();
 
 export default function ListingPage() {
   console.log("I am in the listing page");
-  console.log(localStorage.getItem("username"));
-  console.log(localStorage.getItem("userid"));
-  console.log(localStorage.getItem("password"));
+ // console.log(localStorage.getItem("username"));
+ // console.log(localStorage.getItem("userid"));
+ // console.log(localStorage.getItem("password"));
   const [listings, setListings] = useState([{}]);
   const [search, setSearch] = useState("");
+  var [image, setImage] = useState("");
 
   useEffect(() => {
     const getAllListings = async () => {
@@ -50,6 +52,17 @@ export default function ListingPage() {
       setListings(res.data);
     };
     getAllListings();
+    const getImage = async () => {
+      const res = await axios.get("http://localhost:8080/listingpage/1/image", {
+        auth: {
+          username: "admin@lendahand.com",
+          password: "password",
+        },
+      });
+      setImage(res.data);
+      console.log(res.data);
+    };
+    getImage();
   }, []);
 
   return (
@@ -119,11 +132,12 @@ export default function ListingPage() {
           >
             {listings.map((listings) => (
               <Grid item key={listings} xs={12} sm={6} md={4}>
-                <Listing
+                <Listing2
                   name={listings.name}
                   description={listings.des}
                   id={listings.id}
                   buttonName={"apply"}
+                  img={image}
                 />
               </Grid>
             ))}
