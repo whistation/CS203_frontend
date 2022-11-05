@@ -22,6 +22,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import { useLocation } from "react-router-dom";
 
 
 //create theme
@@ -49,7 +50,9 @@ var urlcreated = false;
 
 //exporting the actual app!
 export default function ViewApplicants() {
-  const listingId = 14;
+  //const listingId = location.state.listingId;
+  const listingId = 1;
+  console.log(listingId);
 
   //code to handle opening and closing of the confirmation pop-up
   const [open, setOpen] = useState(false);
@@ -63,7 +66,7 @@ export default function ViewApplicants() {
   //function that fires when the user confirms that they want to delete the listing
   const navigate = useNavigate();
   const handleDelete = () => {
-    axios.delete("http://localhost:8080/listingpage/removal/" + listingid, //add the appropriate listingid
+    axios.delete("http://localhost:8080/listingpage/removal/" + listingId, //add the appropriate listingid
     {auth: 
       {
         "username": "admin@lendahand.com",
@@ -132,7 +135,7 @@ export default function ViewApplicants() {
     })
 
     //api call to get the applicants, listing details
-    axios.get("http://localhost:8080/listingpage/" + listingid, //need to pass in the relevant listingid in this url 
+    axios.get("http://localhost:8080/listingpage/" + listingId, //need to pass in the relevant listingid in this url 
       {auth: 
         {
           "username": "admin@lendahand.com",

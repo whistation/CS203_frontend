@@ -12,6 +12,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
 
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
@@ -23,25 +26,14 @@ import CommitmentFilter from "../components/CommitmentFilter.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 
 const theme = createTheme();
-// const listings = [
-//   {
-//       id: 1,
-//       name: "Test Project 1",
-//       des: "This is a description idk what to write im losing it",
-//       noOfParticipants: 5,
-//       lister: {id: 1, firstname: "firstname", lastname: "lastname",contactNo: "62353535"},
-//       applications: []
-//   }
-// ];
 
 export default function ListingPage() {
   console.log("I am in the listing page");
- // console.log(localStorage.getItem("username"));
- // console.log(localStorage.getItem("userid"));
- // console.log(localStorage.getItem("password"));
+  // console.log(localStorage.getItem("username"));
+  // console.log(localStorage.getItem("userid"));
+  // console.log(localStorage.getItem("password"));
   const [listings, setListings] = useState([{}]);
   const [search, setSearch] = useState("");
-  var [image, setImage] = useState("");
 
   useEffect(() => {
     const getAllListings = async () => {
@@ -54,6 +46,7 @@ export default function ListingPage() {
       //console.log(res);
       setListings(res.data);
     };
+    getAllListings();
   }, []);
 
   return (
@@ -84,7 +77,23 @@ export default function ListingPage() {
             marginTop: 11,
           }}
         >
-          <SearchBar />
+          {/* <SearchBar /> */}
+          <form>
+            <TextField
+              id="search-bar"
+              className="text"
+              label="Search"
+              variant="outlined"
+              placeholder="Project Title..."
+              size="small"
+              sx={{
+                width: "92vw",
+              }}
+            />
+            <IconButton type="submit" aria-label="search">
+              <SearchIcon style={{ fill: "blue" }} />
+            </IconButton>
+          </form>
         </Box>
         <Box
           sx={{
@@ -97,9 +106,9 @@ export default function ListingPage() {
             p: 2,
           }}
         >
-          <LocationFilter/>
-          <CommitmentFilter/>
-          <TagFilter/>
+          <LocationFilter />
+          <CommitmentFilter />
+          <TagFilter />
         </Box>
         <Container
           disableGutters
