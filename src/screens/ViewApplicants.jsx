@@ -43,7 +43,7 @@ const modalStyle = {
 var urlcreated = false;
 
 //get the listing id
-const listingid = 17;
+const listingid = 19;
 
 //exporting the actual app!
 export default function ViewApplicants() {
@@ -78,8 +78,6 @@ export default function ViewApplicants() {
     })
   };
 
-
-
   //variable to set the imageurl for the picture
   const [imageurl, setImageurl] = useState(placeholder);
 
@@ -88,6 +86,9 @@ export default function ViewApplicants() {
     // Runs after the first render() lifecycle
 
     axios.get("http://localhost:8080/listingpage/"+ listingid + "/image",
+    {
+      responseType: "arraybuffer"
+    }
     ).then((res) => {
       console.log("successfully got the image");
       console.log(res);
