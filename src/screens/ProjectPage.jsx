@@ -36,7 +36,7 @@ const theme = createTheme();
 
 export default function ProjectPage() {
   //get the listingid 
-  const listingId = 14;
+  const listingId = 35;
 
   //get the userId
   const userId = localStorage.getItem("userid");
@@ -111,19 +111,6 @@ export default function ProjectPage() {
 
   }, []);
 
-  const withdrawApplication = (userId) => {
-    axios.delete("http://localhost:8080/listingpage/application/removal/" + userId,
-    {auth: 
-      {
-        "username": "admin@lendahand.com",
-        "password": "password"
-      }
-    }
-    ).then((res) => {
-      console.log("application deleted")
-    })
-  }
-
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState(true);
@@ -147,30 +134,29 @@ export default function ProjectPage() {
       console.log("post application failed!", error);
     });
   };
+
   const handleClose = () => {
     setOpen(false);
     navigate("/listingpage");
   };
-  const testhandleSubmit = (event) => {
-    // event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
-    const userId = 1;
-    // const listingId = location.state.listingId;
-    postApplication(userId, listingId);
-  };
 
   const handleWithdraw = () => {
-    setOpen(true);
-    setstate(false);
-    const userId = localStorage.getItem("userid");
-    withdrawApplication(userId);
-  }
+    axios.delete("http://localhost:8080/listingpage/application/removal/" + userId,
+    {auth: 
+      {
+        "username": "admin@lendahand.com",
+        "password": "password"
+      }
+    }
+    ).then((res) => {
+      console.log("application deleted", res);
+      setState(false);
+      setOpen(true);
 
-  const userid = localStorage.getItem("userid");
+    }, (err) => {
+      console.log("failed to delete application", err)
+    })
+  }
   
   return (
     <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
