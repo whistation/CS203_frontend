@@ -124,18 +124,20 @@ export default function CreateListing() {
         useWebWorker: true
       }
       const imageFile = e.target.files[0];
-      console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+      setPicture(imageFile);
+      // console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
 
-      try {
-        const compressedFile = await imageCompression(imageFile, options);
-        console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-        console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+      // try {
+      //   const compressedFile = await imageCompression(imageFile, options);
+      //   console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+      //   console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+      console.log(`original file size ${imageFile.size / 1024 / 1024} MB`)
      
-        setPicture(compressedFile); 
+      //   setPicture(compressedFile); 
 
-      } catch (error) {
-        console.log(error);
-      }
+      // } catch (error) {
+      //   console.log(error);
+      // }
 
       // const compressedImage = imageCompression(e.target.files[0], options);
       // var file = new File([compressedImage], "file");
