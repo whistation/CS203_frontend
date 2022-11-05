@@ -39,7 +39,8 @@ export default function ProjectPage() {
   const listingId = 14;
 
   //storing the listing and listing details
-  const [listing, setListing] = useState({});
+  const [listing, setListing] = useState([]);
+  const [tag, setTag] = useState("");
   const [name, setName] = useState("");
   const location = useLocation();
 
@@ -59,6 +60,8 @@ export default function ProjectPage() {
         }
       ).then((response) => {
         setListing(response.data);
+        setTag(response.data.tag.value);
+        setName(""+ response.data.lister.firstname + " " + response.data.lister.lastname);
         console.log("get listing details success", response);
 
       }, (error) => {
@@ -66,7 +69,7 @@ export default function ProjectPage() {
       });
     };
     getListing(listingId);
-    setName("" + listing.lister.firstname + " " + listing.lister.lastname);
+
 
     //api call to get the image 
     axios.get("http://localhost:8080/listingpage/"+ listingId + "/image",
@@ -103,9 +106,6 @@ export default function ProjectPage() {
     })
 
   }, []);
-
-
-
 
   const postApplication = async (userId, listingId) => {
     const Ipstateress = 0; //replace with your own ipstateress
@@ -220,8 +220,8 @@ export default function ProjectPage() {
               sx={{ mt: 2}} 
               // backgroundColor="red"
           >
-            {/* project title field */}
-            <Typography sx={{color:"#212121",ml:0.5, mt:2}} align="left" variant="h6"  component="div">
+            {/* project owner's name */}
+            <Typography sx={{color:"#212121",ml:0.5, mt:1}} align="left" variant="h6"  component="div">
               Project Owner
             </Typography>
             <Box 
@@ -256,9 +256,58 @@ export default function ProjectPage() {
                 {listing.des}
               </Typography>
             </Box>
+
+
+             {/* location, tags, committment */}
+          <Box container justifyContent="center" spacing={3} sx={{mb:1, mt:3}}>
+            
+            <Grid container justifyContent="center" spacing={3} sx={{mt: 0, mb:1,}}>
+              
+              {/* location */}
+              <Box item>
+                <Typography sx={{color:"#212121", fontSize:"17px"}} variant="h6" >
+                  Location:
+                </Typography>
+                <Box item width="120px" sx={{py:1, px:1, mx:3, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll"}}>
+                  <Typography sx={{color:"#838383"}} align="center" variant="subtitle1" component="div">
+                    {listing.location}
+                  </Typography>
+                </Box>
+              </Box>
+
+
+              {/* tag */}
+              <Box item>
+                <Typography sx={{color:"#212121", fontSize:"17px"}} variant="h6" >
+                  Tag:
+                </Typography>
+                <Box item width="120px" sx={{py:1, px:1, mx:2, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll"}}>
+                  <Typography sx={{color:"#838383"}} align="center" variant="subtitle1" component="div">
+                    {/* {listing.tag.value} */}
+                    {tag}
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* commitment */}
+              <Box item>
+                <Typography sx={{color:"#212121", fontSize:"17px"}} variant="h6" >
+                  Commitment:
+                </Typography>
+                <Box item width="120px" sx={{py:1, px:1,mx:3, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll"}}>
+                  <Typography sx={{color:"#838383"}} align="center" variant="subtitle1" component="div">
+                    {listing.commitment}
+                  </Typography>
+                </Box>
+              </Box>
+              
+              </Grid>
+            </Box>
           </Box>
 
+         
 
+          {/* apply button */}
             <Button
               type="submit"
               fullWidth
@@ -269,6 +318,7 @@ export default function ProjectPage() {
               Apply
             </Button>
             
+          {/* withdraw button */}
             <Button
               type="submit"
               fullWidth
@@ -278,7 +328,7 @@ export default function ProjectPage() {
             >
               Withdraw
             </Button>
-          
+        
 
           <Modal
             hideBackdrop
