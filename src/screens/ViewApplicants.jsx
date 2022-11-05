@@ -62,7 +62,7 @@ export default function ViewApplicants() {
   const handleDelete = () => {
     axios
       .delete(
-        "http://localhost:8080/listingpage/removal/" + listingid, //add the appropriate listingid
+        "http://localhost:8080/listingpage/removal/" + listingId, //add the appropriate listingid
         {
           auth: {
             username: "admin@lendahand.com",
@@ -138,7 +138,7 @@ export default function ViewApplicants() {
     //api call to get the applicants, listing details
     axios
       .get(
-        "http://localhost:8080/listingpage/" + listingid, //need to pass in the relevant listingid in this url
+        "http://localhost:8080/listingpage/" + listingId, //need to pass in the relevant listingid in this url
         {
           auth: {
             username: "admin@lendahand.com",
