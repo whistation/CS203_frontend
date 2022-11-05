@@ -47,7 +47,8 @@ const modalStyle = {
 var urlcreated = false;
 
 //get the listing id
-const listingid = 1;
+const locationCall = useLocation();
+const listingId = locationCall.state.listingId;
 
 
 //exporting the actual app!
@@ -100,7 +101,7 @@ export default function ViewApplicants() {
   React.useEffect(() => {
 
     //api call to get the image 
-    axios.get("http://localhost:8080/listingpage/"+ listingid+ "/image",
+    axios.get("http://localhost:8080/listingpage/"+ listingId+ "/image",
     {
       responseType: "arraybuffer"
     }
