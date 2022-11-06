@@ -71,7 +71,6 @@ export default function MyListings() {
               var blob = new Blob([imagedata], { type: contenttype });
               imageurl = (URL || webkitURL).createObjectURL(blob);
               listingdatatemp[index] = {"name" : info.name, "des": info.des, "id": info.id, "imageurl": imageurl};
-
             } catch (error) {
               // console.log("get image failed for listingid:" + info.id);
               // console.log(error);
@@ -82,17 +81,22 @@ export default function MyListings() {
             
           }
           getImage();
-          setListingdata(listingdatatemp);
         })
-        // console.log("FINAL RESULT");
-        // console.log("listingdatatemp", listingdatatemp);
+        setListingdata(listingdatatemp);
+
   
       }, (error) => {
         console.log("get listings failed", error);
       });
-
-
   }, []);
+
+var show = false;  
+useEffect(()=> {
+    if (listingdata.length > 0) {
+      show = true;
+    }
+    console.log("show", show, "listingdata", listingdata)
+  }, [listingdata])
 
   const navigate = useNavigate();
   return (
@@ -156,10 +160,9 @@ export default function MyListings() {
               background: "white",
             }}
           >
-            {console.log("listingdata", listingdata)}
-            {listingdata.map((data, index) => (
-              console.log('getting this listing', data.name, index),
-              <Grid item key={data.id} xs={12} sm={6} md={4}>
+            {console.log("I am in the return", "listingdata", listingdata)}
+              {listingdata.map((data, index) => (
+                <Grid item key={data.id} xs={12} sm={6} md={4}>
                 <Listing2
                   name={data.name}
                   description={data.des}
@@ -168,7 +171,9 @@ export default function MyListings() {
                   imageUrl={data.imageurl}
                 />
               </Grid>
-            ))}
+              ))
+            }
+            
           </Grid>
         </Container>
       </Container>
