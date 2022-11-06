@@ -142,7 +142,7 @@ export default function MyListings() {
             size="small"
             endIcon={<AddIcon />}
             onClick={() => navigate("/listingpage/createlisting")}
-            sx={{position:"absolute", top:100, right:25}}
+            sx={{position:"absolute", top:90, right:25}}
           >
             Create New Listing
           </Button>
