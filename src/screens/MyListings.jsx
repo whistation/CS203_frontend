@@ -47,7 +47,6 @@ export default function MyListings() {
         const listingstemp = response.data;
         console.log(listingstemp);
 
-
         //making the listingdata array
         listingstemp.map((info, index) => {
           var imageurl = "";
@@ -71,9 +70,8 @@ export default function MyListings() {
               var blob = new Blob([imagedata], { type: contenttype });
               imageurl = (URL || webkitURL).createObjectURL(blob);
               listingdatatemp[index] = {"name" : info.name, "des": info.des, "id": info.id, "imageurl": imageurl};
+
             } catch (error) {
-              // console.log("get image failed for listingid:" + info.id);
-              // console.log(error);
               imageurl = placeholder;
               listingdatatemp[index] = {"name" : info.name, "des": info.des, "id": info.id, "imageurl": imageurl};
 
@@ -90,13 +88,19 @@ export default function MyListings() {
       });
   }, []);
 
-var show = false;  
-useEffect(()=> {
-    if (listingdata.length > 0) {
-      show = true;
-    }
-    console.log("show", show, "listingdata", listingdata)
-  }, [listingdata])
+  //checking if listingdata has been fixed
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+  var show = false;  
+  useEffect(()=> {
+      if (listingdata.length > 0) {
+        show = true;
+      }
+      console.log("listingdata has been updated")
+      console.log("show", show, "listingdata", listingdata)
+      console.log("force update")
+      forceUpdate();
+    }, [listingdata])
 
   const navigate = useNavigate();
   return (

@@ -253,16 +253,14 @@ export default function Settings() {
           <Container disableGutters sx={{
             background: "white",
             direction: "column",
-            justifyContent: "flex-start",
             width: "20vw",
-            height: '80vh'
+            height: '80vh',
           }}>
             <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange}
                   sx={{borderRight: 1, borderColor: 'divider'}}>
               <Tab label="Profile" {...a11yProps(0)} />
               <Tab label="Privacy" {...a11yProps(1)} />
-              <Tab label="Preferences" {...a11yProps(2)} disabled/>
-              <Tab label="Report" {...a11yProps(3)} disabled/>
+              {/* <br></br>
               <br></br>
               <br></br>
               <br></br>
@@ -277,9 +275,7 @@ export default function Settings() {
               <br></br>
               <br></br>
               <br></br>
-              <br></br>
-              <br></br>
-              <Tab label="About" {...a11yProps(4)} disabled/>
+              <br></br> */}
             </Tabs>
           </Container>
           {/*<Container maxWidth={false} disableGutters sx={{ background: "white", direction: "column", justifyContent: "center", width: "100vw", }}>*/}
@@ -299,7 +295,7 @@ export default function Settings() {
                   <Grid item spacing={2}>
                     <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName"
                                label="First Name" inputProps={{maxLength: 100}} autoFocus/>
-                    <TextField required fullWidth id="lastName" label="Last Name" name="lastName"
+                    <TextField sx={{my:3}} required fullWidth id="lastName" label="Last Name" name="lastName"
                                autoComplete="family-name" inputProps={{maxLength: 100}}/>
                     <TextField required fullWidth id="phoneNo" label="Phone Number" name="phoneNo"
                                autoComplete="phone number" type="tel" inputProps={{maxLength: 8}}
@@ -327,7 +323,7 @@ export default function Settings() {
                     <TextField required fullWidth name="password" label="New Password" type="password" id="password"
                                autoComplete="new-password" inputProps={{maxLength: 100}}
                                onChange={(e) => setPassword(e.target.value)}/>
-                    <TextField required fullWidth name="confirmpassword" label="Confirm Password" type="password"
+                    <TextField sx={{mt: 3}}required fullWidth name="confirmpassword" label="Confirm Password" type="password"
                                id="confirmpassword" autoComplete="confirm-password" inputProps={{maxLength: 100}}
                                helperText={passwordNotMatch && passwordErrorMessage}
                                onChange={(e) => validatePassword(e)} error={passwordNotMatch}/>
@@ -342,10 +338,6 @@ export default function Settings() {
                   </Grid>
                 </Grid>
               </Box>
-            </TabPanel>
-
-            <TabPanel value={value} index={2}>
-              Item Three
             </TabPanel>
           </Container>
           {/*</Box>*/}
