@@ -51,19 +51,19 @@ export default function ListingPage() {
   //set default search to space character
   const [search, setSearch] = useState(" ");
 
-  const [commitment, setCommitment] = useState(null);
+  const [commitment, setCommitment] = useState("All");
 
   const handleCommitmentFilter = (event) => {
     setCommitment(event.target.value);
   };
 
-  const [tag, setTag] = useState(null);
+  const [tag, setTag] = useState("All");
 
   const handleTagFilter = (event) => {
     setTag(event.target.value);
   };
 
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState("All");
 
   const handleLocationFilter = (event) => {
     setLocation(event.target.value);
