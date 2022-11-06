@@ -45,6 +45,7 @@ export default function ProjectPage() {
 
   //get the applicationid
   var [appId, setAppId] = useState([]);
+  var [nullCheck, setNullCheck] =  useState([]);
   useEffect(() => {
     const getAppId = async () => {
       const aid = await axios.get(
@@ -65,6 +66,7 @@ export default function ProjectPage() {
         }
       );
       console.log("appid", aid.data);
+      setNullCheck(aid.data);
       setAppId((aid.data)[0].id);
       console.log("please work",appId);
     }
@@ -321,7 +323,7 @@ export default function ProjectPage() {
           </Box>
 
           {/*appId != null? */}
-           {hold2 ? 
+           {nullCheck.length == 0 ? 
            // apply button
            <Button
            type="submit"
