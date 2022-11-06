@@ -18,8 +18,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import placeholder from '../assets/image_placeholder.png';
 import NavigationBar from "../components/NavigationBar.jsx";
-import Listing from "../components/Listing.jsx";
-import Listing2 from "../components/Listing2.jsx";
+import CreatedListing from "../components/CreatedListing.jsx";
 
 const theme = createTheme();
 
@@ -127,7 +126,7 @@ export default function MyListings() {
           <NavigationBar />
         </Box>
         <Box sx={{ height: "70px", background: "white" }} />
-        <Container
+        <Box
           sx={{
             background: "white",
             display: "flex",
@@ -146,15 +145,17 @@ export default function MyListings() {
           >
             Create New Listing
           </Button>
-        </Container>
+        </Box>
         <Container
           disableGutters
           sx={{
             display: "flex",
             justifyContent: "center",
             background: "white",
-            marginTop: 5,
             marginBottom: 10,
+            position:"absolute",
+            top: 170,
+            left: 150
           }}
         >
           <Grid
@@ -171,7 +172,7 @@ export default function MyListings() {
               {listingdata.map((data) => (
                 console.log("I am in the map, and I am rendering this listing", data.name),
                 <Grid item key={data.id} xs={12} sm={6} md={4}>
-                <Listing2
+                <CreatedListing
                   name={data.name}
                   description={data.des}
                   id={data.id}

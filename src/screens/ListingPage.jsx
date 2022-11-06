@@ -22,7 +22,7 @@ import Select from "@mui/material/Select";
 
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
-import Listing2 from "../components/Listing2.jsx";
+import Listing2 from "../components/CreatedListing.jsx";
 import Filter from "../components/Filter.jsx";
 import TagFilter from "../components/TagFilter.jsx";
 import LocationFilter from "../components/LocationFilter.jsx";

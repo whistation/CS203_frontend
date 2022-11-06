@@ -10,7 +10,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import placeholder from '../assets/image_placeholder.png';
 import NavigationBar from "../components/NavigationBar";
-import Listing2 from "../components/Listing2";
+import Listing2 from "../components/CreatedListing";
+import AppliedListing from "../components/AppliedListing";
 
 const theme = createTheme();
 
@@ -130,6 +131,9 @@ export default function MyApplications() {
               background: "white",
               marginTop: 5,
               marginBottom: 10,
+              position:"absolute",
+              top: 120,
+              left: 150
             }}
           >
             <Grid
@@ -146,7 +150,7 @@ export default function MyApplications() {
               {listingdata.map((data) => (
                 console.log("I am in the map, and I am rendering this listing", data.name),
                 <Grid item key={data.id} xs={12} sm={6} md={4}>
-                <Listing2
+                <AppliedListing
                   name={data.name}
                   description={data.des}
                   id={data.id}

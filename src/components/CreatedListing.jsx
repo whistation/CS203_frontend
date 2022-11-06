@@ -10,8 +10,6 @@ import { useState, useEffect, setState } from "react";
 import Box from "@mui/material/Box";
 import placeholder from "../assets/image_placeholder.png";
 
-
-
 export default function Listing2({ 
   name, 
   description, 
@@ -30,7 +28,6 @@ export default function Listing2({
         alt="image"
       />
 
-      {/* <img src={`url(${imageUrl})`} alt="new" /> */}
       <CardContent sx={{ textAlign: "left" }}>
         <Typography gutterBottom variant="h5" component="div">
           {name}
@@ -43,7 +40,6 @@ export default function Listing2({
 
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end" }}>
-        {/* <Button size="small">Share</Button> */}
         <Button
           size="small"
           onClick={() =>
@@ -60,29 +56,3 @@ export default function Listing2({
     </Card>
   );
 }
-
-//console.log(img);
-//const encodedString = Buffer.from(`${img}`).toString('base64');
-//const base64ToString = Buffer.from(encodedString, "base64").toString()
-// var blob = new Blob([img], { type: "image/jpeg" });
-// var imageUrl = URL.createObjectURL(blob);
-// console.log(imageUrl);
-
-// console.log(encodedString);
-//console.log("a");
-//  console.log(base64ToString);
-// var [image, setImage] = useState("");
-// useEffect(() => {
-//   const getImage = async () => {
-//     const res = await axios.get("http://localhost:8080/listingpage/1/image", {
-//       auth: {
-//         username: "admin@lendahand.com",
-//         password: "password",
-//       },
-//     });
-//     setImage(res.data);
-//     console.log(res.data);
-//   };
-//   getImage();
-// }, []);
-//setImgURL("url(http://127.0.0.1:5173/14736884-2fd4-471f-85af-f1f0790271dc)");
