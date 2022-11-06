@@ -6,10 +6,14 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 export default function CommitmentFilter() {
-  const [commitment, setCommitment] = React.useState('');
+  const [commitment, setCommitment] = React.useState(null);
 
-  const handleChange = (event) => {
-    setCommitment(event.target.value);
+  const handleCommitmentFilter = (event) => {
+    if (event.target.value == "All") {
+      setCommitment(null);
+    } else {
+      setCommitment(event.target.value);
+    }
   };
 
   return (
@@ -21,7 +25,7 @@ export default function CommitmentFilter() {
           id="demo-simple-select"
           value={commitment}
           label="commitment"
-          onChange={handleChange}
+          onChange={handleCommitmentFilter}
           size="sm"
         >
           <MenuItem value={10}>Ad Hoc</MenuItem>
@@ -31,6 +35,7 @@ export default function CommitmentFilter() {
           <MenuItem value={50}>6 Months</MenuItem>
           <MenuItem value={60}>1 Year</MenuItem>
           <MenuItem value={70}>Long-Term</MenuItem>
+          <MenuItem value={80}>All</MenuItem>
         </Select>
       </FormControl>
     </Box>

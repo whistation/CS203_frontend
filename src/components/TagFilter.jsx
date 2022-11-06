@@ -1,36 +1,36 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 export default function TagFilter() {
-  const [age, setAge] = React.useState('');
+  const [tag, setTag] = React.useState("");
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+  const handleTag = (event) => {
+    setTag(event.target.value);
+  console.log(tag);
+  }
 
   return (
     <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Tag</InputLabel>
+        <InputLabel>Tag</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          label="age"
-          onChange={handleChange}
-          size="sm"
+          labelId="tag"
+          id="tag"
+          value={tag}
+          label="tag"
+          onChange={handleTag}
         >
-          <MenuItem value={10}>Coastal</MenuItem>
-          <MenuItem value={20}>Marine</MenuItem>
-          <MenuItem value={30}>Jungle</MenuItem>
-          <MenuItem value={40}>Clean Energy</MenuItem>
-          <MenuItem value={50}>Agriculture</MenuItem>
-          <MenuItem value={60}>Recycling and Waste</MenuItem>
-          <MenuItem value={70}>Other</MenuItem>
+          <MenuItem value={"Coastal"}>Coastal</MenuItem>
+          <MenuItem value={"Marine"}>Marine</MenuItem>
+          <MenuItem value={"Jungle"}>Jungle</MenuItem>
+          <MenuItem value={"Clean Energy"}>Clean Energy</MenuItem>
+          <MenuItem value={"Agriculture"}>Agriculture</MenuItem>
+          <MenuItem value={"Recycling and Waste"}>Recycling and Waste</MenuItem>
+          <MenuItem value={"Others"}>Others</MenuItem>
         </Select>
       </FormControl>
     </Box>
