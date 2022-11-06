@@ -35,7 +35,7 @@ export default function Listing2({
         <Typography gutterBottom variant="h5" component="div">
           {name}
         </Typography>
-        <Box width="265px" height="100px" sx={{border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowY:"scroll", overflowX:"scroll", py:1, px:1}}>
+        <Box width="265px" height="93px" sx={{border:"1px solid grey", borderRadius:1.5, overflow:"hidden", py:1, px:1}}>
           <Typography variant="body2" color="text.secondary">
             {description}
           </Typography>

@@ -8,20 +8,21 @@ import Box from '@mui/material/Box';
 import Grid from "@mui/material/Grid";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import placeholder from '../assets/image_placeholder.png';
 import NavigationBar from "../components/NavigationBar";
-import Listing from "../components/Listing"
+import Listing2 from "../components/Listing2";
 
 const theme = createTheme();
 
 export default function MyApplications() {
   const [listings, setListings] = useState([{}]);
+  const [listingdata, setListingdata] = useState([]);
+  const listingdatatemp = [];
 
   // getting all applications by user
   useEffect(() => {
     const userId = localStorage.getItem("userid");
-    const getAllApps = async () => {
-      const res = await axios.get("http://localhost:8080/user/applications?userId=" + userId,
+      axios.get("http://localhost:8080/user/applications?userId=" + userId,
         {
           auth:
           {
@@ -37,14 +38,66 @@ export default function MyApplications() {
         }).then((res) => {
           console.log("get applicants success", res);
           setListings(res.data);
-          console.log("resdata", res.data);
+
+          //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
+          const listingstemp = res.data;
+          console.log("listingstemp", listingstemp);
+
+          //making the listingdata array
+          listingstemp.map((info, index) => {
+            var imageurl = "";
+            
+            //api call for the image
+            const getImage = async() => {
+              try{
+                const res = await axios.get("http://localhost:8080/listingpage/" + info.listingId + "/image",
+                  {
+                    responseType: "arraybuffer"
+                  },
+                  {
+                    auth: {
+                      username: "admin@lendahand.com",
+                      password: "password",
+                    },
+                  })
+
+                const imagedata = res.data;
+                const contenttype = res.headers.get("content-type");
+                var blob = new Blob([imagedata], { type: contenttype });
+                imageurl = (URL || webkitURL).createObjectURL(blob);
+                listingdatatemp[index] = {"name" : info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl};
+
+              } catch (error) {
+                imageurl = placeholder;
+                listingdatatemp[index] = {"name" : info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl};
+
+              }
+              
+            }
+            getImage();
+          })
+          setListingdata(listingdatatemp);
           
         }, (error) => {
           console.log("get applicants failed", error);
         })
-    }
-    getAllApps();
+
   }, []);
+
+  //checking if listingdata has been fixed
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+  var show = false;  
+  
+  useEffect(()=> {
+      if (listingdata.length > 0) {
+        show = true;
+      }
+      console.log("listingdata has been updated")
+      console.log("show", show, "listingdata", listingdata)
+      console.log("force update")
+      forceUpdate();
+    }, [listingdata])
 
   return (
     <>
@@ -89,15 +142,20 @@ export default function MyApplications() {
                 background: "white",
               }}
             >
-              {listings.map((listings) => (
-                <Grid item key={listings} xs={12} sm={6} md={4}>
-                  <Listing name={listings.listingName} 
-                  description={listings.listingDes} 
-                  id={listings.listingId} 
+              {console.log("I am in the return", "listingdata", listingdata)}
+              {listingdata.map((data) => (
+                console.log("I am in the map, and I am rendering this listing", data.name),
+                <Grid item key={data.id} xs={12} sm={6} md={4}>
+                <Listing2
+                  name={data.name}
+                  description={data.des}
+                  id={data.id}
                   buttonName={"view"}
-                  />
-                </Grid>
-              ))}
+                  imageUrl={data.imageurl}
+                />
+              </Grid>
+              ))
+            }
             </Grid>
           </Container>
         </Container>
