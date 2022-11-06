@@ -28,11 +28,12 @@ export default function MyListings() {
   const [listingdata, setListingdata] = useState([]);
   const listingdatatemp = [];
 
+  const userid = localStorage.getItem("userid");
 
   //getting the listing data
   useEffect(() => {
       axios.get(
-        "http://localhost:8080/listingpage",
+        "http://localhost:8080/listingpage/mylistings?userId=" + userid,
         {
           auth: {
             username: "admin@lendahand.com",
@@ -92,6 +93,7 @@ export default function MyListings() {
   const [, updateState] = React.useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
   var show = false;  
+  
   useEffect(()=> {
       if (listingdata.length > 0) {
         show = true;
@@ -140,6 +142,7 @@ export default function MyListings() {
             size="small"
             endIcon={<AddIcon />}
             onClick={() => navigate("/listingpage/createlisting")}
+            sx={{position:"absolute", top:100, right:25}}
           >
             Create New Listing
           </Button>
@@ -165,7 +168,8 @@ export default function MyListings() {
             }}
           >
             {console.log("I am in the return", "listingdata", listingdata)}
-              {listingdata.map((data, index) => (
+              {listingdata.map((data) => (
+                console.log("I am in the map, and I am rendering this listing", data.name),
                 <Grid item key={data.id} xs={12} sm={6} md={4}>
                 <Listing2
                   name={data.name}
