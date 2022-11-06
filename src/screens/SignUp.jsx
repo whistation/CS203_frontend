@@ -86,8 +86,10 @@ export default function SignUp() {
         .then((response) => {
           console.log(response);
           handleOpen();
-        }, (error) => {
-          console.log(error);
+        }).catch(function(error) {
+          if (error.response.status == 409) { 
+            handleConflictOpen();
+          }
         });
     }
   };
@@ -111,6 +113,15 @@ export default function SignUp() {
   const handleBlankClose = () => {
     setBlankOpen(false);
   };
+
+  //code to handle the opening and closing of the username taken pop-up
+  const [conflictOpen, setConflictOpen] = useState(false);
+  const handleConflictOpen = () => {
+    setConflictOpen(true);
+  };
+  const handleConflictClose = () => {
+    setConflictOpen(false);
+  }
 
 //code for input validation of phone number
   const [phoneErrorState, setPhoneErrorState] = useState(false);
@@ -319,6 +330,20 @@ export default function SignUp() {
           <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400 }}>
             <h2 id="child-modal-title">Please do not leave any fields blank!</h2>
             <Button onClick={handleBlankClose}>Got it!</Button>
+          </Box>
+        </Modal>
+
+        {/* username taken pop up */}
+        <Modal
+          hideBackdrop
+          open={conflictOpen}
+          onClose={handleConflictClose}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+        >
+          <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400 }}>
+            <h2 id="child-modal-title">You have already used this email address to make an account, please enter a new one!</h2>
+            <Button onClick={handleConflictClose}>Got it!</Button>
           </Box>
         </Modal>
 
