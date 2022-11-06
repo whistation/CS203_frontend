@@ -45,6 +45,7 @@ export default function ProjectPage() {
   const [tag, setTag] = useState("");
   const [name, setName] = useState("");
   const location = useLocation();
+  const listingId = location.state.listingId;
 
   //variable to set the imageurl for the picture
   const [imageurl, setImageurl] = useState(placeholder);

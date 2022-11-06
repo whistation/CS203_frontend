@@ -76,6 +76,7 @@ export default function ListingPage() {
       location: location.location,
       tag: tag.tag,
       commitment: commitment.commitment,
+      username: "All"
     };
     setFilters(finalFilter);
   };
