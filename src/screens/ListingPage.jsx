@@ -86,13 +86,16 @@ export default function ListingPage() {
     console.log({ filters });
     console.log("searching now");
     const getAllListings = async () => {
-      const res = await axios.get("http://localhost:8080/listingpage", {
-        data: {
-          username: "all",
-          tag: "Jungle",
-          location: "all",
-          commitment: "all",
-        },
+      const res = await axios.get("http://localhost:8080/listingpage", 
+      {
+        filters: {
+        username: "all",
+        tag: "Clean Energy",
+        location: "all",
+        commitment: "all"
+        }
+      },
+      {
         params: {
           inName: `${search}`,
         },
@@ -233,6 +236,7 @@ export default function ListingPage() {
                   Recycling and Waste
                 </MenuItem>
                 <MenuItem value={"Others"}>Others</MenuItem>
+                <MenuItem value={"All"}>All</MenuItem>
               </Select>
             </FormControl>
           </Box>
