@@ -32,22 +32,53 @@ export default function ListingPage() {
   // console.log(localStorage.getItem("username"));
   // console.log(localStorage.getItem("userid"));
   // console.log(localStorage.getItem("password"));
-  const [listings, setListings] = useState([{}]);
-  const [search, setSearch] = useState("");
 
-  useEffect(() => {
+//user authentication details
+const username = localStorage.getItem("username");
+const password = localStorage.getItem("password");
+
+const listingDefault = [
+  {
+      id: 1,
+      name: "Nothing Here Right Now!",
+      des: "Please click the Search Button for Results",
+      noOfParticipants: 5,
+  }
+];
+  //set default before search to prompt for search
+  const [listings, setListings] = useState(listingDefault);
+
+  //set default search to space character
+  const [search, setSearch] = useState(" ");
+  const filters = [
+    {
+    tag: "jungle",
+  }
+]
+
+
+  const handleSearching = () => {
+    console.log("searching now");
     const getAllListings = async () => {
       const res = await axios.get("http://localhost:8080/listingpage", {
-        auth: {
-          username: "admin@lendahand.com",
-          password: "password",
+        params: {
+          inName: `${search}`,
         },
-      });
+        auth: {
+          "username": username,
+          "password": password,
+        },
+        data: {
+          filters: filters,
+        },
+      },
+      );
       //console.log(res);
       setListings(res.data);
     };
     getAllListings();
-  }, []);
+
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -89,8 +120,14 @@ export default function ListingPage() {
               sx={{
                 width: "92vw",
               }}
+              onChange={(e) => setSearch(e.target.value)}
             />
-            <IconButton type="submit" aria-label="search">
+            <IconButton 
+            //type="submit" 
+            aria-label="search" 
+            onClick={()=>{handleSearching()}}
+            //onClick={()=>{console.log("hello");}}
+            >
               <SearchIcon style={{ fill: "blue" }} />
             </IconButton>
           </form>
