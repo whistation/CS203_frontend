@@ -26,7 +26,7 @@ export default function LocationSelect() {
           <MenuItem value={"north"}>North</MenuItem>
           <MenuItem value={"south"}>South</MenuItem>
           <MenuItem value={"east"}>East</MenuItem>
-          <MenuItem value={"west"}>West</MenuItem> 
+          <MenuItem value={"west"}>West</MenuItem>
         </Select>
       </FormControl>
     </Box>

@@ -1,14 +1,7 @@
 import * as React from "react";
-import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
-import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { sizing } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
@@ -31,77 +24,77 @@ export default function MyListings() {
 
   //getting the listing data
   useEffect(() => {
-      axios.get(
-        "http://localhost:8080/listingpage/mylistings?userId=" + userid,
-        {
-          auth: {
-            username: "admin@lendahand.com",
-            password: "password",
-          },
+    axios.get(
+      "http://localhost:8080/listingpage/mylistings?userId=" + userid,
+      {
+        auth: {
+          username: "admin@lendahand.com",
+          password: "password",
         },
-      ).then((response) => {
-        console.log("get listings success");
-        setListings(response.data);
+      },
+    ).then((response) => {
+      console.log("get listings success");
+      setListings(response.data);
 
-        //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
-        const listingstemp = response.data;
-        console.log(listingstemp);
+      //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
+      const listingstemp = response.data;
+      console.log(listingstemp);
 
-        //making the listingdata array
-        listingstemp.map((info, index) => {
-          var imageurl = "";
-          
-          //api call for the image
-          const getImage = async() => {
-            try{
-              const res = await axios.get("http://localhost:8080/listingpage/" + info.id + "/image",
-                {
-                  responseType: "arraybuffer"
+      //making the listingdata array
+      listingstemp.map((info, index) => {
+        var imageurl = "";
+
+        //api call for the image
+        const getImage = async () => {
+          try {
+            const res = await axios.get("http://localhost:8080/listingpage/" + info.id + "/image",
+              {
+                responseType: "arraybuffer"
+              },
+              {
+                auth: {
+                  username: "admin@lendahand.com",
+                  password: "password",
                 },
-                {
-                  auth: {
-                    username: "admin@lendahand.com",
-                    password: "password",
-                  },
-                })
+              })
 
-              const imagedata = res.data;
-              const contenttype = res.headers.get("content-type");
-              var blob = new Blob([imagedata], { type: contenttype });
-              imageurl = (URL || webkitURL).createObjectURL(blob);
-              listingdatatemp[index] = {"name" : info.name, "des": info.des, "id": info.id, "imageurl": imageurl};
+            const imagedata = res.data;
+            const contenttype = res.headers.get("content-type");
+            var blob = new Blob([imagedata], { type: contenttype });
+            imageurl = (URL || webkitURL).createObjectURL(blob);
+            listingdatatemp[index] = { "name": info.name, "des": info.des, "id": info.id, "imageurl": imageurl };
 
-            } catch (error) {
-              imageurl = placeholder;
-              listingdatatemp[index] = {"name" : info.name, "des": info.des, "id": info.id, "imageurl": imageurl};
+          } catch (error) {
+            imageurl = placeholder;
+            listingdatatemp[index] = { "name": info.name, "des": info.des, "id": info.id, "imageurl": imageurl };
 
-            }
-            
           }
-          getImage();
-        })
-        setListingdata(listingdatatemp);
 
-  
-      }, (error) => {
-        console.log("get listings failed", error);
-      });
+        }
+        getImage();
+      })
+      setListingdata(listingdatatemp);
+
+
+    }, (error) => {
+      console.log("get listings failed", error);
+    });
   }, []);
 
   //checking if listingdata has been fixed
   const [, updateState] = React.useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
-  var show = false;  
-  
-  useEffect(()=> {
-      if (listingdata.length > 0) {
-        show = true;
-      }
-      console.log("listingdata has been updated")
-      console.log("show", show, "listingdata", listingdata)
-      console.log("force update")
-      forceUpdate();
-    }, [listingdata])
+  var show = false;
+
+  useEffect(() => {
+    if (listingdata.length > 0) {
+      show = true;
+    }
+    console.log("listingdata has been updated")
+    console.log("show", show, "listingdata", listingdata)
+    console.log("force update")
+    forceUpdate();
+  }, [listingdata])
 
   const navigate = useNavigate();
   return (
@@ -141,7 +134,7 @@ export default function MyListings() {
             size="small"
             endIcon={<AddIcon />}
             onClick={() => navigate("/listingpage/createlisting")}
-            sx={{position:"absolute", top:90, right:25}}
+            sx={{ position: "absolute", top: 90, right: 25 }}
           >
             Create New Listing
           </Button>
@@ -153,7 +146,7 @@ export default function MyListings() {
             justifyContent: "center",
             background: "white",
             marginBottom: 10,
-            position:"absolute",
+            position: "absolute",
             top: 170,
             left: 150
           }}
@@ -169,9 +162,9 @@ export default function MyListings() {
             }}
           >
             {console.log("I am in the return", "listingdata", listingdata)}
-              {listingdata.map((data) => (
-                console.log("I am in the map, and I am rendering this listing", data.name),
-                <Grid item key={data.id} xs={12} sm={6} md={4}>
+            {listingdata.map((data) => (
+              console.log("I am in the map, and I am rendering this listing", data.name),
+              <Grid item key={data.id} xs={12} sm={6} md={4}>
                 <CreatedListing
                   name={data.name}
                   description={data.des}
@@ -180,9 +173,9 @@ export default function MyListings() {
                   imageUrl={data.imageurl}
                 />
               </Grid>
-              ))
+            ))
             }
-            
+
           </Grid>
         </Container>
       </Container>

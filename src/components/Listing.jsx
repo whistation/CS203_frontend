@@ -5,11 +5,9 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import {useNavigate} from "react-router-dom";
-import {useState, useEffect} from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-import placeholder from "../assets/image_placeholder.png";
 import bgrnd1 from "../assets/backgroundpic1.jpg";
 import bgrnd2 from "../assets/backgroundpic2.jpg";
 import bgrnd3 from "../assets/backgroundpic3.jpg";
@@ -26,7 +24,7 @@ const bgrnds = [
 function RandomBackground() {
   const [currentBgrndIndex, setCurrentBgrndIndex] = useState(Math.floor(Math.random() * bgrnds.length))
   const changeBgrnd = () => {
-    const randomNumber = Math.floor(Math.random()*bgrnds.length);
+    const randomNumber = Math.floor(Math.random() * bgrnds.length);
     setCurrentBgrndIndex(randomNumber);
     console.log(Math.random());
   }
@@ -37,14 +35,14 @@ function RandomBackground() {
   )
 }
 
-export default function Listing({name, description, id, buttonName}) {
+export default function Listing({ name, description, id, buttonName }) {
   const navigate = useNavigate();
   return (
     <Card variant="outlined" sx={{ width: 300, height: 370 }}>
       <CardMedia
         component="img"
         height="140"
-        image= {RandomBackground()}
+        image={RandomBackground()}
         alt="image placeholder"
       />
       <CardContent sx={{ textAlign: "left" }}>
@@ -56,11 +54,11 @@ export default function Listing({name, description, id, buttonName}) {
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end" }}>
-          <Button size="small" onClick={() => navigate("/listingpage/projectpage", {
-            state: {
-						listingId: id,
-            }
-					})} >{buttonName} </Button>
+        <Button size="small" onClick={() => navigate("/listingpage/projectpage", {
+          state: {
+            listingId: id,
+          }
+        })} >{buttonName} </Button>
       </CardActions>
     </Card>
   );

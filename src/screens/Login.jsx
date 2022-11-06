@@ -9,11 +9,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import validator from "validator";
 import Modal from '@mui/material/Modal';
-import {useState} from "react";
+import { useState } from "react";
 
 function Copyright(props) {
   return (
@@ -49,7 +49,7 @@ export default function LogIn() {
 
   //code for input validation of email
   const [emailErrorState, setEmailErrorState] = useState(false);
-  const emailErrorMessage="Enter a valid email."
+  const emailErrorMessage = "Enter a valid email."
   const validateEmail = (e) => {
     var email = e.target.value;
 
@@ -68,13 +68,13 @@ export default function LogIn() {
     const data = new FormData(event.currentTarget);
 
     setInput(
-    {
-      "username": data.get('email'),
-      "password": data.get('password'),
-    }
+      {
+        "username": data.get('email'),
+        "password": data.get('password'),
+      }
     );
 
-    const input =     
+    const input =
     {
       "username": data.get('email'),
       "password": data.get('password'),
@@ -83,11 +83,12 @@ export default function LogIn() {
 
     //if some of the fields are empty prompt user to fill them, else handle auth
     if (JSON.stringify(input.username).length === 0 | JSON.stringify(input.password).length === 0) {
-        console.log("some fields are empty!");
-        handleBlankOpen();
+      console.log("some fields are empty!");
+      handleBlankOpen();
     } else {
-        axios.get("http://localhost:8080/listingpage",
-        {auth: 
+      axios.get("http://localhost:8080/listingpage",
+        {
+          auth:
           {
             "username": input.username,
             "password": input.password,
@@ -145,7 +146,6 @@ export default function LogIn() {
     setFailedOpen(false);
   };
 
-
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -164,7 +164,7 @@ export default function LogIn() {
             Log in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            
+
             {/* email field */}
             <TextField
               margin="normal"
@@ -178,7 +178,7 @@ export default function LogIn() {
               inputProps={{ maxLength: 320 }}
               helperText={emailErrorState && emailErrorMessage}
               error={emailErrorState}
-              onChange={(e)=>validateEmail(e)}
+              onChange={(e) => validateEmail(e)}
             />
 
             {/* password field */}
@@ -192,7 +192,6 @@ export default function LogIn() {
               id="password"
               autoComplete="current-password"
               inputProps={{ maxLength: 100 }}
-
             />
 
             <Button
@@ -213,7 +212,7 @@ export default function LogIn() {
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
-        
+
         {/* Please do not leave fields blank pop up */}
         <Modal
           hideBackdrop
@@ -227,7 +226,7 @@ export default function LogIn() {
             <Button onClick={handleBlankClose}>Got it!</Button>
           </Box>
         </Modal>
-        
+
         {/* successful log in pop up */}
         <Modal
           hideBackdrop
@@ -250,12 +249,11 @@ export default function LogIn() {
           aria-labelledby="child-modal-title"
           aria-describedby="child-modal-description"
         >
-          <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400}}>
+          <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400 }}>
             <h2 id="child-modal-title">Unsuccessful log in. Email or password is incorrect!</h2>
             <Button onClick={handleFailedClose}>Try Again</Button>
           </Box>
         </Modal>
-
       </Container>
     </ThemeProvider>
   );

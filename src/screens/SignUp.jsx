@@ -3,14 +3,14 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useState} from "react";
+import { useState } from "react";
 import axios from "axios";
 import Modal from '@mui/material/Modal';
 import validator from "validator";
@@ -44,12 +44,11 @@ function Copyright(props) {
   );
 }
 
-
 const theme = createTheme();
 
 export default function SignUp() {
 
-//function to handle the event when we press the submit button
+  //function to handle the event when we press the submit button
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -64,13 +63,13 @@ export default function SignUp() {
       "authorities": "AUTH_USER"
     }
 
-    if (input.username.length === 0 | input.password.length === 0 | 
-        input.firstname.length === 0 | input.lastname.length === 0 | input.contactNo.length === 0 ) {
-          console.log("some fields are empty!");
-          handleBlankOpen();
-          
+    if (input.username.length === 0 | input.password.length === 0 |
+      input.firstname.length === 0 | input.lastname.length === 0 | input.contactNo.length === 0) {
+      console.log("some fields are empty!");
+      handleBlankOpen();
+
     } else {
-        axios.post('http://localhost:8080/newuser', 
+      axios.post('http://localhost:8080/newuser',
         {
           "username": data.get('email'),
           "password": data.get('password'),
@@ -79,22 +78,24 @@ export default function SignUp() {
           "contactNo": data.get('phoneNo'),
         }
         ,
-        {headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:8080',
-          'Content-Type': 'application/json',
-        }})
+        {
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:8080',
+            'Content-Type': 'application/json',
+          }
+        })
         .then((response) => {
           console.log(response);
           handleOpen();
-        }).catch(function(error) {
-          if (error.response.status == 409) { 
+        }).catch(function (error) {
+          if (error.response.status == 409) {
             handleConflictOpen();
           }
         });
     }
   };
 
-//code to handle opening and closing of the confirmation pop-up
+  //code to handle opening and closing of the confirmation pop-up
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -123,23 +124,21 @@ export default function SignUp() {
     setConflictOpen(false);
   }
 
-//code for input validation of phone number
+  //code for input validation of phone number
   const [phoneErrorState, setPhoneErrorState] = useState(false);
   function CheckIfNumber() {
     var input = event.target.value;
     // useEffect(() => {
-      if (isNaN(input) || !(input[0]==8 || input[0]==6 || input[0]==9)) {
-        setPhoneErrorState(true);
-      } else {
-        setPhoneErrorState(false);
-      }
-
-    // })
+    if (isNaN(input) || !(input[0] == 8 || input[0] == 6 || input[0] == 9)) {
+      setPhoneErrorState(true);
+    } else {
+      setPhoneErrorState(false);
+    }
   }
 
-//code for input validation of email
+  //code for input validation of email
   const [emailErrorState, setEmailErrorState] = useState(false);
-  const emailErrorMessage="Enter a valid email."
+  const emailErrorMessage = "Enter a valid email."
   const validateEmail = (e) => {
     var email = e.target.value;
 
@@ -150,10 +149,10 @@ export default function SignUp() {
     }
   };
 
-//code for double checking password entry
+  //code for double checking password entry
   const [passwordNotMatch, setPasswordNotMatch] = useState(false);
   const [password, setPassword] = useState("");
-  const passwordErrorMessage="The password does not match!"
+  const passwordErrorMessage = "The password does not match!"
   const validatePassword = (e) => {
     if (password == e.target.value) {
       setPasswordNotMatch(false);
@@ -163,7 +162,7 @@ export default function SignUp() {
   }
 
 
-// This is what is rendered
+  // This is what is rendered
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -174,7 +173,6 @@ export default function SignUp() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            // backgroundColor: 'blue'
           }}
         >
           {/* icon and "Sign up" header */}
@@ -229,7 +227,7 @@ export default function SignUp() {
                   inputProps={{ maxLength: 320 }}
                   helperText={emailErrorState && emailErrorMessage}
                   error={emailErrorState}
-                  onChange={(e)=>validateEmail(e)}
+                  onChange={(e) => validateEmail(e)}
                 />
               </Grid>
 
@@ -238,7 +236,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  helperText= "Enter a Singaporean phone number."
+                  helperText="Enter a Singaporean phone number."
                   id="phoneNo"
                   label="Phone Number"
                   name="phoneNo"
@@ -261,10 +259,10 @@ export default function SignUp() {
                   id="password"
                   autoComplete="new-password"
                   inputProps={{ maxLength: 100 }}
-                  onChange={(e)=>setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </Grid>
-            
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -302,9 +300,8 @@ export default function SignUp() {
             </Grid>
           </Box>
           <Copyright sx={{ mt: 5 }} />
-
         </Box>
-        
+
         {/* confirmation pop up */}
         <Modal
           hideBackdrop
@@ -318,7 +315,7 @@ export default function SignUp() {
             <Button onClick={handleClose}>Take me to the log in page!</Button>
           </Box>
         </Modal>
-        
+
         {/* Please do not leave fields blank pop up */}
         <Modal
           hideBackdrop
@@ -346,7 +343,6 @@ export default function SignUp() {
             <Button onClick={handleConflictClose}>Got it!</Button>
           </Box>
         </Modal>
-
       </Container>
     </ThemeProvider>
   );

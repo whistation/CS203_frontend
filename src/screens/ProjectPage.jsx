@@ -11,7 +11,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ApprovalIcon from "@mui/icons-material/Approval";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Component } from "react";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -189,8 +188,6 @@ export default function ProjectPage() {
   return (
     <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
       <CssBaseline />
-
-
       <Grid
         item
         xs={false}
@@ -266,7 +263,6 @@ export default function ProjectPage() {
               </Typography>
             </Box>
 
-
             {/* location, tags, committment */}
             <Box container justifyContent="center" spacing={3} sx={{ mb: 1, mt: 3 }}>
               <Grid container justifyContent="center" spacing={3} sx={{ mt: 0, mb: 1, }}>
@@ -312,6 +308,7 @@ export default function ProjectPage() {
             </Box>
           </Box>
 
+          {/*renders withdraw if the listing has been applied to, renders apply otherwise */}
           {appStatus.length == 0 ?
             // apply button
             <Button
@@ -335,7 +332,6 @@ export default function ProjectPage() {
               Withdraw
             </Button>
           }
-
 
           <Modal
             hideBackdrop

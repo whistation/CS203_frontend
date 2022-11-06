@@ -64,59 +64,57 @@ export default function Home() {
             <HomeBar />
           </Box>
         </Container>
-      <Grid container sx={{ height: '100vh', width: '100vw' }}>
-        <CssBaseline />
-        <Grid item
-          xs={12}
-          sx={{
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundColor: "white",
-            backgroundImage: `url(${bg})`,
-            height: "100%"
-          }}>
-          <Typography
-            component="h1"
-            variant="h1"
-            color="white"
+        <Grid container sx={{ height: '100vh', width: '100vw' }}>
+          <CssBaseline />
+          <Grid item
+            xs={12}
             sx={{
-              position: 'relative',
-              pt: 50,
-              fontWeight: 'bold',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundColor: "white",
+              backgroundImage: `url(${bg})`,
+              height: "100%"
             }}>
-            Lend a Hand
-          </Typography>
-        </Grid>
+            <Typography
+              component="h1"
+              variant="h1"
+              color="white"
+              sx={{
+                position: 'relative',
+                pt: 50,
+                fontWeight: 'bold',
+              }}>
+              Lend a Hand
+            </Typography>
+          </Grid>
 
-        <Grid container sx={{ height: '9vh', width: '100vw' }} id="aboutUs">
-          <CssBaseline>
-            <Grid item xs={12} sx={{ backgroundColor: "lightgray" }}>
-              <h2> About us </h2>
-            </Grid>
-          </CssBaseline>
+          <Grid container sx={{ height: '9vh', width: '100vw' }} id="aboutUs">
+            <CssBaseline>
+              <Grid item xs={12} sx={{ backgroundColor: "lightgray" }}>
+                <h2> About us </h2>
+              </Grid>
+            </CssBaseline>
+          </Grid>
+          <Grid item xs={3} sx={{ backgroundColor: "white" }}></Grid>
+          <Grid item xs={6} sx={{ backgroundColor: "white" }}>
+            <h4>
+              {aboutUs}
+            </h4>
+            <p>
+              {ourMission}
+            </p>
+            <p>
+              Sign up for an account today! With an account, you can not only volunteer for existing projects but also list green projects of your own.
+            </p>
+          </Grid>
+          <Grid item xs={3} sx={{ backgroundColor: "white" }}></Grid>
+          <Grid item xs={3} sx={{ height: '8vh', backgroundColor: "white" }}></Grid>
+          <Grid item xs={6} sx={{ height: '8vh', backgroundColor: "white" }}>
+            <Copyright sx={{ mt: 4, mb: 4 }} />
+          </Grid>
+          <Grid item xs={3} sx={{ height: '8vh', backgroundColor: "white" }}></Grid>
         </Grid>
-        <Grid item xs={3} sx={{ backgroundColor: "white" }}></Grid>
-        <Grid item xs={6} sx={{ backgroundColor: "white" }}>
-          <h4>
-            {aboutUs}
-          </h4>
-          <p>
-            {ourMission}
-          </p>
-          <p>
-            Sign up for an account today! With an account, you can not only volunteer for existing projects but also list green projects of your own.
-          </p>
-        </Grid>
-        <Grid item xs={3} sx={{ backgroundColor: "white" }}></Grid>
-        <Grid item xs={3} sx={{ height: '8vh', backgroundColor: "white" }}></Grid>
-        <Grid item xs={6} sx={{ height: '8vh', backgroundColor: "white"}}>
-          <Copyright sx={{ mt: 4, mb: 4 }} />
-        </Grid>
-        <Grid item xs={3} sx={{ height: '8vh', backgroundColor: "white"}}></Grid>
-        
-      </Grid>
-      
-</ThemeProvider>
+      </ThemeProvider>
     </>
   );
 }

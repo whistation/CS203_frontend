@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 import "./General.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Container from '@mui/material/Container';
@@ -10,7 +9,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import placeholder from '../assets/image_placeholder.png';
 import NavigationBar from "../components/NavigationBar";
-import Listing2 from "../components/CreatedListing";
 import AppliedListing from "../components/AppliedListing";
 
 const theme = createTheme();
@@ -23,82 +21,81 @@ export default function MyApplications() {
   // getting all applications by user
   useEffect(() => {
     const userId = localStorage.getItem("userid");
-      axios.get("http://localhost:8080/user/applications?userId=" + userId,
+    axios.get("http://localhost:8080/user/applications?userId=" + userId,
+      {
+        auth:
         {
-          auth:
-          {
-            username: localStorage.getItem("username"),
-            password: localStorage.getItem("password")
-          }
-        },
-        {
-          headers: {
-            'Access-Control-Allow-Origin': 'http://localhost:8080',
-            'Content-Type': 'application/json',
-          }
-        }).then((res) => {
-          console.log("get applicants success", res);
-          setListings(res.data);
+          username: localStorage.getItem("username"),
+          password: localStorage.getItem("password")
+        }
+      },
+      {
+        headers: {
+          'Access-Control-Allow-Origin': 'http://localhost:8080',
+          'Content-Type': 'application/json',
+        }
+      }).then((res) => {
+        console.log("get applicants success", res);
+        setListings(res.data);
 
-          //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
-          const listingstemp = res.data;
-          console.log("listingstemp", listingstemp);
+        //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
+        const listingstemp = res.data;
+        console.log("listingstemp", listingstemp);
 
-          //making the listingdata array
-          listingstemp.map((info, index) => {
-            var imageurl = "";
-            
-            //api call for the image
-            const getImage = async() => {
-              try{
-                const res = await axios.get("http://localhost:8080/listingpage/" + info.listingId + "/image",
-                  {
-                    responseType: "arraybuffer"
+        //making the listingdata array
+        listingstemp.map((info, index) => {
+          var imageurl = "";
+
+          //api call for the image
+          const getImage = async () => {
+            try {
+              const res = await axios.get("http://localhost:8080/listingpage/" + info.listingId + "/image",
+                {
+                  responseType: "arraybuffer"
+                },
+                {
+                  auth: {
+                    username: "admin@lendahand.com",
+                    password: "password",
                   },
-                  {
-                    auth: {
-                      username: "admin@lendahand.com",
-                      password: "password",
-                    },
-                  })
+                })
 
-                const imagedata = res.data;
-                const contenttype = res.headers.get("content-type");
-                var blob = new Blob([imagedata], { type: contenttype });
-                imageurl = (URL || webkitURL).createObjectURL(blob);
-                listingdatatemp[index] = {"name" : info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl};
+              const imagedata = res.data;
+              const contenttype = res.headers.get("content-type");
+              var blob = new Blob([imagedata], { type: contenttype });
+              imageurl = (URL || webkitURL).createObjectURL(blob);
+              listingdatatemp[index] = { "name": info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl };
 
-              } catch (error) {
-                imageurl = placeholder;
-                listingdatatemp[index] = {"name" : info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl};
-
-              }
-              
+            } catch (error) {
+              imageurl = placeholder;
+              listingdatatemp[index] = { "name": info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl };
             }
-            getImage();
-          })
-          setListingdata(listingdatatemp);
-          
-        }, (error) => {
-          console.log("get applicants failed", error);
+
+          }
+          getImage();
         })
+        setListingdata(listingdatatemp);
+
+      }, (error) => {
+        console.log("get applicants failed", error);
+      })
 
   }, []);
 
   //checking if listingdata has been fixed
   const [, updateState] = React.useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
-  var show = false;  
-  
-  useEffect(()=> {
-      if (listingdata.length > 0) {
-        show = true;
-      }
-      console.log("listingdata has been updated")
-      console.log("show", show, "listingdata", listingdata)
-      console.log("force update")
-      forceUpdate();
-    }, [listingdata])
+  var show = false;
+
+  useEffect(() => {
+    if (listingdata.length > 0) {
+      show = true;
+    }
+    console.log("listingdata has been updated")
+    console.log("show", show, "listingdata", listingdata)
+    console.log("force update")
+    forceUpdate();
+  }, [listingdata])
 
   return (
     <>
@@ -131,7 +128,7 @@ export default function MyApplications() {
               background: "white",
               marginTop: 5,
               marginBottom: 10,
-              position:"absolute",
+              position: "absolute",
               top: 120,
               left: 150
             }}
@@ -150,16 +147,16 @@ export default function MyApplications() {
               {listingdata.map((data) => (
                 console.log("I am in the map, and I am rendering this listing", data.name),
                 <Grid item key={data.id} xs={12} sm={6} md={4}>
-                <AppliedListing
-                  name={data.name}
-                  description={data.des}
-                  id={data.id}
-                  buttonName={"view"}
-                  imageUrl={data.imageurl}
-                />
-              </Grid>
+                  <AppliedListing
+                    name={data.name}
+                    description={data.des}
+                    id={data.id}
+                    buttonName={"view"}
+                    imageUrl={data.imageurl}
+                  />
+                </Grid>
               ))
-            }
+              }
             </Grid>
           </Container>
         </Container>

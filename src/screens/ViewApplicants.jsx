@@ -2,21 +2,15 @@ import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import AddBoxIcon from "@mui/icons-material/AddBox";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import placeholder from "../assets/image_placeholder.png";
 import { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import { Navigate, useNavigate } from "react-router-dom";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import List from "@mui/material/List";
@@ -113,9 +107,7 @@ export default function ViewApplicants() {
           const contenttype = res.headers.get("content-type");
           var blob = new Blob([imagedata], { type: contenttype });
           var url = (URL || webkitURL).createObjectURL(blob);
-          
           setImageurl(url);
-
         },
         (error) => {
           console.log("image get failed");
@@ -206,7 +198,6 @@ export default function ViewApplicants() {
             <Box
               noValidate
               sx={{ mt: 2 }}
-              // backgroundColor="red"
             >
               {/* Project title field */}
               <Typography

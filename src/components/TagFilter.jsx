@@ -10,7 +10,7 @@ export default function TagFilter() {
 
   const handleTag = (event) => {
     setTag(event.target.value);
-  console.log(tag);
+    console.log(tag);
   }
 
   return (

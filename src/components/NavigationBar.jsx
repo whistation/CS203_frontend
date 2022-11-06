@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -34,7 +34,7 @@ const NavigationBar = () => {
 
   const navigate = useNavigate();
   return (
-    <AppBar position="fixed" sx={{background: "white"}}>
+    <AppBar position="fixed" sx={{ background: "white" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -85,13 +85,13 @@ const NavigationBar = () => {
               }}
             >
               <MenuItem onClick={() => navigate("/listingpage")}>
-                  <Typography textAlign="center">Discover</Typography>
+                <Typography textAlign="center">Discover</Typography>
               </MenuItem>
               <MenuItem onClick={() => navigate("/listingpage/mylistings")}>
-                  <Typography textAlign="center">My Listings</Typography>
+                <Typography textAlign="center">My Listings</Typography>
               </MenuItem>
               <MenuItem onClick={() => navigate("/listingpage/myapplications")}>
-                  <Typography textAlign="center">My Applications</Typography>
+                <Typography textAlign="center">My Applications</Typography>
               </MenuItem>
             </Menu>
           </Box>
@@ -113,31 +113,31 @@ const NavigationBar = () => {
           >
             HOME
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}/>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} />
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              <Button
-                //component={Link} to="/about"
-                onClick={() => navigate("/listingpage")}
-                sx={{ my: 2, color: 'grey', display: 'block' }}
-              >
-                Discover
-              </Button>
+            <Button
+              //component={Link} to="/about"
+              onClick={() => navigate("/listingpage")}
+              sx={{ my: 2, color: 'grey', display: 'block' }}
+            >
+              Discover
+            </Button>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              <Button
-                onClick={() => navigate("/listingpage/mylistings")}
-                sx={{ my: 2, color: 'grey', display: 'block' }}
-              >
-                My Listings
-              </Button>
+            <Button
+              onClick={() => navigate("/listingpage/mylistings")}
+              sx={{ my: 2, color: 'grey', display: 'block' }}
+            >
+              My Listings
+            </Button>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              <Button
-                onClick={() => navigate("/listingpage/myapplications")}
-                sx={{ my: 2, color: 'grey', display: 'block' }}
-              >
-                My Applications
-              </Button>
+            <Button
+              onClick={() => navigate("/listingpage/myapplications")}
+              sx={{ my: 2, color: 'grey', display: 'block' }}
+            >
+              My Applications
+            </Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip>
@@ -162,10 +162,10 @@ const NavigationBar = () => {
               onClose={handleCloseUserMenu}
             >
               <MenuItem onClick={() => navigate("/listingpage/settings")}>
-                  <Typography textAlign="center">Settings</Typography>
+                <Typography textAlign="center">Settings</Typography>
               </MenuItem>
               <MenuItem onClick={() => navigate("/")}>
-                  <Typography textAlign="center">Log Out</Typography>
+                <Typography textAlign="center">Log Out</Typography>
               </MenuItem>
             </Menu>
           </Box>

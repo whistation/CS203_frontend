@@ -12,15 +12,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import placeholder from '../assets/image_placeholder.png';
 import { styled } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
-import {useState} from "react";
+import { useState } from "react";
 import Modal from '@mui/material/Modal';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
-import imageCompression from 'browser-image-compression'; 
+import imageCompression from 'browser-image-compression';
 
 //Everything related to the Add Image button
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -105,48 +105,44 @@ const modalStyle = {
   pb: 3,
 };
 
-
-
 //exporting the actual app!
 export default function CreateListing() {
 
-    //code to handle image upload
-    const [pictureURL, setPictureURL] = useState(placeholder);
+  //code to handle image upload
+  const [pictureURL, setPictureURL] = useState(placeholder);
 
-    const image = new FormData();
-    const [picture, setPicture] = useState(null);
-  
-      async function handleUpload(e){
-      setPictureURL(URL.createObjectURL(e.target.files[0]));
-      const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1920,
-        useWebWorker: true
-      }
-      const imageFile = e.target.files[0];
-      setPicture(imageFile);
-      // console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+  const image = new FormData();
+  const [picture, setPicture] = useState(null);
 
-      // try {
-      //   const compressedFile = await imageCompression(imageFile, options);
-      //   console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-      //   console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-      console.log(`original file size ${imageFile.size / 1024 / 1024} MB`)
-     
-      //   setPicture(compressedFile); 
-
-      // } catch (error) {
-      //   console.log(error);
-      // }
-
-      // const compressedImage = imageCompression(e.target.files[0], options);
-      // var file = new File([compressedImage], "file");
-      // setPicture(file);
+  async function handleUpload(e) {
+    setPictureURL(URL.createObjectURL(e.target.files[0]));
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true
     }
-    image.append("image", picture);
-    console.log("The picture in image formdata", image.get("image"));
+    const imageFile = e.target.files[0];
+    setPicture(imageFile);
+    // console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
 
-  
+    // try {
+    //   const compressedFile = await imageCompression(imageFile, options);
+    //   console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+    //   console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+    console.log(`original file size ${imageFile.size / 1024 / 1024} MB`)
+
+    //   setPicture(compressedFile); 
+
+    // } catch (error) {
+    //   console.log(error);
+    // }
+
+    // const compressedImage = imageCompression(e.target.files[0], options);
+    // var file = new File([compressedImage], "file");
+    // setPicture(file);
+  }
+  image.append("image", picture);
+  console.log("The picture in image formdata", image.get("image"));
 
   //project title and description data
   const [data, setData] = useState(0);
@@ -178,9 +174,9 @@ export default function CreateListing() {
 
     //verify that the fields are not empty
     if (
-      pictureURL==="/src/assets/image_placeholder.png" | 
-      location.length===0 | tag.length===0 
-        | commitment.length===0 | data.get('title').length===0 | data.get('description').length===0) {
+      pictureURL === "/src/assets/image_placeholder.png" |
+      location.length === 0 | tag.length === 0
+      | commitment.length === 0 | data.get('title').length === 0 | data.get('description').length === 0) {
       console.log("some fields are empty!");
       handleBlankOpen();
     } else {
@@ -204,7 +200,7 @@ export default function CreateListing() {
     });
 
     //axios post call for listing details
-      axios.post("http://localhost:8080/listingpage/newlisting?userId=" + userid + "&tagName=" + tag,
+    axios.post("http://localhost:8080/listingpage/newlisting?userId=" + userid + "&tagName=" + tag,
       {
         "name": data.get('title'),
         "des": data.get('description'),
@@ -212,13 +208,13 @@ export default function CreateListing() {
         "location": location
       },
       {
-        auth: 
+        auth:
         {
           "username": username,
           "password": password
         }
       }
-      )
+    )
       .then((response) => {
         console.log("axios post details success");
         console.log(response);
@@ -230,12 +226,12 @@ export default function CreateListing() {
         console.log(image);
         console.log(image.get("image"));
 
-        axios.post('http://127.0.0.1:8080/listingpage/newlisting/imageupload?id=' + listingid, 
-          image, 
+        axios.post('http://127.0.0.1:8080/listingpage/newlisting/imageupload?id=' + listingid,
+          image,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
-              'Authorization': 'Basic YWRtaW5AbGVuZGFoYW5kLmNvbTpwYXNzd29yZA==', 
+              'Authorization': 'Basic YWRtaW5AbGVuZGFoYW5kLmNvbTpwYXNzd29yZA==',
               'Access-Control-Allow-Origin': 'http://127.0.0.1:8080',
             }
           }
@@ -245,25 +241,26 @@ export default function CreateListing() {
           console.log(response);
           setOpen(false);
           navigate("/listingpage/mylistings");
-          
+
         }
-        ).catch(function(error) {
+        ).catch(function (error) {
           if (error.response.status == 500) {
-            
+
             //if the image posting is not successful, delete the listing details that have been posted before the listing image
-            axios.delete("http://localhost:8080/listingpage/removal/" + listingid, 
-            {auth: 
+            axios.delete("http://localhost:8080/listingpage/removal/" + listingid,
               {
-                "username": "admin@lendahand.com",
-                "password": "password"
+                auth:
+                {
+                  "username": "admin@lendahand.com",
+                  "password": "password"
+                }
               }
-            }
             ).then((res) => {
               console.log("successful deletion!");
               console.log(res);
               handleClose();
               navigate("/listingpage/mylistings");
-        
+
             }, (error) => {
               console.log("unsuccessful deletion");
               console.log(error);
@@ -275,12 +272,10 @@ export default function CreateListing() {
           }
         })
 
-
       }, (error) => {
         console.log("axios post details fail");
         console.log(error);
       });
-
 
   };
 
@@ -310,9 +305,9 @@ export default function CreateListing() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '100vh', width: '100vw'}}>
+      <Grid container component="main" sx={{ height: '100vh', width: '100vw' }}>
         <CssBaseline />
-        
+
         <Grid
           item
           xs={false}
@@ -329,12 +324,12 @@ export default function CreateListing() {
             style={{
               width: "100%"
             }}
-            variant="contained" 
+            variant="contained"
             component="label"
 
           >
-            <input hidden accept="image/*" multiple type="file" onChange={handleUpload}/>
-            <ImageSrc style={{ backgroundImage: `url(${pictureURL})` }}/>
+            <input hidden accept="image/*" multiple type="file" onChange={handleUpload} />
+            <ImageSrc style={{ backgroundImage: `url(${pictureURL})` }} />
             <ImageBackdrop className="MuiImageBackdrop-root" />
             <Image>
               <Typography
@@ -349,20 +344,20 @@ export default function CreateListing() {
                 }}
               >
                 Add an image of your project!
-                
+
                 <ImageMarked className="MuiImageMarked-root" />
               </Typography>
             </Image>
           </ImageButton>
         </Grid>
-    
-        <Grid 
-          item 
-          xs={12} 
-          sm={8} 
-          md={5} 
-          component={Paper} 
-          elevation={6} 
+
+        <Grid
+          item
+          xs={12}
+          sm={8}
+          md={5}
+          component={Paper}
+          elevation={6}
           square>
           <Box
             sx={{
@@ -381,11 +376,11 @@ export default function CreateListing() {
               Create New Listing
             </Typography>
 
-            <Box 
-              component="form" 
-              noValidate 
-              onSubmit={handleOpen} 
-              sx={{ mt: 1}} >
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleOpen}
+              sx={{ mt: 1 }} >
               {/* Project title field */}
               <TextField
                 autoFocus
@@ -410,80 +405,80 @@ export default function CreateListing() {
                 id="description"
                 autoComplete="description"
                 multiline={true}
-                inputProps={{maxLength: 200}}
+                inputProps={{ maxLength: 200 }}
                 maxRows={5}
                 helperText="Describe the project, and the kind of volunteers you are seeking. (Max 200 characters)"
               />
 
-              <Grid container justifyContent="center" spacing={3} sx={{mt: 0, mb:1}}>
-                
+              <Grid container justifyContent="center" spacing={3} sx={{ mt: 0, mb: 1 }}>
+
                 {/* location select */}
                 <Grid item>
-                      <Box sx={{ minWidth: 120 }}>
-                        <FormControl fullWidth>
-                          <InputLabel id="demo-simple-select-label">Location</InputLabel>
-                          <Select
-                            labelId="location"
-                            id="location"
-                            value={location}
-                            label="location"
-                            onChange={handleLocation}
-                          >
-                            <MenuItem value={"north"}>North</MenuItem>
-                            <MenuItem value={"south"}>South</MenuItem>
-                            <MenuItem value={"east"}>East</MenuItem>
-                            <MenuItem value={"west"}>West</MenuItem> 
-                          </Select>
-                        </FormControl>
-                      </Box>
+                  <Box sx={{ minWidth: 120 }}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Location</InputLabel>
+                      <Select
+                        labelId="location"
+                        id="location"
+                        value={location}
+                        label="location"
+                        onChange={handleLocation}
+                      >
+                        <MenuItem value={"north"}>North</MenuItem>
+                        <MenuItem value={"south"}>South</MenuItem>
+                        <MenuItem value={"east"}>East</MenuItem>
+                        <MenuItem value={"west"}>West</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
                 </Grid>
 
                 {/* tag select */}
                 <Grid item>
-                      <Box sx={{ minWidth: 120 }}>
-                        <FormControl fullWidth>
-                          <InputLabel>Tag</InputLabel>
-                          <Select
-                            labelId="tag"
-                            id="tag"
-                            value={tag}
-                            label="tag"
-                            onChange={handleTag}
-                          >
-                            <MenuItem value={"Coastal"}>Coastal</MenuItem>
-                            <MenuItem value={"Marine"}>Marine</MenuItem>
-                            <MenuItem value={"Jungle"}>Jungle</MenuItem>
-                            <MenuItem value={"Clean Energy"}>Clean Energy</MenuItem> 
-                            <MenuItem value={"Agriculture"}>Agriculture</MenuItem>
-                            <MenuItem value={"Recycling and Waste"}>Recycling and Waste</MenuItem>
-                            <MenuItem value={"Others"}>Others</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Box>
+                  <Box sx={{ minWidth: 120 }}>
+                    <FormControl fullWidth>
+                      <InputLabel>Tag</InputLabel>
+                      <Select
+                        labelId="tag"
+                        id="tag"
+                        value={tag}
+                        label="tag"
+                        onChange={handleTag}
+                      >
+                        <MenuItem value={"Coastal"}>Coastal</MenuItem>
+                        <MenuItem value={"Marine"}>Marine</MenuItem>
+                        <MenuItem value={"Jungle"}>Jungle</MenuItem>
+                        <MenuItem value={"Clean Energy"}>Clean Energy</MenuItem>
+                        <MenuItem value={"Agriculture"}>Agriculture</MenuItem>
+                        <MenuItem value={"Recycling and Waste"}>Recycling and Waste</MenuItem>
+                        <MenuItem value={"Others"}>Others</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
                 </Grid>
 
                 {/* commitment select */}
                 <Grid item>
-                      <Box sx={{ minWidth: 120 }}>
-                        <FormControl fullWidth>
-                          <InputLabel>Time</InputLabel>
-                          <Select
-                            labelId="commitment"
-                            id="commitment"
-                            value={commitment}
-                            label="commitment"
-                            onChange={handleCommitment}
-                          >
-                            <MenuItem value={"ad-hoc"}>Ad-Hoc</MenuItem>
-                            <MenuItem value={"1 week"}>1 week</MenuItem>
-                            <MenuItem value={"1 month"}>1 month</MenuItem>
-                            <MenuItem value={"3 months"}>3 months</MenuItem> 
-                            <MenuItem value={"6 months"}>6 months</MenuItem>
-                            <MenuItem value={"1 year"}>1 year</MenuItem>
-                            <MenuItem value={"long-term"}>Long-Term</MenuItem> 
-                          </Select>
-                        </FormControl>
-                      </Box>
+                  <Box sx={{ minWidth: 120 }}>
+                    <FormControl fullWidth>
+                      <InputLabel>Time</InputLabel>
+                      <Select
+                        labelId="commitment"
+                        id="commitment"
+                        value={commitment}
+                        label="commitment"
+                        onChange={handleCommitment}
+                      >
+                        <MenuItem value={"ad-hoc"}>Ad-Hoc</MenuItem>
+                        <MenuItem value={"1 week"}>1 week</MenuItem>
+                        <MenuItem value={"1 month"}>1 month</MenuItem>
+                        <MenuItem value={"3 months"}>3 months</MenuItem>
+                        <MenuItem value={"6 months"}>6 months</MenuItem>
+                        <MenuItem value={"1 year"}>1 year</MenuItem>
+                        <MenuItem value={"long-term"}>Long-Term</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
                 </Grid>
               </Grid>
 

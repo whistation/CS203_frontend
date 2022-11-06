@@ -1,13 +1,7 @@
 import * as React from "react";
-import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
-import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { sizing } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
@@ -22,12 +16,6 @@ import Select from "@mui/material/Select";
 
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
-import Listing2 from "../components/CreatedListing.jsx";
-import Filter from "../components/Filter.jsx";
-import TagFilter from "../components/TagFilter.jsx";
-import LocationFilter from "../components/LocationFilter.jsx";
-import CommitmentFilter from "../components/CommitmentFilter.jsx";
-import SearchBar from "../components/SearchBar.jsx";
 
 const theme = createTheme();
 
@@ -86,24 +74,24 @@ export default function ListingPage() {
     console.log({ filters });
     console.log("searching now");
     const getAllListings = async () => {
-      const res = await axios.get("http://localhost:8080/listingpage", 
-      {
-        filters: {
-        username: "all",
-        tag: "Clean Energy",
-        location: "all",
-        commitment: "all"
-        }
-      },
-      {
-        params: {
-          inName: `${search}`,
+      const res = await axios.get("http://localhost:8080/listingpage",
+        {
+          filters: {
+            username: "all",
+            tag: "Clean Energy",
+            location: "all",
+            commitment: "all"
+          }
         },
-        auth: {
-          username: username,
-          password: password,
-        },
-      });
+        {
+          params: {
+            inName: `${search}`,
+          },
+          auth: {
+            username: username,
+            password: password,
+          },
+        });
       //console.log(res);
       setListings(res.data);
     };
@@ -158,7 +146,7 @@ export default function ListingPage() {
               onClick={() => {
                 handleSearching();
               }}
-              //onClick={()=>{console.log("hello");}}
+            //onClick={()=>{console.log("hello");}}
             >
               <SearchIcon style={{ fill: "blue" }} />
             </IconButton>
@@ -277,80 +265,3 @@ export default function ListingPage() {
     </ThemeProvider>
   );
 }
-
-// const SearchBar = () => (
-//   <form>
-//     <TextField
-//       id="search-bar"
-//       className="text"
-//       label="Search"
-//       variant="outlined"
-//       placeholder="Project Title..."
-//       size="small"
-//       sx={{
-//         width: 975,
-//       }}
-//     />
-//     <IconButton type="submit" aria-label="search">
-//       <SearchIcon style={{ fill: "blue" }} />
-//     </IconButton>
-//   </form>
-// );
-
-// function ElevationScroll(props) {
-//   const { children, window } = props;
-//   // Note that you normally won't need to set the window ref as useScrollTrigger
-//   // will default to window.
-//   // This is only being set here because the demo is in an iframe.
-//   const trigger = useScrollTrigger({
-//     disableHysteresis: true,
-//     threshold: 0,
-//     target: window ? window() : undefined,
-//   });
-
-//   return React.cloneElement(children, {
-//     elevation: trigger ? 4 : 0,
-//   });
-// }
-
-// ElevationScroll.propTypes = {
-//   children: PropTypes.element.isRequired,
-//   /**
-//    * Injected by the documentation to work in an iframe.
-//    * You won't need it on your project.
-//    */
-//   window: PropTypes.func,
-// };
-
-// export default function ListingPage(props) {
-//   return (
-//     <React.Fragment>
-//       <CssBaseline />
-//       <ElevationScroll {...props}>
-//         <AppBar sx={{ background: "white" }}>
-//           <Toolbar>
-//             <Typography variant="h6" component="div" sx={{ color: "black" }}>
-//               Scroll to elevate App bar
-//             </Typography>
-//           </Toolbar>
-//         </AppBar>
-//       </ElevationScroll>
-//       <Toolbar />
-//       <Toolbar sx={{ background: "black" }}>
-//         {/* <SearchBar /> */}
-//       </Toolbar>
-//       <Container>
-//         <Box sx={{ my: 2 }}>
-//           {[...new Array(30)]
-//             .map(
-//               () => `Cras mattis consectetur purus sit amet fermentum.
-// Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-// Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-// Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
-//             )
-//             .join("\n")}
-//         </Box>
-//       </Container>
-//     </React.Fragment>
-//   );
-// }
