@@ -72,28 +72,10 @@ export default function ListingPage() {
   const [filters, setFilters] = useState({});
 
   const handleFilters = (location, tag, commitment) => {
-    var locationFilter = null;
-    if (location === "All") {
-      locationFilter = null;
-    } else {
-      locationFilter = location;
-    }
-    var tagFilter = null;
-    if (tag === "All") {
-      tagFilter = null;
-    } else {
-      tagFilter = tag;
-    }
-    var commitmentFilter = null;
-    if (commitment === "All") {
-      commitmentFilter = null;
-    } else {
-      commitmentFilter = commitment;
-    }
     const finalFilter = {
-      location: locationFilter,
-      tag: tagFilter,
-      commitment: commitmentFilter,
+      location: location.location,
+      tag: tag.tag,
+      commitment: commitment.commitment,
     };
     setFilters(finalFilter);
   };
@@ -112,9 +94,10 @@ export default function ListingPage() {
           password: password,
         },
         data: {
-          location: null,
+          username: "all",
           tag: "Jungle",
-          commitment: null,
+          location: "all",
+          commitment: "all",
         },
       });
       //console.log(res);
