@@ -10,6 +10,7 @@ export default function LocationFilter() {
 
   const handleChange = (event) => {
     setLocation(event.target.value);
+    console.log(location);
   };
 
   return (
@@ -24,11 +25,12 @@ export default function LocationFilter() {
           onChange={handleChange}
           size="sm"
         >
-          <MenuItem value={10}>North</MenuItem>
-          <MenuItem value={20}>South</MenuItem>
-          <MenuItem value={30}>East</MenuItem>
-          <MenuItem value={40}>West</MenuItem>
-          <MenuItem value={50}>Central</MenuItem>
+          <MenuItem value={"North"}>North</MenuItem>
+          <MenuItem value={"South"}>South</MenuItem>
+          <MenuItem value={"East"}>East</MenuItem>
+          <MenuItem value={"West"}>West</MenuItem>
+          <MenuItem value={"Central"}>Central</MenuItem>
+          <MenuItem value={"All"}>All</MenuItem>
         </Select>
       </FormControl>
     </Box>

@@ -15,6 +15,10 @@ import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
@@ -29,35 +33,74 @@ const theme = createTheme();
 
 export default function ListingPage() {
   console.log("I am in the listing page");
-  // console.log(localStorage.getItem("username"));
-  // console.log(localStorage.getItem("userid"));
-  // console.log(localStorage.getItem("password"));
 
-//user authentication details
-const username = localStorage.getItem("username");
-const password = localStorage.getItem("password");
+  //user authentication details
+  const username = localStorage.getItem("username");
+  const password = localStorage.getItem("password");
 
-const listingDefault = [
-  {
+  const listingDefault = [
+    {
       id: 1,
       name: "Nothing Here Right Now!",
       des: "Please click the Search Button for Results",
-      noOfParticipants: 5,
-  }
-];
+    },
+  ];
   //set default before search to prompt for search
   const [listings, setListings] = useState(listingDefault);
 
   //set default search to space character
   const [search, setSearch] = useState(" ");
-  const filters = [
-    {
-    tag: "jungle",
-  }
-]
 
+  const [commitment, setCommitment] = useState(null);
+
+  const handleCommitmentFilter = (event) => {
+    setCommitment(event.target.value);
+  };
+
+  const [tag, setTag] = useState(null);
+
+  const handleTagFilter = (event) => {
+    setTag(event.target.value);
+  };
+
+  const [location, setLocation] = useState(null);
+
+  const handleLocationFilter = (event) => {
+    setLocation(event.target.value);
+  };
+
+  const [filters, setFilters] = useState({});
+
+  const handleFilters = (location, tag, commitment) => {
+    var locationFilter = null;
+    if (location === "All") {
+      locationFilter = null;
+    } else {
+      locationFilter = location;
+    }
+    var tagFilter = null;
+    if (tag === "All") {
+      tagFilter = null;
+    } else {
+      tagFilter = tag;
+    }
+    var commitmentFilter = null;
+    if (commitment === "All") {
+      commitmentFilter = null;
+    } else {
+      commitmentFilter = commitment;
+    }
+    const finalFilter = {
+      location: locationFilter,
+      tag: tagFilter,
+      commitment: commitmentFilter,
+    };
+    setFilters(finalFilter);
+  };
 
   const handleSearching = () => {
+    handleFilters({ location }, { tag }, { commitment });
+    console.log({ filters });
     console.log("searching now");
     const getAllListings = async () => {
       const res = await axios.get("http://localhost:8080/listingpage", {
@@ -65,19 +108,19 @@ const listingDefault = [
           inName: `${search}`,
         },
         auth: {
-          "username": username,
-          "password": password,
+          username: username,
+          password: password,
         },
         data: {
-          filters: filters,
+          location: null,
+          tag: "Jungle",
+          commitment: null,
         },
-      },
-      );
+      });
       //console.log(res);
       setListings(res.data);
     };
     getAllListings();
-
   };
 
   return (
@@ -122,11 +165,13 @@ const listingDefault = [
               }}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <IconButton 
-            //type="submit" 
-            aria-label="search" 
-            onClick={()=>{handleSearching()}}
-            //onClick={()=>{console.log("hello");}}
+            <IconButton
+              //type="submit"
+              aria-label="search"
+              onClick={() => {
+                handleSearching();
+              }}
+              //onClick={()=>{console.log("hello");}}
             >
               <SearchIcon style={{ fill: "blue" }} />
             </IconButton>
@@ -143,9 +188,70 @@ const listingDefault = [
             p: 2,
           }}
         >
-          <LocationFilter />
-          <CommitmentFilter />
-          <TagFilter />
+          <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Location</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={location}
+                label="location"
+                onChange={handleLocationFilter}
+                size="sm"
+              >
+                <MenuItem value={"North"}>North</MenuItem>
+                <MenuItem value={"South"}>South</MenuItem>
+                <MenuItem value={"East"}>East</MenuItem>
+                <MenuItem value={"West"}>West</MenuItem>
+                <MenuItem value={"Central"}>Central</MenuItem>
+                <MenuItem value={"All"}>All</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Commitment</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={commitment}
+                label="commitment"
+                onChange={handleCommitmentFilter}
+                size="sm"
+              >
+                <MenuItem value={"All"}>All</MenuItem>
+                <MenuItem value={"Ad Hoc"}>Ad Hoc</MenuItem>
+                <MenuItem value={"1 Week"}>1 Week</MenuItem>
+                <MenuItem value={"1 Month"}>1 Month</MenuItem>
+                <MenuItem value={"3 Months"}>3 Months</MenuItem>
+                <MenuItem value={"6 Months"}>6 Months</MenuItem>
+                <MenuItem value={"1 Year"}>1 Year</MenuItem>
+                <MenuItem value={"Long-Term"}>Long-Term</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
+            <FormControl fullWidth>
+              <InputLabel>Tag</InputLabel>
+              <Select
+                labelId="tag"
+                id="tag"
+                value={tag}
+                label="tag"
+                onChange={handleTagFilter}
+              >
+                <MenuItem value={"Coastal"}>Coastal</MenuItem>
+                <MenuItem value={"Marine"}>Marine</MenuItem>
+                <MenuItem value={"Jungle"}>Jungle</MenuItem>
+                <MenuItem value={"Clean Energy"}>Clean Energy</MenuItem>
+                <MenuItem value={"Agriculture"}>Agriculture</MenuItem>
+                <MenuItem value={"Recycling and Waste"}>
+                  Recycling and Waste
+                </MenuItem>
+                <MenuItem value={"Others"}>Others</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
         </Box>
         <Container
           disableGutters

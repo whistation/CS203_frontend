@@ -161,9 +161,6 @@ const NavigationBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem>
-                  <Typography textAlign="center">Profile</Typography>
-              </MenuItem>
               <MenuItem onClick={() => navigate("/listingpage/settings")}>
                   <Typography textAlign="center">Settings</Typography>
               </MenuItem>
