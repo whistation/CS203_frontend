@@ -16,24 +16,22 @@ import { useState, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-
+import placeholder from '../assets/image_placeholder.png';
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
 import Listing2 from "../components/Listing2.jsx";
-import { ConstructionOutlined } from "@mui/icons-material";
 
 const theme = createTheme();
 
 export default function MyListings() {
   const [listings, setListings] = useState([{}]);
-  const username = localStorage.getItem("username");
-  var [imageData, setImageData] = useState([]);
-  var [contentType, setContentType] = useState("");
+  const [listingdata, setListingdata] = useState([]);
+  const listingdatatemp = [];
 
+
+  //getting the listing data
   useEffect(() => {
-    console.log("call listing");
-    const getAllListings = async () => {
-      const res = await axios.get(
+      axios.get(
         "http://localhost:8080/listingpage",
         {
           auth: {
@@ -41,61 +39,59 @@ export default function MyListings() {
             password: "password",
           },
         },
-        {
-          data: {
-            username: "username",
-          },
-        }
-      );
-      console.log("res.data", res.data);
-      setListings(res.data);
+      ).then((response) => {
+        console.log("get listings success");
+        setListings(response.data);
 
-      console.log("hello");
-      console.log(res.data);
-      setListings(res.data);
-      console.log("listings");
-      console.log(listings);
-      //console.log(listings[0]);
-      //console.log("this is photo");
-      //console.log(listings[0].photo);
-      // console.log("this is picbyte");
-      //console.log(listings[0].photo.picByte);
-      // console.log(handleImage(listings[0].photo.picByte, listings[0].photo.type));
-      console.log("this is shuyi");
-    };
-    console.log("call listing");
-    getAllListings();
+        //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
+        const listingstemp = response.data;
+        console.log(listingstemp);
 
-    // console.log(handleImage(listings[0].photo.picByte, listings[0].photo.type));
-    console.log("listings");
-    console.log(listings);
 
-    const getImage = async () => {
-      const res = await axios.get("http://localhost:8080/listingpage/1/image", 
-      {
-        responseType: "arraybuffer",
-      },
-      {
-        auth: {
-          username: "admin@lendahand.com",
-          password: "password",
-        },
+        //making the listingdata array
+        listingstemp.map((info, index) => {
+          var imageurl = "";
+          
+          //api call for the image
+          const getImage = async() => {
+            try{
+              const res = await axios.get("http://localhost:8080/listingpage/" + info.id + "/image",
+                {
+                  responseType: "arraybuffer"
+                },
+                {
+                  auth: {
+                    username: "admin@lendahand.com",
+                    password: "password",
+                  },
+                })
+
+              const imagedata = res.data;
+              const contenttype = res.headers.get("content-type");
+              var blob = new Blob([imagedata], { type: contenttype });
+              imageurl = (URL || webkitURL).createObjectURL(blob);
+              listingdatatemp[index] = {"name" : info.name, "des": info.des, "id": info.id, "imageurl": imageurl};
+
+            } catch (error) {
+              // console.log("get image failed for listingid:" + info.id);
+              // console.log(error);
+              imageurl = placeholder;
+              listingdatatemp[index] = {"name" : info.name, "des": info.des, "id": info.id, "imageurl": imageurl};
+
+            }
+            
+          }
+          getImage();
+          setListingdata(listingdatatemp);
+        })
+        // console.log("FINAL RESULT");
+        // console.log("listingdatatemp", listingdatatemp);
+  
+      }, (error) => {
+        console.log("get listings failed", error);
       });
-      const imagedata = res.data;
-      setImageData(imagedata);
-      console.log("logging image in mylistings");
-      console.log(imagedata);
-      console.log(imageData);
-      const contenttype = res.headers.get("content-type");
-      setContentType(contenttype);
-      console.log(contenttype);
-      //console.log(res.data);
-    };
-    getImage();
-    //console.log(handleImage(listings[0].photo.picByte, listings[0].photo.type));
 
-    // console.log(listings[0].photo.picByte);
-    // console.log(listings[0].photo.type);
+
   }, []);
 
   const navigate = useNavigate();
@@ -160,18 +156,18 @@ export default function MyListings() {
               background: "white",
             }}
           >
-            {console.log(imageData)}
-            {listings.map((listings) => (
-              <Grid item key={listings.id} xs={12} sm={6} md={4}>
+            {console.log("listingdata", listingdata)}
+            {listingdata.map((data, index) => (
+              console.log('getting this listing', data.name, index),
+              <Grid item key={data.id} xs={12} sm={6} md={4}>
                 <Listing2
-                  name={listings.name}
-                  description={listings.des}
-                  id={listings.id}
+                  name={data.name}
+                  description={data.des}
+                  id={data.id}
                   buttonName={"view"}
-                  image={{imageData}}
-                  contentType={{contentType}}
+                  imageUrl={data.imageurl}
                 />
-              </Grid> 
+              </Grid>
             ))}
           </Grid>
         </Container>

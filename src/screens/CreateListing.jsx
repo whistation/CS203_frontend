@@ -410,9 +410,9 @@ export default function CreateListing() {
                 id="description"
                 autoComplete="description"
                 multiline={true}
-                inputProps={{maxLength: 750}}
+                inputProps={{maxLength: 200}}
                 maxRows={5}
-                helperText="Describe the project, and the kind of volunteers you are seeking. (Max 750 characters)"
+                helperText="Describe the project, and the kind of volunteers you are seeking. (Max 200 characters)"
               />
 
               <Grid container justifyContent="center" spacing={3} sx={{mt: 0, mb:1}}>

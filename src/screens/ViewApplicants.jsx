@@ -108,26 +108,14 @@ export default function ViewApplicants() {
         (res) => {
           console.log("successfully got the image");
           console.log(res);
-          // console.log(res.headers.get("content-type"));
 
           const imagedata = res.data;
           const contenttype = res.headers.get("content-type");
-
-          // console.log(imagedata);
-          // console.log(contenttype);
-
           var blob = new Blob([imagedata], { type: contenttype });
-          console.log(imagedata);
-
           var url = (URL || webkitURL).createObjectURL(blob);
-          const substringurl = url.substring(5);
-
-          console.log("logging the url before substring");
-          console.log(url);
-
+          
           setImageurl(url);
-          console.log("logging the url after substring");
-          console.log(substringurl);
+
         },
         (error) => {
           console.log("image get failed");
