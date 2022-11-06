@@ -40,39 +40,6 @@ export default function ProjectPage() {
   const userId = localStorage.getItem("userid");
   console.log(userId);
 
-  //get the listingid 
-  const listingId = 2;
-
-  //get the applicationid
-  var [appId, setAppId] = useState([]);
-  var [nullCheck, setNullCheck] =  useState([]);
-  useEffect(() => {
-    const getAppId = async () => {
-      const aid = await axios.get(
-        "http://localhost:8080/user/applications?userId=" + userId +
-        "&listingId=" + listingId,
-        {
-          auth:
-          {
-            username: localStorage.getItem("username"),
-            password: localStorage.getItem("password")
-          }
-        },
-        {
-          headers: {
-            'Access-Control-Allow-Origin': 'http://localhost:8080',
-            'Content-Type': 'application/json',
-          }
-        }
-      );
-      console.log("appid", aid.data);
-      setNullCheck(aid.data);
-      setAppId((aid.data)[0].id);
-      console.log("please work",appId);
-    }
-    getAppId();
-  }, []);
-
   //storing the listing and listing details
   const [listing, setListing] = useState([]);
   const [tag, setTag] = useState("");
@@ -141,6 +108,36 @@ export default function ProjectPage() {
     })
 
   }, []);
+
+    //get the applicationid
+    var [appId, setAppId] = useState([]);
+    var [nullCheck, setNullCheck] =  useState([]);
+    useEffect(() => {
+      const getAppId = async () => {
+        const aid = await axios.get(
+          "http://localhost:8080/user/applications?userId=" + userId +
+          "&listingId=" + listingId,
+          {
+            auth:
+            {
+              username: localStorage.getItem("username"),
+              password: localStorage.getItem("password")
+            }
+          },
+          {
+            headers: {
+              'Access-Control-Allow-Origin': 'http://localhost:8080',
+              'Content-Type': 'application/json',
+            }
+          }
+        );
+        console.log("appid", aid.data);
+        setNullCheck(aid.data);
+        setAppId((aid.data)[0].id);
+        console.log("please work",appId);
+      }
+      getAppId();
+    }, []);
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);

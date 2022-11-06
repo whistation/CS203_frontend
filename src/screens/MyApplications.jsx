@@ -17,6 +17,7 @@ const theme = createTheme();
 export default function MyApplications() {
   const [listings, setListings] = useState([{}]);
 
+  // getting all applications by user
   useEffect(() => {
     const userId = localStorage.getItem("userid");
     const getAllApps = async () => {
@@ -36,6 +37,7 @@ export default function MyApplications() {
         }).then((res) => {
           console.log("get applicants success", res);
           setListings(res.data);
+          console.log("resdata", res.data);
           
         }, (error) => {
           console.log("get applicants failed", error);
@@ -89,9 +91,9 @@ export default function MyApplications() {
             >
               {listings.map((listings) => (
                 <Grid item key={listings} xs={12} sm={6} md={4}>
-                  <Listing name={listings.name} 
-                  description={listings.des} 
-                  id={listings.id} 
+                  <Listing name={listings.listingName} 
+                  description={listings.listingDes} 
+                  id={listings.listingId} 
                   buttonName={"view"}
                   />
                 </Grid>
