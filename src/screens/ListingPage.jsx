@@ -87,18 +87,18 @@ export default function ListingPage() {
     console.log("searching now");
     const getAllListings = async () => {
       const res = await axios.get("http://localhost:8080/listingpage", {
+        data: {
+          username: "all",
+          tag: "Jungle",
+          location: "all",
+          commitment: "all",
+        },
         params: {
           inName: `${search}`,
         },
         auth: {
           username: username,
           password: password,
-        },
-        data: {
-          username: "all",
-          tag: "Jungle",
-          location: "all",
-          commitment: "all",
         },
       });
       //console.log(res);
