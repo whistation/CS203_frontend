@@ -64,7 +64,7 @@ export default function ProjectPage() {
       ).then((response) => {
         setListing(response.data);
         setTag(response.data.tag.value);
-        setName(""+ response.data.lister.firstname + " " + response.data.lister.lastname);
+        setName("" + response.data.lister.firstname + " " + response.data.lister.lastname);
         console.log("get listing details success", response);
 
       }, (error) => {
@@ -75,10 +75,10 @@ export default function ProjectPage() {
 
 
     //api call to get the image 
-    axios.get("http://localhost:8080/listingpage/"+ listingId + "/image",
-    {
-      responseType: "arraybuffer"
-    }
+    axios.get("http://localhost:8080/listingpage/" + listingId + "/image",
+      {
+        responseType: "arraybuffer"
+      }
     ).then((res) => {
       console.log("successfully got the image");
       console.log(res);
@@ -98,7 +98,7 @@ export default function ProjectPage() {
 
       console.log("logging the url before substring");
       console.log(url);
-      
+
       setImageurl(url);
       console.log("logging the url after substring");
       console.log(substringurl);
@@ -110,35 +110,34 @@ export default function ProjectPage() {
 
   }, []);
 
-    //get the applicationid
-    var [appId, setAppId] = useState([]);
-    var [nullCheck, setNullCheck] =  useState([]);
-    useEffect(() => {
-      const getAppId = async () => {
-        const aid = await axios.get(
-          "http://localhost:8080/user/applications?userId=" + userId +
-          "&listingId=" + listingId,
+  //get the applicationid
+  var [appId, setAppId] = useState([]);
+  var [appStatus, setAppStatus] = useState([]);
+  useEffect(() => {
+    const getAppId = async () => {
+      const aid = await axios.get(
+        "http://localhost:8080/user/applications?userId=" + userId +
+        "&listingId=" + listingId,
+        {
+          auth:
           {
-            auth:
-            {
-              username: localStorage.getItem("username"),
-              password: localStorage.getItem("password")
-            }
-          },
-          {
-            headers: {
-              'Access-Control-Allow-Origin': 'http://localhost:8080',
-              'Content-Type': 'application/json',
-            }
+            username: localStorage.getItem("username"),
+            password: localStorage.getItem("password")
           }
-        );
-        console.log("appid", aid.data);
-        setNullCheck(aid.data);
-        setAppId((aid.data)[0].id);
-        console.log("please work",appId);
-      }
-      getAppId();
-    }, []);
+        },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:8080',
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+      console.log("appid", aid.data);
+      setAppStatus(aid.data);
+      setAppId((aid.data)[0].id);
+    }
+    getAppId();
+  }, []);
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -146,9 +145,9 @@ export default function ProjectPage() {
 
   const handleSubmit = () => {
     axios.post(
-      "http://localhost:8080/listingpage/"+listingId+"/newapplication?userId=" + userId,
+      "http://localhost:8080/listingpage/" + listingId + "/newapplication?userId=" + userId,
       {
-        "message":"string"
+        "message": "string"
       },
       {
         auth: {
@@ -171,25 +170,21 @@ export default function ProjectPage() {
 
   const handleWithdraw = () => {
     axios.delete("http://localhost:8080/listingpage/application/removal/" + appId,
-    {auth: 
       {
-        "username": "admin@lendahand.com",
-        "password": "password"
+        auth:
+        {
+          "username": "admin@lendahand.com",
+          "password": "password"
+        }
       }
-    }
     ).then((res) => {
       console.log("application deleted", res);
       setState(false);
       setOpen(true);
-
     }, (err) => {
       console.log("failed to delete application", err)
     })
   }
-  
-  // apply/withdraw button render condition
-  const hold = false;
-  const hold2 = true;
 
   return (
     <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
@@ -230,110 +225,106 @@ export default function ProjectPage() {
             Apply for a project
           </Typography>
 
-          <Box 
-              noValidate 
-              sx={{ mt: 2}} 
-              // backgroundColor="red"
+          <Box
+            noValidate
+            sx={{ mt: 2 }}
           >
             {/* project owner's name */}
-            <Typography sx={{color:"#212121",ml:0.5, mt:1}} align="left" variant="h6"  component="div">
+            <Typography sx={{ color: "#212121", ml: 0.5, mt: 1 }} align="left" variant="h6" component="div">
               Project Owner
             </Typography>
-            <Box 
+            <Box
               width="535px"
-              sx={{py:1, px:1, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll"}}>
-                <Typography sx={{color:"#838383"}} align="left" variant="subtitle1" component="div">
-                  {name}
-                </Typography>
+              sx={{ py: 1, px: 1, border: "1px solid grey", borderRadius: 1.5, overflow: "hidden", overflowX: "scroll" }}>
+              <Typography sx={{ color: "#838383" }} align="left" variant="subtitle1" component="div">
+                {name}
+              </Typography>
             </Box>
 
             {/* project title field */}
-            <Typography sx={{color:"#212121",ml:0.5, mt:2}} align="left" variant="h6"  component="div">
+            <Typography sx={{ color: "#212121", ml: 0.5, mt: 2 }} align="left" variant="h6" component="div">
               Project Title
             </Typography>
-            <Box 
+            <Box
               width="535px"
-              sx={{py:1, px:1, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll"}}>
-                <Typography sx={{color:"#838383"}} align="left" variant="subtitle1" component="div">
-                  {listing.name}
-                </Typography>
+              sx={{ py: 1, px: 1, border: "1px solid grey", borderRadius: 1.5, overflow: "hidden", overflowX: "scroll" }}>
+              <Typography sx={{ color: "#838383" }} align="left" variant="subtitle1" component="div">
+                {listing.name}
+              </Typography>
             </Box>
 
             {/* project description field */}
-            <Typography sx={{color:"#212121",ml:0.5, mt:2}} align="left" variant="h6"  component="div">
+            <Typography sx={{ color: "#212121", ml: 0.5, mt: 2 }} align="left" variant="h6" component="div">
               Project description
             </Typography>
-            <Box 
-            width="535px"
-            height="120px"
-            sx={{py:1, px:1, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll", overflowY:"scroll", display:"flex", flexDirection:"column"}}>
-              <Typography  sx={{color:"#838383"}} align="left" variant="subtitle1" component="div">
+            <Box
+              width="535px"
+              height="120px"
+              sx={{ py: 1, px: 1, border: "1px solid grey", borderRadius: 1.5, overflow: "hidden", overflowX: "scroll", overflowY: "scroll", display: "flex", flexDirection: "column" }}>
+              <Typography sx={{ color: "#838383" }} align="left" variant="subtitle1" component="div">
                 {listing.des}
               </Typography>
             </Box>
 
 
-             {/* location, tags, committment */}
-            <Box container justifyContent="center" spacing={3} sx={{mb:1, mt:3}}>
-            
-            <Grid container justifyContent="center" spacing={3} sx={{mt: 0, mb:1,}}>
-              
-              {/* location */}
-              <Box item>
-                <Typography sx={{color:"#212121", fontSize:"17px"}} variant="h6" >
-                  Location:
-                </Typography>
-                <Box item width="120px" sx={{py:1, px:1, mx:3, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll"}}>
-                  <Typography sx={{color:"#838383"}} align="center" variant="subtitle1" component="div">
-                    {listing.location}
-                  </Typography>
-                </Box>
-              </Box>
+            {/* location, tags, committment */}
+            <Box container justifyContent="center" spacing={3} sx={{ mb: 1, mt: 3 }}>
+              <Grid container justifyContent="center" spacing={3} sx={{ mt: 0, mb: 1, }}>
 
-
-              {/* tag */}
-              <Box item>
-                <Typography sx={{color:"#212121", fontSize:"17px"}} variant="h6" >
-                  Tag:
-                </Typography>
-                <Box item width="120px" sx={{py:1, px:1, mx:2, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll"}}>
-                  <Typography sx={{color:"#838383"}} align="center" variant="subtitle1" component="div">
-                    {/* {listing.tag.value} */}
-                    {tag}
+                {/* location */}
+                <Box item>
+                  <Typography sx={{ color: "#212121", fontSize: "17px" }} variant="h6" >
+                    Location:
                   </Typography>
+                  <Box item width="120px" sx={{ py: 1, px: 1, mx: 3, border: "1px solid grey", borderRadius: 1.5, overflow: "hidden", overflowX: "scroll" }}>
+                    <Typography sx={{ color: "#838383" }} align="center" variant="subtitle1" component="div">
+                      {listing.location}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
 
-              {/* commitment */}
-              <Box item>
-                <Typography sx={{color:"#212121", fontSize:"17px"}} variant="h6" >
-                  Commitment:
-                </Typography>
-                <Box item width="120px" sx={{py:1, px:1,mx:3, border:"1px solid grey", borderRadius:1.5, overflow:"hidden", overflowX:"scroll"}}>
-                  <Typography sx={{color:"#838383"}} align="center" variant="subtitle1" component="div">
-                    {listing.commitment}
+                {/* tag */}
+                <Box item>
+                  <Typography sx={{ color: "#212121", fontSize: "17px" }} variant="h6" >
+                    Tag:
                   </Typography>
+                  <Box item width="120px" sx={{ py: 1, px: 1, mx: 2, border: "1px solid grey", borderRadius: 1.5, overflow: "hidden", overflowX: "scroll" }}>
+                    <Typography sx={{ color: "#838383" }} align="center" variant="subtitle1" component="div">
+                      {/* {listing.tag.value} */}
+                      {tag}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-              
+
+                {/* commitment */}
+                <Box item>
+                  <Typography sx={{ color: "#212121", fontSize: "17px" }} variant="h6" >
+                    Commitment:
+                  </Typography>
+                  <Box item width="120px" sx={{ py: 1, px: 1, mx: 3, border: "1px solid grey", borderRadius: 1.5, overflow: "hidden", overflowX: "scroll" }}>
+                    <Typography sx={{ color: "#838383" }} align="center" variant="subtitle1" component="div">
+                      {listing.commitment}
+                    </Typography>
+                  </Box>
+                </Box>
+
               </Grid>
             </Box>
           </Box>
 
-          {/*appId != null? */}
-           {nullCheck.length == 0 ? 
-           // apply button
-           <Button
-           type="submit"
-           fullWidth
-           variant="contained"
-           sx={{ mt: 3, mb: 2 }}
-           onClick={() => handleSubmit() }
-         >
-           Apply
-         </Button> 
-           : 
-           //withdraw button
+          {appStatus.length == 0 ?
+            // apply button
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => handleSubmit()}
+            >
+              Apply
+            </Button>
+            :
+            //withdraw button
             <Button
               type="submit"
               fullWidth
@@ -343,7 +334,7 @@ export default function ProjectPage() {
             >
               Withdraw
             </Button>
-           }
+          }
 
 
           <Modal
@@ -354,10 +345,10 @@ export default function ProjectPage() {
             aria-describedby="child-modal-description"
           >
             <Box sx={{ ...modalStyle, width: 400 }}>
-              {state ? 
-              <h2 id="child-modal-title">Successful application!</h2>
-              :
-              <h2 id="child-modal-title">Successful withdrawal!</h2>
+              {state ?
+                <h2 id="child-modal-title">Successful application!</h2>
+                :
+                <h2 id="child-modal-title">Successful withdrawal!</h2>
               }
               <Button onClick={handleClose}>Great!</Button>
             </Box>
