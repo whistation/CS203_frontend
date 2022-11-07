@@ -10,7 +10,7 @@ import { useState, useEffect, setState } from "react";
 import Box from "@mui/material/Box";
 import placeholder from "../assets/image_placeholder.png";
 
-export default function Listing2({
+export default function CreatedListing({
   name,
   description,
   id,

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 
-export default function Listing2({
+export default function AppliedListing({
   name,
   description,
   id,

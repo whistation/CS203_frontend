@@ -1,7 +1,13 @@
 import * as React from "react";
+import PropTypes from "prop-types";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import { sizing } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
@@ -30,7 +36,7 @@ export default function ListingPage() {
     {
       id: 1,
       name: "Nothing Here Right Now!",
-      des: "Please click the Search Button for Results",
+      des: "Please click the Search Button for Results (Don't press the Enter Key)",
     },
   ];
   //set default before search to prompt for search
@@ -39,60 +45,67 @@ export default function ListingPage() {
   //set default search to space character
   const [search, setSearch] = useState(" ");
 
-  const [commitment, setCommitment] = useState("All");
+  // const [commitment, setCommitment] = useState("All");
 
-  const handleCommitmentFilter = (event) => {
-    setCommitment(event.target.value);
-  };
+  // const handleCommitmentFilter = async(event) => {
+  //   const value = await event.target.value;
+  //   setCommitment(event.target.value);
+  // };
 
   const [tag, setTag] = useState("All");
 
-  const handleTagFilter = (event) => {
-    setTag(event.target.value);
+  const handleTagFilter = async(event) => {
+    const value = await event.target.value;
+    //console.log(value);
+    setTag(value);
+    //console.log(tag);
   };
 
-  const [location, setLocation] = useState("All");
+  React.useEffect(() => {
+    console.log(tag);
+    handleSearching();
+  }, [tag]);
 
-  const handleLocationFilter = (event) => {
-    setLocation(event.target.value);
-  };
+  // const [location, setLocation] = useState("All");
 
-  const [filters, setFilters] = useState({});
+  // const handleLocationFilter = async(event) => {
+  //   const value = await event.target.value;
+  //   setLocation(event.target.value);
+  // };
 
-  const handleFilters = (location, tag, commitment) => {
-    const finalFilter = {
-      location: location.location,
-      tag: tag.tag,
-      commitment: commitment.commitment,
-      username: "All"
-    };
-    setFilters(finalFilter);
-  };
+  // const [filters, setFilters] = useState({});
+
+  // const handleFilters = (location, tag, commitment) => {
+  //   const finalFilter = {
+  //     location: location.location,
+  //     tag: tag.tag,
+  //     commitment: commitment.commitment,
+  //     username: "All"
+  //   };
+  //   setFilters(finalFilter);
+  // };
 
   const handleSearching = () => {
-    handleFilters({ location }, { tag }, { commitment });
-    console.log({ filters });
+    //handleFilters({ location }, { tag }, { commitment });
+    //console.log({ filters });
+    //const filtering = {filters}.filters;
+    //console.log(filtering);
     console.log("searching now");
+    console.log(tag);
     const getAllListings = async () => {
-      const res = await axios.get("http://localhost:8080/listingpage",
-        {
-          filters: {
-            username: "all",
-            tag: "Clean Energy",
-            location: "all",
-            commitment: "all"
-          }
+      const res = await axios.get("http://localhost:8080/listingpage", 
+      {
+        params: {
+          inName: `${search}`,
+          tag: tag
         },
-        {
-          params: {
-            inName: `${search}`,
-          },
-          auth: {
-            username: username,
-            password: password,
-          },
-        });
-      //console.log(res);
+        auth: {
+          username: username,
+          password: password,
+        },
+      });
+      console.log("hello");
+      console.log(res.data);
       setListings(res.data);
     };
     getAllListings();
@@ -146,7 +159,7 @@ export default function ListingPage() {
               onClick={() => {
                 handleSearching();
               }}
-            //onClick={()=>{console.log("hello");}}
+              //onClick={()=>{console.log("hello");}}
             >
               <SearchIcon style={{ fill: "blue" }} />
             </IconButton>
@@ -163,7 +176,7 @@ export default function ListingPage() {
             p: 2,
           }}
         >
-          <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
+          {/* <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Location</InputLabel>
               <Select
@@ -204,7 +217,7 @@ export default function ListingPage() {
                 <MenuItem value={"Long-Term"}>Long-Term</MenuItem>
               </Select>
             </FormControl>
-          </Box>
+          </Box> */}
           <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
             <FormControl fullWidth>
               <InputLabel>Tag</InputLabel>
@@ -265,3 +278,80 @@ export default function ListingPage() {
     </ThemeProvider>
   );
 }
+
+// const SearchBar = () => (
+//   <form>
+//     <TextField
+//       id="search-bar"
+//       className="text"
+//       label="Search"
+//       variant="outlined"
+//       placeholder="Project Title..."
+//       size="small"
+//       sx={{
+//         width: 975,
+//       }}
+//     />
+//     <IconButton type="submit" aria-label="search">
+//       <SearchIcon style={{ fill: "blue" }} />
+//     </IconButton>
+//   </form>
+// );
+
+// function ElevationScroll(props) {
+//   const { children, window } = props;
+//   // Note that you normally won't need to set the window ref as useScrollTrigger
+//   // will default to window.
+//   // This is only being set here because the demo is in an iframe.
+//   const trigger = useScrollTrigger({
+//     disableHysteresis: true,
+//     threshold: 0,
+//     target: window ? window() : undefined,
+//   });
+
+//   return React.cloneElement(children, {
+//     elevation: trigger ? 4 : 0,
+//   });
+// }
+
+// ElevationScroll.propTypes = {
+//   children: PropTypes.element.isRequired,
+//   /**
+//    * Injected by the documentation to work in an iframe.
+//    * You won't need it on your project.
+//    */
+//   window: PropTypes.func,
+// };
+
+// export default function ListingPage(props) {
+//   return (
+//     <React.Fragment>
+//       <CssBaseline />
+//       <ElevationScroll {...props}>
+//         <AppBar sx={{ background: "white" }}>
+//           <Toolbar>
+//             <Typography variant="h6" component="div" sx={{ color: "black" }}>
+//               Scroll to elevate App bar
+//             </Typography>
+//           </Toolbar>
+//         </AppBar>
+//       </ElevationScroll>
+//       <Toolbar />
+//       <Toolbar sx={{ background: "black" }}>
+//         {/* <SearchBar /> */}
+//       </Toolbar>
+//       <Container>
+//         <Box sx={{ my: 2 }}>
+//           {[...new Array(30)]
+//             .map(
+//               () => `Cras mattis consectetur purus sit amet fermentum.
+// Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+// Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+// Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
+//             )
+//             .join("\n")}
+//         </Box>
+//       </Container>
+//     </React.Fragment>
+//   );
+// }
