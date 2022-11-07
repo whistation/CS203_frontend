@@ -85,7 +85,7 @@ export default function ListingPage() {
     console.log(commitment);
     const getAllListings = async () => {
       const res = await axios.get(
-        `http://localhost:8080/listingpage?tag=${tag}&commitment=${commitment}&username=All&location=${location}` ,
+        `${url}/listingpage?tag=${tag}&commitment=${commitment}&username=All&location=${location}` ,
         //`http://localhost:8080/listingpage?tag=${tag}&commitment=$All&username=All&location=$north` ,
         // `${url}/listingpage`,
         {
