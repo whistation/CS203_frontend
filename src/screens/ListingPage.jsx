@@ -346,7 +346,7 @@ export default function ListingPage() {
                       name={data.name}
                       description={data.des}
                       id={data.id}
-                      buttonName={"view"}
+                      buttonName={"Apply"}
                       imageUrl={data.imageurl}
                     />
                   </Grid>
