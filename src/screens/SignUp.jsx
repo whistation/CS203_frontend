@@ -14,6 +14,8 @@ import { useState } from "react";
 import axios from "axios";
 import Modal from '@mui/material/Modal';
 import validator from "validator";
+import url from "../constants/global";
+
 
 //styling for the pop-ups
 const modalStyle = {
@@ -69,7 +71,7 @@ export default function SignUp() {
       handleBlankOpen();
 
     } else {
-      axios.post('https://54.95.245.238:8080/newuser',
+      axios.post(`${url}/newuser`,
         {
           "username": data.get('email'),
           "password": data.get('password'),

@@ -19,7 +19,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
-import imageCompression from 'browser-image-compression';
+import url from "../constants/global";
 
 //Everything related to the Add Image button
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -122,23 +122,7 @@ export default function CreateListing() {
     }
     const imageFile = e.target.files[0];
     setPicture(imageFile);
-    // console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
-
-    // try {
-    //   const compressedFile = await imageCompression(imageFile, options);
-    //   console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-    //   console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
     console.log(`original file size ${imageFile.size / 1024 / 1024} MB`)
-
-    //   setPicture(compressedFile); 
-
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
-    // const compressedImage = imageCompression(e.target.files[0], options);
-    // var file = new File([compressedImage], "file");
-    // setPicture(file);
   }
   image.append("image", picture);
   console.log("The picture in image formdata", image.get("image"));
@@ -199,7 +183,7 @@ export default function CreateListing() {
     });
 
     //axios post call for listing details
-    axios.post("https://54.95.245.238:8080/listingpage/newlisting?userId=" + userid + "&tagName=" + tag,
+    axios.post(`${url}/listingpage/newlisting?userId=` + userid + "&tagName=" + tag,
       {
         "name": data.get('title'),
         "des": data.get('description'),
@@ -225,7 +209,7 @@ export default function CreateListing() {
         console.log(image);
         console.log(image.get("image"));
 
-        axios.post('https://127.0.0.1:8080/listingpage/newlisting/imageupload?id=' + listingid,
+        axios.post(`${url}/listingpage/newlisting/imageupload?id=${listingid}`,
           image,
           {
             headers: {
@@ -242,10 +226,8 @@ export default function CreateListing() {
 
         }
         ).catch(function (error) {
-          if (error.response.status == 500) {
-
             //if the image posting is not successful, delete the listing details that have been posted before the listing image
-            axios.delete("https://54.95.245.238:8080/listingpage/removal/" + listingid,
+            axios.delete(`${url}/listingpage/removal/${listingid}`,
               {
                 auth:
                 {
@@ -267,7 +249,7 @@ export default function CreateListing() {
             //after deleting, close the confirmation pop up and open the error pop up
             handleCancel();
             handleErrorOpen();
-          }
+          
         })
 
       }, (error) => {

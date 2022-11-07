@@ -14,6 +14,7 @@ import axios from "axios";
 import validator from "validator";
 import Modal from '@mui/material/Modal';
 import { useState } from "react";
+import url from "../constants/global";
 
 function Copyright(props) {
   return (
@@ -87,7 +88,7 @@ export default function LogIn() {
       handleBlankOpen();
     } else {
       console.log(input.password);
-      axios.get("https://54.95.245.238:8080/user?username=" +input.username,
+      axios.get(`${url}/user?username=${input.username}`,
         {
           auth:
           {
@@ -130,13 +131,14 @@ export default function LogIn() {
 
     //store username and userid in the local storage
     try {
-      const getUser = await axios.get("http://54.95.245.238:8080/user?username=" + Input.username, 
+      const getUser = await axios.get(`${url}/user?username=${Input.username}`, 
       {
         auth: {
           "username": Input.username,
           "password": Input.password,
         }
-      });
+      }
+      );
       console.log("successfully got the user", getUser)
       localStorage.setItem("userid", getUser.data.id)
       localStorage.setItem("firstname", getUser.data.firstname)

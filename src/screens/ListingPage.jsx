@@ -1,13 +1,7 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
-import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { sizing } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
@@ -19,7 +13,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import url from "../constants/global.jsx";
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
 
@@ -103,7 +97,7 @@ export default function ListingPage() {
     console.log("searching now");
     const getAllListings = async () => {
       const res = await axios.get(
-        "https://54.95.245.238:8080/listingpage",
+        `${url}/listingpage`,
         // {
         //   filters: {
         //     username: "all",
@@ -144,7 +138,7 @@ export default function ListingPage() {
       const getImage = async () => {
         try {
           const res = await axios.get(
-            "https://54.95.245.238:8080/listingpage/" + info.id + "/image",
+            `${url}/listingpage/${info.id}/image`,
             {
               responseType: "arraybuffer",
             },
@@ -233,12 +227,20 @@ export default function ListingPage() {
               size="small"
               sx={{
                 width: "92vw",
+                position:"absolute",
+                top:100,
+                left:30
               }}
               onChange={(e) => setSearch(e.target.value)}
             />
             <IconButton
               //type="submit"
               aria-label="search"
+              sx={{
+                position:"absolute",
+                top:100,
+                right:30
+              }}
               onClick={() => {
                 handleSearching();
               }}
@@ -257,6 +259,8 @@ export default function ListingPage() {
             alignItems: "center",
             m: 1,
             p: 2,
+            position:"absolute",
+            top:150
           }}
         >
           <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
