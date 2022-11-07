@@ -86,7 +86,8 @@ export default function LogIn() {
       console.log("some fields are empty!");
       handleBlankOpen();
     } else {
-      axios.get("http://localhost:8080/listingpage/1",
+      console.log(input.password);
+      axios.get("http://localhost:8080/user?username=" +input.username,
         {
           auth:
           {

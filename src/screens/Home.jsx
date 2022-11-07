@@ -9,7 +9,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 
-import bg from "../assets/backgroundpic7.jpg";
+//import bg from "../assets/backgroundpic7.jpg";
 
 const theme = createTheme();
 
@@ -72,13 +72,13 @@ export default function Home() {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundColor: "white",
-              backgroundImage: `url(${bg})`,
+              backgroundImage: `url("https://img.freepik.com/free-vector/watercolor-nature-background-with-leaves_52683-59449.jpg?w=2000")`,
               height: "100%"
             }}>
             <Typography
               component="h1"
               variant="h1"
-              color="white"
+              color="black"
               sx={{
                 position: 'relative',
                 pt: 50,

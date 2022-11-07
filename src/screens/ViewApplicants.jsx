@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import placeholder from "../assets/image_placeholder.png";
+
 import { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -79,7 +79,7 @@ export default function ViewApplicants() {
   };
 
   //variable to set the imageurl for the picture
-  const [imageurl, setImageurl] = useState(placeholder);
+  const [imageurl, setImageurl] = useState(`url("https://www.kindpng.com/picc/m/55-553143_transparent-plant-cartoon-png-transparent-cartoon-plant-png.png")`);
 
   //variables to set the project title, description, location, tag, commitment displayed
   const [title, setTitle] = useState("Project title");

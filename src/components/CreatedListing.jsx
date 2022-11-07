@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, setState } from "react";
 import Box from "@mui/material/Box";
-import placeholder from "../assets/image_placeholder.png";
 
 export default function CreatedListing({
   name,

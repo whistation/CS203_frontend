@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Grid from "@mui/material/Grid";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import placeholder from '../assets/image_placeholder.png';
+
 import NavigationBar from "../components/NavigationBar";
 import Typography from "@mui/material/Typography";
 
@@ -69,7 +69,7 @@ export default function MyApplications() {
               listingdatatemp[index] = { "name": info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl };
 
             } catch (error) {
-              imageurl = placeholder;
+              imageurl = `url("https://www.kindpng.com/picc/m/55-553143_transparent-plant-cartoon-png-transparent-cartoon-plant-png.png")`;
               listingdatatemp[index] = { "name": info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl };
             }
 

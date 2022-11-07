@@ -14,7 +14,6 @@ import { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import placeholder from '../assets/image_placeholder.png';
 
 //styling for the confirmation pop-up
 const modalStyle = {
@@ -47,7 +46,7 @@ export default function ProjectPage() {
   const listingId = location.state.listingId;
 
   //variable to set the imageurl for the picture
-  const [imageurl, setImageurl] = useState(placeholder);
+  const [imageurl, setImageurl] = useState(`url("https://www.kindpng.com/picc/m/55-553143_transparent-plant-cartoon-png-transparent-cartoon-plant-png.png")`);
 
   useEffect(() => {
     //get listing id from route and call

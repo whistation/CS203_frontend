@@ -9,7 +9,6 @@ import Grid from '@mui/material/Grid';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import placeholder from '../assets/image_placeholder.png';
 import { styled } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
 import { useState } from "react";
@@ -109,7 +108,7 @@ const modalStyle = {
 export default function CreateListing() {
 
   //code to handle image upload
-  const [pictureURL, setPictureURL] = useState(placeholder);
+  const [pictureURL, setPictureURL] = useState(`url("https://www.kindpng.com/picc/m/55-553143_transparent-plant-cartoon-png-transparent-cartoon-plant-png.png")`);
 
   const image = new FormData();
   const [picture, setPicture] = useState(null);
@@ -174,7 +173,7 @@ export default function CreateListing() {
 
     //verify that the fields are not empty
     if (
-      pictureURL === "/src/assets/image_placeholder.png" |
+      pictureURL === `url("https://www.kindpng.com/picc/m/55-553143_transparent-plant-cartoon-png-transparent-cartoon-plant-png.png")` |
       location.length === 0 | tag.length === 0
       | commitment.length === 0 | data.get('title').length === 0 | data.get('description').length === 0) {
       console.log("some fields are empty!");

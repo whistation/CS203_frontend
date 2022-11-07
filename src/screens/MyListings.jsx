@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import placeholder from '../assets/image_placeholder.png';
 import NavigationBar from "../components/NavigationBar.jsx";
 import CreatedListing from "../components/CreatedListing.jsx";
 import { TroubleshootOutlined } from "@mui/icons-material";
@@ -82,7 +81,7 @@ export default function MyListings() {
             listingdatatemp[index] = { "name": info.name, "des": info.des, "id": info.id, "imageurl": imageurl };
 
           } catch (error) {
-            imageurl = placeholder;
+            imageurl = `url("https://www.kindpng.com/picc/m/55-553143_transparent-plant-cartoon-png-transparent-cartoon-plant-png.png")`;
             listingdatatemp[index] = { "name": info.name, "des": info.des, "id": info.id, "imageurl": imageurl };
 
           }
@@ -211,92 +210,3 @@ export default function MyListings() {
   );
 }
 
-// const SearchBar = () => (
-//   <form>
-//     <TextField
-//       id="search-bar"
-//       className="text"
-//       label="Search"
-//       variant="outlined"
-//       placeholder="Project Title..."
-//       size="small"
-//       sx={{
-//         width: 975,
-//       }}
-//     />
-//     <IconButton type="submit" aria-label="search">
-//       <SearchIcon style={{ fill: "blue" }} />
-//     </IconButton>
-//   </form>
-// );
-
-// function ElevationScroll(props) {
-//   const { children, window } = props;
-//   // Note that you normally won't need to set the window ref as useScrollTrigger
-//   // will default to window.
-//   // This is only being set here because the demo is in an iframe.
-//   const trigger = useScrollTrigger({
-//     disableHysteresis: true,
-//     threshold: 0,
-//     target: window ? window() : undefined,
-//   });
-
-//   return React.cloneElement(children, {
-//     elevation: trigger ? 4 : 0,
-//   });
-// }
-
-// ElevationScroll.propTypes = {
-//   children: PropTypes.element.isRequired,
-//   /**
-//    * Injected by the documentation to work in an iframe.
-//    * You won't need it on your project.
-//    */
-//   window: PropTypes.func,
-// };
-
-// export default function ListingPage(props) {
-//   return (
-//     <React.Fragment>
-//       <CssBaseline />
-//       <ElevationScroll {...props}>
-//         <AppBar sx={{ background: "white" }}>
-//           <Toolbar>
-//             <Typography variant="h6" component="div" sx={{ color: "black" }}>
-//               Scroll to elevate App bar
-//             </Typography>
-//           </Toolbar>
-//         </AppBar>
-//       </ElevationScroll>
-//       <Toolbar />
-//       <Toolbar sx={{ background: "black" }}>
-//         {/* <SearchBar /> */}
-//       </Toolbar>
-//       <Container>
-//         <Box sx={{ my: 2 }}>
-//           {[...new Array(30)]
-//             .map(
-//               () => `Cras mattis consectetur purus sit amet fermentum.
-// Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-// Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-// Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
-//             )
-//             .join("\n")}
-//         </Box>
-//       </Container>
-//     </React.Fragment>
-//   );
-// }
-
-// img = {handleImage(listings.photo.picByte, listings.photo.type)}
-// img={()=> {
-//   console.log(listings.id);
-//   console.log(listings.photo.picByte);
-//   const imageBytes = listings.photo.picByte;
-//   const type = listings.photo.type;
-//   var blob = new Blob([imageBytes], { type: type });
-//   var imageUrl = URL.createObjectURL(blob);
-//   console.log("This is imageurl");
-//   console.log(imageUrl);
-//   return imageUrl;
-// }}
