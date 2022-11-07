@@ -79,8 +79,8 @@ export default function LogIn() {
       "username": data.get('email'),
       "password": data.get('password'),
     }
-    console.log(input);
 
+    console.log("we are trying to check these credentials", input);
     //if some of the fields are empty prompt user to fill them, else handle auth
     if (JSON.stringify(input.username).length === 0 | JSON.stringify(input.password).length === 0) {
       console.log("some fields are empty!");
@@ -97,12 +97,12 @@ export default function LogIn() {
         })
         .then((response) => {
           //successful log in
-          console.log("successful log in!");
+          console.log("correct credentials!");
           handleLogInOpen();
 
         }, (error) => {
           //unsuccessful log in
-          console.log("unsuccessful log in :(");
+          console.log("incorrect credentials!");
           handleFailedOpen();
         });
     }
@@ -122,20 +122,35 @@ export default function LogIn() {
   const handleLogInOpen = () => {
     setLogInOpen(true);
   };
-  const handleLogInClose = () => {
+
+
+  const handleLogInClose = async () => {
+    console.log("we are about to store the userid and username in local storage. We first need to call the user from the DB")
+    console.log("Here is the username", Input.username);
+
     //store username and userid in the local storage
-    axios.get("http://54.95.245.238:8080/user?username=" + Input.username,
-    ).then((response) => {
-      console.log("Testing JSON extraction")
-      localStorage.setItem("userid", response.data.id)
-      localStorage.setItem("firstname", response.data.firstname)
-    });
+    try {
+      const getUser = await axios.get("http://54.95.245.238:8080/user?username=" + Input.username, 
+      {
+        auth: {
+          "username": Input.username,
+          "password": Input.password,
+        }
+      });
+      console.log("successfully got the user", getUser)
+      localStorage.setItem("userid", getUser.data.id)
+      localStorage.setItem("firstname", getUser.data.firstname)
 
-    localStorage.setItem("username", Input.username);
-    localStorage.setItem("password", Input.password);
+      localStorage.setItem("username", Input.username);
+      localStorage.setItem("password", Input.password);
+  
+      setLogInOpen(false);
+      navigate("/listingpage");
 
-    setLogInOpen(false);
-    navigate("/listingpage");
+    } catch(error) {
+      console.log("Failed to get the user from the DB", error);
+    }
+
   };
 
   //code to handle opening and closing of the failed log in pop-up

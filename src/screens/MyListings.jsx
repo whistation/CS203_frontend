@@ -37,6 +37,7 @@ export default function MyListings() {
   const listingdatatemp = [];
 
   const userid = localStorage.getItem("userid");
+  console.log(userid);
 
   //getting the listing data
   useEffect(() => {
