@@ -23,7 +23,7 @@ export default function MyApplications() {
   // getting all applications by user
   useEffect(() => {
     const userId = localStorage.getItem("userid");
-    axios.get("http://localhost:8080/user/applications?userId=" + userId,
+    axios.get("http://54.95.245.238:8080/user/applications?userId=" + userId,
       {
         auth:
         {
@@ -33,7 +33,7 @@ export default function MyApplications() {
       },
       {
         headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:8080',
+          //'Access-Control-Allow-Origin': 'http://54.95.245.238:8080',
           'Content-Type': 'application/json',
         }
       }).then((res) => {
@@ -51,7 +51,7 @@ export default function MyApplications() {
           //api call for the image
           const getImage = async () => {
             try {
-              const res = await axios.get("http://localhost:8080/listingpage/" + info.listingId + "/image",
+              const res = await axios.get("http://54.95.245.238:8080/listingpage/" + info.listingId + "/image",
                 {
                   responseType: "arraybuffer"
                 },

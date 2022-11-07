@@ -69,7 +69,7 @@ export default function SignUp() {
       handleBlankOpen();
 
     } else {
-      axios.post('http://localhost:8080/newuser',
+      axios.post('http://54.95.245.238:8080/newuser',
         {
           "username": data.get('email'),
           "password": data.get('password'),
@@ -80,7 +80,7 @@ export default function SignUp() {
         ,
         {
           headers: {
-            'Access-Control-Allow-Origin': 'http://localhost:8080',
+            //'Access-Control-Allow-Origin': 'http://54.95.245.238:8080',
             'Content-Type': 'application/json',
           }
         })

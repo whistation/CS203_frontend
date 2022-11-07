@@ -103,7 +103,7 @@ export default function ListingPage() {
     console.log("searching now");
     const getAllListings = async () => {
       const res = await axios.get(
-        "http://localhost:8080/listingpage",
+        "http://54.95.245.238:8080/listingpage",
         // {
         //   filters: {
         //     username: "all",
@@ -144,7 +144,7 @@ export default function ListingPage() {
       const getImage = async () => {
         try {
           const res = await axios.get(
-            "http://localhost:8080/listingpage/" + info.id + "/image",
+            "http://54.95.245.238:8080/listingpage/" + info.id + "/image",
             {
               responseType: "arraybuffer",
             },

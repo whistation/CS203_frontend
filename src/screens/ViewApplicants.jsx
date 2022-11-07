@@ -56,7 +56,7 @@ export default function ViewApplicants() {
   const handleDelete = () => {
     axios
       .delete(
-        "http://localhost:8080/listingpage/removal/" + listingId, //add the appropriate listingid
+        "http://54.95.245.238:8080/listingpage/removal/" + listingId, //add the appropriate listingid
         {
           auth: {
             username: "admin@lendahand.com",
@@ -95,7 +95,7 @@ export default function ViewApplicants() {
   React.useEffect(() => {
     //api call to get the image
     axios
-      .get("http://localhost:8080/listingpage/" + listingId + "/image", {
+      .get("http://54.95.245.238:8080/listingpage/" + listingId + "/image", {
         responseType: "arraybuffer",
       })
       .then(
@@ -118,7 +118,7 @@ export default function ViewApplicants() {
     //api call to get the applicants, listing details
     axios
       .get(
-        "http://localhost:8080/listingpage/" + listingId, //need to pass in the relevant listingid in this url
+        "http://54.95.245.238:8080/listingpage/" + listingId, //need to pass in the relevant listingid in this url
         {
           auth: {
             username: "admin@lendahand.com",
