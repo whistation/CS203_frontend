@@ -1,13 +1,7 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
-import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { sizing } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
@@ -19,7 +13,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import url from "../constants/global.jsx";
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
 
@@ -61,16 +55,13 @@ export default function ListingPage() {
 
   const handleTagFilter = async (event) => {
     const value = await event.target.value;
-    //console.log(value);
     setTag(value);
-    //console.log(tag);
   };
 
   React.useEffect(() => {
     //console.log(tag);
     handleSearching();
   }, [tag]);
-
 
   const [location, setLocation] = useState("All");
 
@@ -84,42 +75,27 @@ export default function ListingPage() {
     handleSearching();
   }, [location]);
 
-  // const [filters, setFilters] = useState({});
-
-  // const handleFilters = (location, tag, commitment) => {
-  //   const finalFilter = {
-  //     location: location.location,
-  //     tag: tag.tag,
-  //     commitment: commitment.commitment,
-  //     username: "All",
-  //   };
-  //   setFilters(finalFilter);
-  // };
-
   const [listingdata, setListingdata] = useState([]);
   const listingdatatemp = [];
 
   const handleSearching = () => {
     console.log("searching now");
+    console.log(tag);
+    console.log(location);
+    console.log(commitment);
     const getAllListings = async () => {
       const res = await axios.get(
-        "https://cors-anywhere.herokuapp.com/http://54.95.245.238:8080/listingpage",
-        // {
-        //   filters: {
-        //     username: "all",
-        //     tag: "Clean Energy",
-        //     location: "all",
-        //     commitment: "all",
-        //   },
-        // },
+        `http://localhost:8080/listingpage?tag=${tag}&commitment=${commitment}&username=All&location=${location}` ,
+        //`http://localhost:8080/listingpage?tag=${tag}&commitment=$All&username=All&location=$north` ,
+        // `${url}/listingpage`,
         {
-          params: {
-            username: "All",
-            tag: tag,
-            location: location,
-            commitment: commitment,
-            inName: `${search}`,
-          },
+           params: {
+          //   username: "All",
+          //   tag: tag,
+          //   location: location,
+          //   commitment: commitment,
+             inName: `${search}`,
+ },
           auth: {
             username: "admin@lendahand.com",
             password: "password",
@@ -144,7 +120,7 @@ export default function ListingPage() {
       const getImage = async () => {
         try {
           const res = await axios.get(
-            "https://cors-anywhere.herokuapp.com/http://54.95.245.238:8080/listingpage/" + info.id + "/image",
+            `${url}/listingpage/${info.id}/image`,
             {
               responseType: "arraybuffer",
             },
@@ -233,12 +209,20 @@ export default function ListingPage() {
               size="small"
               sx={{
                 width: "92vw",
+                position:"absolute",
+                top:100,
+                left:30
               }}
               onChange={(e) => setSearch(e.target.value)}
             />
             <IconButton
               //type="submit"
               aria-label="search"
+              sx={{
+                position:"absolute",
+                top:100,
+                right:30
+              }}
               onClick={() => {
                 handleSearching();
               }}
@@ -257,6 +241,8 @@ export default function ListingPage() {
             alignItems: "center",
             m: 1,
             p: 2,
+            position:"absolute",
+            top:150
           }}
         >
           <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
@@ -270,11 +256,11 @@ export default function ListingPage() {
                 onChange={handleLocationFilter}
                 size="sm"
               >
-                <MenuItem value={"North"}>North</MenuItem>
-                <MenuItem value={"South"}>South</MenuItem>
-                <MenuItem value={"East"}>East</MenuItem>
-                <MenuItem value={"West"}>West</MenuItem>
-                <MenuItem value={"Central"}>Central</MenuItem>
+                <MenuItem value={"north"}>North</MenuItem>
+                <MenuItem value={"south"}>South</MenuItem>
+                <MenuItem value={"east"}>East</MenuItem>
+                <MenuItem value={"west"}>West</MenuItem>
+                <MenuItem value={"central"}>Central</MenuItem>
                 <MenuItem value={"All"}>All</MenuItem>
               </Select>
             </FormControl>
@@ -291,13 +277,13 @@ export default function ListingPage() {
                 size="sm"
               >
                 <MenuItem value={"All"}>All</MenuItem>
-                <MenuItem value={"Ad Hoc"}>Ad Hoc</MenuItem>
-                <MenuItem value={"1 Week"}>1 Week</MenuItem>
-                <MenuItem value={"1 Month"}>1 Month</MenuItem>
-                <MenuItem value={"3 Months"}>3 Months</MenuItem>
-                <MenuItem value={"6 Months"}>6 Months</MenuItem>
-                <MenuItem value={"1 Year"}>1 Year</MenuItem>
-                <MenuItem value={"Long-Term"}>Long-Term</MenuItem>
+                <MenuItem value={"ad-hoc"}>Ad-Hoc</MenuItem>
+                <MenuItem value={"1%20week"}>1 Week</MenuItem>
+                <MenuItem value={"1%20month"}>1 Month</MenuItem>
+                <MenuItem value={"3%20months"}>3 Months</MenuItem>
+                <MenuItem value={"6%20months"}>6 Months</MenuItem>
+                <MenuItem value={"1%20year"}>1 Year</MenuItem>
+                <MenuItem value={"long-term"}>Long-Term</MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -314,9 +300,9 @@ export default function ListingPage() {
                 <MenuItem value={"Coastal"}>Coastal</MenuItem>
                 <MenuItem value={"Marine"}>Marine</MenuItem>
                 <MenuItem value={"Jungle"}>Jungle</MenuItem>
-                <MenuItem value={"Clean Energy"}>Clean Energy</MenuItem>
+                <MenuItem value={"Clean%20Energy"}>Clean Energy</MenuItem>
                 <MenuItem value={"Agriculture"}>Agriculture</MenuItem>
-                <MenuItem value={"Recycling and Waste"}>
+                <MenuItem value={"Recycling%20and%20Waste"}>
                   Recycling and Waste
                 </MenuItem>
                 <MenuItem value={"Others"}>Others</MenuItem>
@@ -331,8 +317,10 @@ export default function ListingPage() {
             display: "flex",
             justifyContent: "center",
             background: "white",
-marginTop: 10,
+            marginTop: 10,
             marginBottom: 10,
+            position:"absolute",
+            top:190, left: 150
           }}
         >
           <Grid

@@ -10,6 +10,7 @@ import axios from "axios";
 
 import NavigationBar from "../components/NavigationBar";
 import Typography from "@mui/material/Typography";
+import url from "../constants/global";
 
 import AppliedListing from "../components/AppliedListing";
 
@@ -23,7 +24,7 @@ export default function MyApplications() {
   // getting all applications by user
   useEffect(() => {
     const userId = localStorage.getItem("userid");
-    axios.get("https://54.95.245.238:8080/user/applications?userId=" + userId,
+    axios.get(`${url}/user/applications?userId=${userId}`,
       {
         auth:
         {
@@ -50,7 +51,7 @@ export default function MyApplications() {
           //api call for the image
           const getImage = async () => {
             try {
-              const res = await axios.get("https://54.95.245.238:8080/listingpage/" + info.listingId + "/image",
+              const res = await axios.get(`${url}/listingpage/${info.listingId}/image`,
                 {
                   responseType: "arraybuffer"
                 },

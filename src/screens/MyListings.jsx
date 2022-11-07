@@ -13,6 +13,7 @@ import NavigationBar from "../components/NavigationBar.jsx";
 import CreatedListing from "../components/CreatedListing.jsx";
 import { TroubleshootOutlined } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
+import url from "../constants/global";
 
 const theme = createTheme();
 
@@ -42,7 +43,7 @@ export default function MyListings() {
   //getting the listing data
   useEffect(() => {
     axios.get(
-      "https://54.95.245.238:8080/listingpage/mylistings?userId=" + userid,
+      `${url}/listingpage/mylistings?userId=${userid}`,
       {
         auth: {
           username: "admin@lendahand.com",
@@ -64,7 +65,7 @@ export default function MyListings() {
         //api call for the image
         const getImage = async () => {
           try {
-            const res = await axios.get("https://54.95.245.238:8080/listingpage/" + info.id + "/image",
+            const res = await axios.get(`${url}/listingpage/${info.id}/image`,
               {
                 responseType: "arraybuffer"
               },
