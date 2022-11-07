@@ -111,7 +111,7 @@ export default function Settings() {
       console.log("some fields are invalid!");
 
     } else {
-      axios.put('http://localhost:8080/user/resetting/profile/' + localStorage.getItem("userid"),
+      axios.put('https://localhost:8080/user/resetting/profile/' + localStorage.getItem("userid"),
         {
           "firstname": input.firstname,
           "lastname": input.lastname,
@@ -150,7 +150,7 @@ export default function Settings() {
 
     if (input.password !== null) {
       console.log(input.password)
-      axios.put('http://localhost:8080/user/resetting/password/' + localStorage.getItem("userid"),
+      axios.put('https://localhost:8080/user/resetting/password/' + localStorage.getItem("userid"),
         {
           "password": input.password
         },

@@ -87,7 +87,7 @@ export default function LogIn() {
       handleBlankOpen();
     } else {
       console.log(input.password);
-      axios.get("http://54.95.245.238:8080/user?username=" +input.username,
+      axios.get("https://54.95.245.238:8080/user?username=" +input.username,
         {
           auth:
           {
@@ -124,7 +124,7 @@ export default function LogIn() {
   };
   const handleLogInClose = () => {
     //store username and userid in the local storage
-    axios.get("http://54.95.245.238:8080/user?username=" + Input.username,
+    axios.get("https://54.95.245.238:8080/user?username=" + Input.username,
     ).then((response) => {
       console.log("Testing JSON extraction")
       localStorage.setItem("userid", response.data.id)
