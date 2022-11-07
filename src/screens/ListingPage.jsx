@@ -335,8 +335,10 @@ export default function ListingPage() {
             display: "flex",
             justifyContent: "center",
             background: "white",
-marginTop: 10,
+            marginTop: 10,
             marginBottom: 10,
+            position:"absolute",
+            top:190, left: 40
           }}
         >
           <Grid

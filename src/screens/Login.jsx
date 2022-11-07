@@ -87,7 +87,6 @@ export default function LogIn() {
       console.log("some fields are empty!");
       handleBlankOpen();
     } else {
-      console.log(input.password);
       axios.get(`${url}/user?username=${input.username}`,
         {
           auth:
