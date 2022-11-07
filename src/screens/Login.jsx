@@ -87,7 +87,7 @@ export default function LogIn() {
       handleBlankOpen();
     } else {
       console.log(input.password);
-      axios.get("http://54.95.245.238:8080/user?username=" +input.username,
+      axios.get("https://54.95.245.238:8080/user?username=" +input.username,
         {
           auth:
           {

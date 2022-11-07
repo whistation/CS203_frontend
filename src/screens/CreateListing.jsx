@@ -199,7 +199,7 @@ export default function CreateListing() {
     });
 
     //axios post call for listing details
-    axios.post("http://54.95.245.238:8080/listingpage/newlisting?userId=" + userid + "&tagName=" + tag,
+    axios.post("https://54.95.245.238:8080/listingpage/newlisting?userId=" + userid + "&tagName=" + tag,
       {
         "name": data.get('title'),
         "des": data.get('description'),
@@ -225,7 +225,7 @@ export default function CreateListing() {
         console.log(image);
         console.log(image.get("image"));
 
-        axios.post('http://127.0.0.1:8080/listingpage/newlisting/imageupload?id=' + listingid,
+        axios.post('https://127.0.0.1:8080/listingpage/newlisting/imageupload?id=' + listingid,
           image,
           {
             headers: {
@@ -245,7 +245,7 @@ export default function CreateListing() {
           if (error.response.status == 500) {
 
             //if the image posting is not successful, delete the listing details that have been posted before the listing image
-            axios.delete("http://54.95.245.238:8080/listingpage/removal/" + listingid,
+            axios.delete("https://54.95.245.238:8080/listingpage/removal/" + listingid,
               {
                 auth:
                 {

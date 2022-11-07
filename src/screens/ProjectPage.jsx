@@ -52,7 +52,7 @@ export default function ProjectPage() {
     //get listing id from route and call
     const getListing = async (listingId) => {
       axios.get(
-        `http://54.95.245.238:8080/listingpage/${listingId}`,
+        `https://54.95.245.238:8080/listingpage/${listingId}`,
         {
           auth: {
             username: "admin@lendahand.com",
@@ -73,7 +73,7 @@ export default function ProjectPage() {
 
 
     //api call to get the image 
-    axios.get("http://54.95.245.238:8080/listingpage/" + listingId + "/image",
+    axios.get("https://54.95.245.238:8080/listingpage/" + listingId + "/image",
       {
         responseType: "arraybuffer"
       }
@@ -114,7 +114,7 @@ export default function ProjectPage() {
   useEffect(() => {
     const getAppId = async () => {
       const aid = await axios.get(
-        "http://54.95.245.238:8080/user/applications?userId=" + userId +
+        "https://54.95.245.238:8080/user/applications?userId=" + userId +
         "&listingId=" + listingId,
         {
           auth:
@@ -142,7 +142,7 @@ export default function ProjectPage() {
 
   const handleSubmit = () => {
     axios.post(
-      "http://54.95.245.238:8080/listingpage/" + listingId + "/newapplication?userId=" + userId,
+      "https://54.95.245.238:8080/listingpage/" + listingId + "/newapplication?userId=" + userId,
       {
         "message": "string"
       },
@@ -166,7 +166,7 @@ export default function ProjectPage() {
   };
 
   const handleWithdraw = () => {
-    axios.delete("http://54.95.245.238:8080/listingpage/application/removal/" + appId,
+    axios.delete("https://54.95.245.238:8080/listingpage/application/removal/" + appId,
       {
         auth:
         {
