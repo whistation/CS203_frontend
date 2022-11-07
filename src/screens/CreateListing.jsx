@@ -391,7 +391,8 @@ export default function CreateListing() {
                 label="Project Title"
                 name="title"
                 autoComplete="title"
-                helperText="Enter a title for your project."
+                helperText="Enter a title for your project. (Max 25 characters)"
+                inputProps={{ maxLength: 25 }}
               />
 
               {/* Project description field */}

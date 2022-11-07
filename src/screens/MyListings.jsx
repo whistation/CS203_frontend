@@ -12,10 +12,27 @@ import { useNavigate } from "react-router-dom";
 import placeholder from '../assets/image_placeholder.png';
 import NavigationBar from "../components/NavigationBar.jsx";
 import CreatedListing from "../components/CreatedListing.jsx";
+import { TroubleshootOutlined } from "@mui/icons-material";
+import Typography from "@mui/material/Typography";
 
 const theme = createTheme();
 
+//styling for the pop-ups
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  borderRadius: 10,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
+
 export default function MyListings() {
+  const navigate = useNavigate();
   const [listings, setListings] = useState([{}]);
   const [listingdata, setListingdata] = useState([]);
   const listingdatatemp = [];
@@ -81,14 +98,15 @@ export default function MyListings() {
     });
   }, []);
 
+  const [show, setShow] = useState(true);
+  
   //checking if listingdata has been fixed
   const [, updateState] = React.useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
-  var show = false;
 
   useEffect(() => {
     if (listingdata.length > 0) {
-      show = true;
+      setShow(false);
     }
     console.log("listingdata has been updated")
     console.log("show", show, "listingdata", listingdata)
@@ -96,7 +114,6 @@ export default function MyListings() {
     forceUpdate();
   }, [listingdata])
 
-  const navigate = useNavigate();
   return (
     <ThemeProvider theme={theme}>
       <Container
@@ -109,11 +126,20 @@ export default function MyListings() {
           width: "100vw",
         }}
       >
+        {
+          show? 
+          <Box>
+            <Typography variant="h5" color="#1976D2" fontFamily="Arial" sx={{top:"50%", left:"50%"}}>
+              NO LISTINGS CREATED!
+            </Typography>
+          </Box> : null
+        }
+        
         <CssBaseline />
         <Box
           disableGutters
           sx={{
-            background: "white",
+            backgroundColor: "white",
           }}
         >
           <NavigationBar />
@@ -178,6 +204,8 @@ export default function MyListings() {
 
           </Grid>
         </Container>
+
+
       </Container>
     </ThemeProvider>
   );

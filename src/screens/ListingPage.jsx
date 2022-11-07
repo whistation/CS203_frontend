@@ -19,9 +19,10 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import placeholder from '../assets/image_placeholder.png';
 import NavigationBar from "../components/NavigationBar.jsx";
 import Listing from "../components/Listing.jsx";
+import { listItemAvatarClasses } from "@mui/material";
 
 const theme = createTheme();
 
@@ -84,7 +85,8 @@ export default function ListingPage() {
   //   };
   //   setFilters(finalFilter);
   // };
-  const listingDataTemp = [];
+  const [listingdata, setListingdata] = useState([]);
+  const listingdatatemp = [];
 
   const handleSearching = () => {
     //handleFilters({ location }, { tag }, { commitment });
@@ -98,20 +100,73 @@ export default function ListingPage() {
       {
         params: {
           inName: `${search}`,
-          tag: tag
         },
         auth: {
           username: username,
           password: password,
         },
       });
-      console.log("hello");
-      console.log(res.data);
       setListings(res.data);
     };
-    getAllListings();
+    
+    getAllListings().then(
+      ()=> {
+        console.log("get listings success", listings)
+        const listingstemp = listings;
+        //making the listingdata array
+        listingstemp.map((info, index) => {
+          var imageurl = "";
+
+          //api call for the image
+          const getImage = async () => {
+            try {
+              const res = await axios.get("http://localhost:8080/listingpage/" + info.id + "/image",
+                {
+                  responseType: "arraybuffer"
+                },
+                {
+                  auth: {
+                    username: "admin@lendahand.com",
+                    password: "password",
+                  },
+                })
+
+              const imagedata = res.data;
+              const contenttype = res.headers.get("content-type");
+              var blob = new Blob([imagedata], { type: contenttype });
+              imageurl = (URL || webkitURL).createObjectURL(blob);
+              listingdatatemp[index] = { "name": info.name, "des": info.des, "id": info.id, "imageurl": imageurl };
+
+            } catch (error) {
+              imageurl = placeholder;
+              listingdatatemp[index] = { "name": info.name, "des": info.des, "id": info.id, "imageurl": imageurl };
+
+            }
+          }
+          getImage();
+        })
+        setListingdata(listingdatatemp);
+
+      }, (error) => {
+        console.log("get listings failed", error);
+      })
 
   };
+
+  //checking if listingdata has been fixed
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+  var show = false;
+
+  useEffect(() => {
+    if (listingdata.length > 0) {
+      show = true;
+    }
+    console.log("listingdata has been updated")
+    console.log("show", show, "listingdata", listingdata)
+    console.log("force update")
+    forceUpdate();
+  }, [listingdata])
 
   return (
     <ThemeProvider theme={theme}>
@@ -178,48 +233,6 @@ export default function ListingPage() {
             p: 2,
           }}
         >
-          {/* <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Location</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={location}
-                label="location"
-                onChange={handleLocationFilter}
-                size="sm"
-              >
-                <MenuItem value={"North"}>North</MenuItem>
-                <MenuItem value={"South"}>South</MenuItem>
-                <MenuItem value={"East"}>East</MenuItem>
-                <MenuItem value={"West"}>West</MenuItem>
-                <MenuItem value={"Central"}>Central</MenuItem>
-                <MenuItem value={"All"}>All</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-          <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Commitment</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={commitment}
-                label="commitment"
-                onChange={handleCommitmentFilter}
-                size="sm"
-              >
-                <MenuItem value={"All"}>All</MenuItem>
-                <MenuItem value={"Ad Hoc"}>Ad Hoc</MenuItem>
-                <MenuItem value={"1 Week"}>1 Week</MenuItem>
-                <MenuItem value={"1 Month"}>1 Month</MenuItem>
-                <MenuItem value={"3 Months"}>3 Months</MenuItem>
-                <MenuItem value={"6 Months"}>6 Months</MenuItem>
-                <MenuItem value={"1 Year"}>1 Year</MenuItem>
-                <MenuItem value={"Long-Term"}>Long-Term</MenuItem>
-              </Select>
-            </FormControl>
-          </Box> */}
           <Box maxWidth={false} sx={{ minWidth: 180, maxHeight: 10, px: 2 }}>
             <FormControl fullWidth>
               <InputLabel>Tag</InputLabel>
@@ -264,16 +277,20 @@ export default function ListingPage() {
               background: "white",
             }}
           >
-            {listings.map((listings) => (
-              <Grid item key={listings} xs={12} sm={6} md={4}>
+            {console.log("I am in the return", "listingdata", listingdata)}
+            {listingdata.map((data, index) => (
+              console.log("I am in the map, and I am rendering this listing", data.name),
+              <Grid item key={data.id} xs={12} sm={6} md={4}>
                 <Listing
-                  name={listings.name}
-                  description={listings.des}
-                  id={listings.id}
-                  buttonName={"apply"}
+                  name={data.name}
+                  description={data.des}
+                  id={data.id}
+                  buttonName={"view"}
+                  imageUrl={data.imageurl}
                 />
               </Grid>
-            ))}
+            ))
+            }
           </Grid>
         </Container>
       </Container>

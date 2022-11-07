@@ -9,6 +9,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import placeholder from '../assets/image_placeholder.png';
 import NavigationBar from "../components/NavigationBar";
+import Typography from "@mui/material/Typography";
+
 import AppliedListing from "../components/AppliedListing";
 
 const theme = createTheme();
@@ -85,11 +87,10 @@ export default function MyApplications() {
   //checking if listingdata has been fixed
   const [, updateState] = React.useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
-  var show = false;
-
+  const [show, setShow] = useState(true)
   useEffect(() => {
     if (listingdata.length > 0) {
-      show = true;
+      setShow(false);
     }
     console.log("listingdata has been updated")
     console.log("show", show, "listingdata", listingdata)
@@ -110,6 +111,14 @@ export default function MyApplications() {
             width: "100vw",
           }}
         >
+        {
+          show? 
+          <Box>
+            <Typography variant="h5" color="#1976D2" fontFamily="Arial" sx={{top:"50%", left:"50%"}}>
+              NO LISTINGS APPLIED FOR!
+            </Typography>
+          </Box> : null
+        }
           <CssBaseline />
           <Box
             disableGutters
