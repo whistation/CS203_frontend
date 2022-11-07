@@ -19,7 +19,8 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
-import imageCompression from 'browser-image-compression';
+import url from "../constants/global";
+import { useEffect } from "react";
 
 //Everything related to the Add Image button
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -114,34 +115,24 @@ export default function CreateListing() {
   const [picture, setPicture] = useState(null);
 
   async function handleUpload(e) {
-    setPictureURL(URL.createObjectURL(e.target.files[0]));
     const options = {
       maxSizeMB: 1,
       maxWidthOrHeight: 1920,
       useWebWorker: true
     }
     const imageFile = e.target.files[0];
-    setPicture(imageFile);
-    // console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+    console.log("The picture", imageFile, "Its size", imageFile.size);
 
-    // try {
-    //   const compressedFile = await imageCompression(imageFile, options);
-    //   console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-    //   console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-    console.log(`original file size ${imageFile.size / 1024 / 1024} MB`)
-
-    //   setPicture(compressedFile); 
-
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
-    // const compressedImage = imageCompression(e.target.files[0], options);
-    // var file = new File([compressedImage], "file");
-    // setPicture(file);
+    if (imageFile.size > 50000) {
+      console.log("The picture is too big")
+      handleBigOpen();
+    } else {
+      console.log("The picture has been accepted")
+      setPictureURL(URL.createObjectURL(e.target.files[0]));
+      setPicture(imageFile);
+    }
   }
   image.append("image", picture);
-  console.log("The picture in image formdata", image.get("image"));
 
   //project title and description data
   const [data, setData] = useState(0);
@@ -199,7 +190,7 @@ export default function CreateListing() {
     });
 
     //axios post call for listing details
-    axios.post("https://54.95.245.238:8080/listingpage/newlisting?userId=" + userid + "&tagName=" + tag,
+    axios.post(`${url}/listingpage/newlisting?userId=` + userid + "&tagName=" + tag,
       {
         "name": data.get('title'),
         "des": data.get('description'),
@@ -225,7 +216,7 @@ export default function CreateListing() {
         console.log(image);
         console.log(image.get("image"));
 
-        axios.post('https://127.0.0.1:8080/listingpage/newlisting/imageupload?id=' + listingid,
+        axios.post(`${url}/listingpage/newlisting/imageupload?id=${listingid}`,
           image,
           {
             headers: {
@@ -242,10 +233,8 @@ export default function CreateListing() {
 
         }
         ).catch(function (error) {
-          if (error.response.status == 500) {
-
             //if the image posting is not successful, delete the listing details that have been posted before the listing image
-            axios.delete("https://54.95.245.238:8080/listingpage/removal/" + listingid,
+            axios.delete(`${url}/listingpage/removal/${listingid}`,
               {
                 auth:
                 {
@@ -256,7 +245,7 @@ export default function CreateListing() {
             ).then((res) => {
               console.log("successful deletion!");
               console.log(res);
-              handleClose();
+              // handleClose();
               navigate("/listingpage/mylistings");
 
             }, (error) => {
@@ -267,7 +256,7 @@ export default function CreateListing() {
             //after deleting, close the confirmation pop up and open the error pop up
             handleCancel();
             handleErrorOpen();
-          }
+          
         })
 
       }, (error) => {
@@ -299,6 +288,15 @@ export default function CreateListing() {
   };
   const handleErrorClose = () => {
     setErrorOpen(false);
+  };
+
+  //code to handle when the image entered is too big
+  const [bigOpen, setBigOpen] = useState(false);
+  const handleBigOpen = () => {
+    setBigOpen(true);
+  };
+  const handleBigClose = () => {
+    setBigOpen(false);
   };
 
   return (
@@ -489,7 +487,7 @@ export default function CreateListing() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Create
+                Create (double click)
               </Button>
 
               {/* confirmation pop up */}
@@ -531,6 +529,19 @@ export default function CreateListing() {
                 <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400 }}>
                   <h2 id="child-modal-title">We have trouble uploading ur image to the server, try giving us a smaller one please!</h2>
                   <Button onClick={handleErrorClose}>Got it!</Button>
+                </Box>
+              </Modal>
+
+              <Modal
+                hideBackdrop
+                open={bigOpen}
+                onClose={handleBigClose}
+                aria-labelledby="child-modal-title"
+                aria-describedby="child-modal-description"
+              >
+                <Box sx={{ ...modalStyle, border: '2px solid pink', width: 400 }}>
+                  <h2 id="child-modal-title">Please limit the size of your image to 50kb and under! (we are but poor students)</h2>
+                  <Button onClick={handleBigClose}>Got it!</Button>
                 </Box>
               </Modal>
             </Box>

@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import url from "../constants/global";
 
 //styling for the confirmation pop-up
 const modalStyle = {
@@ -52,7 +53,7 @@ export default function ProjectPage() {
     //get listing id from route and call
     const getListing = async (listingId) => {
       axios.get(
-        `https://54.95.245.238:8080/listingpage/${listingId}`,
+        `${url}/listingpage/${listingId}`,
         {
           auth: {
             username: "admin@lendahand.com",
@@ -73,7 +74,7 @@ export default function ProjectPage() {
 
 
     //api call to get the image 
-    axios.get("https://54.95.245.238:8080/listingpage/" + listingId + "/image",
+    axios.get(`${url}/listingpage/${listingId}/image`,
       {
         responseType: "arraybuffer"
       }
@@ -114,8 +115,7 @@ export default function ProjectPage() {
   useEffect(() => {
     const getAppId = async () => {
       const aid = await axios.get(
-        "https://54.95.245.238:8080/user/applications?userId=" + userId +
-        "&listingId=" + listingId,
+        `${url}/user/applications?userId=${userId}&listingId=${listingId}`,
         {
           auth:
           {
@@ -142,7 +142,7 @@ export default function ProjectPage() {
 
   const handleSubmit = () => {
     axios.post(
-      "https://54.95.245.238:8080/listingpage/" + listingId + "/newapplication?userId=" + userId,
+      `${url}/listingpage/${listingId}/newapplication?userId=${userId}`,
       {
         "message": "string"
       },
@@ -166,7 +166,7 @@ export default function ProjectPage() {
   };
 
   const handleWithdraw = () => {
-    axios.delete("https://54.95.245.238:8080/listingpage/application/removal/" + appId,
+    axios.delete(`${url}/listingpage/application/removal/${appId}`,
       {
         auth:
         {

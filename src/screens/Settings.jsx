@@ -17,7 +17,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-
+import url from "../constants/global";
 import NavigationBar from "../components/NavigationBar.jsx";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -111,7 +111,7 @@ export default function Settings() {
       console.log("some fields are invalid!");
 
     } else {
-      axios.put('https://localhost:8080/user/resetting/profile/' + localStorage.getItem("userid"),
+      axios.put(`${url}/user/resetting/profile/${localStorage.getItem("userid")}`,
         {
           "firstname": input.firstname,
           "lastname": input.lastname,
@@ -150,7 +150,7 @@ export default function Settings() {
 
     if (input.password !== null) {
       console.log(input.password)
-      axios.put('https://localhost:8080/user/resetting/password/' + localStorage.getItem("userid"),
+      axios.put(`${url}/user/resetting/password/${localStorage.getItem("userid")}`,
         {
           "password": input.password
         },
@@ -207,12 +207,15 @@ export default function Settings() {
   const [phoneErrorState, setPhoneErrorState] = useState(false);
   function CheckIfNumber() {
     var input = event.target.value;
-    // useEffect(() => {
+    
     if (isNaN(input) || !(input[0] === 8 || input[0] === 6 || input[0] === 9)) {
       setPhoneErrorState(true);
     } else {
       setPhoneErrorState(false);
     }
+
+    console.log("phoneErrorState", phoneErrorState);
+
   }
 
   //code for double checking password entry
