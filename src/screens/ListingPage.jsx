@@ -84,6 +84,7 @@ export default function ListingPage() {
   //   };
   //   setFilters(finalFilter);
   // };
+  const listingDataTemp = [];
 
   const handleSearching = () => {
     //handleFilters({ location }, { tag }, { commitment });
@@ -109,6 +110,7 @@ export default function ListingPage() {
       setListings(res.data);
     };
     getAllListings();
+
   };
 
   return (
