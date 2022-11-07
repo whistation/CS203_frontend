@@ -87,7 +87,7 @@ export default function LogIn() {
       handleBlankOpen();
     } else {
       console.log(input.password);
-      axios.get("https://54.95.245.238:8080/user?username=" +input.username,
+      axios.get("https://cors-anywhere.herokuapp.com/http://54.95.245.238:8080/user?username=" +input.username,
         {
           auth:
           {
@@ -130,7 +130,7 @@ export default function LogIn() {
 
     //store username and userid in the local storage
     try {
-      const getUser = await axios.get("http://54.95.245.238:8080/user?username=" + Input.username, 
+      const getUser = await axios.get("https://cors-anywhere.herokuapp.com/http://54.95.245.238:8080/user?username=" + Input.username, 
       {
         auth: {
           "username": Input.username,
