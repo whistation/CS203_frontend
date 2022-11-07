@@ -129,7 +129,6 @@ export default function SignUp() {
   const [phoneErrorState, setPhoneErrorState] = useState(false);
   function CheckIfNumber() {
     var input = event.target.value;
-    // useEffect(() => {
     if (isNaN(input) || !(input[0] == 8 || input[0] == 6 || input[0] == 9)) {
       setPhoneErrorState(true);
     } else {

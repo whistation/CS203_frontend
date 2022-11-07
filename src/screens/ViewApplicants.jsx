@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import url from "../constants/global.jsx";
 import { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import { Navigate, useNavigate } from "react-router-dom";

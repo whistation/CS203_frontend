@@ -338,7 +338,7 @@ export default function ListingPage() {
             marginTop: 10,
             marginBottom: 10,
             position:"absolute",
-            top:190, left: 40
+            top:190, left: 150
           }}
         >
           <Grid
