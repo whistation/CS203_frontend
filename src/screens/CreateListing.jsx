@@ -231,7 +231,6 @@ export default function CreateListing() {
             headers: {
               'Content-Type': 'multipart/form-data',
               'Authorization': 'Basic YWRtaW5AbGVuZGFoYW5kLmNvbTpwYXNzd29yZA==',
-              'Access-Control-Allow-Origin': 'http://127.0.0.1:8080',
             }
           }
         ).then((response) => {

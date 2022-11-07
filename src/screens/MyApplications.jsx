@@ -33,7 +33,6 @@ export default function MyApplications() {
       },
       {
         headers: {
-          //'Access-Control-Allow-Origin': 'http://54.95.245.238:8080',
           'Content-Type': 'application/json',
         }
       }).then((res) => {
