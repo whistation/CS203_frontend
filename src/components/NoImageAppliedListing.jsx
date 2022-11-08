@@ -17,7 +17,7 @@ export default function NoImageAppliedListing({
 
   const navigate = useNavigate();
   return (
-    <Card variant="outlined" sx={{ width: 300, height: 270 }}>
+    <Card variant="outlined" sx={{ width: 300, height: 250 }}>
 
       <CardContent sx={{ textAlign: "left" }}>
         <Typography gutterBottom variant="h5" component="div">

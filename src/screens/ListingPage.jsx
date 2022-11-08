@@ -63,6 +63,7 @@ export default function ListingPage() {
   React.useEffect(() => {
     //console.log(tag);
     handleSearching();
+    console.log("tag searching");
   }, [tag]);
 
   const [location, setLocation] = useState("All");
