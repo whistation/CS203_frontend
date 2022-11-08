@@ -17,13 +17,13 @@ export default function NoImageListing({
 
   const navigate = useNavigate();
   return (
-    <Card variant="outlined" sx={{ width: 300, height: 370 }}>
+    <Card variant="outlined" sx={{ width: 300, height: 220 }}>
 
       <CardContent sx={{ textAlign: "left" }}>
         <Typography gutterBottom variant="h5" component="div">
           {name}
         </Typography>
-        <Box width="265px" height="93px" sx={{ border: "1px solid lightgrey", borderRadius: 1.5, overflow: "hidden", py: 1, px: 1 }}>
+        <Box width="265px" height="93px" sx={{ border: "1px lightgrey", borderRadius: 1.5, overflow: "hidden", py: 1, px: 1 }}>
           <Typography variant="body2" color="text.secondary">
             {description}
           </Typography>

@@ -54,6 +54,8 @@ export default function MyListings() {
     ).then((response) => {
       console.log("get listings success");
       setListings(response.data);
+    })
+    }, []);
 
     //   //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
     //   const listingstemp = response.data;
@@ -98,7 +100,6 @@ export default function MyListings() {
     // }, (error) => {
     //   console.log("get listings failed", error);
     // });
-  }, []);
   const show = false;
   //const [show, setShow] = useState(true);
   
@@ -189,17 +190,9 @@ export default function MyListings() {
               background: "white",
             }}
           >
-            {/* {console.log("I am in the return", "listings", listings)} */}
             {listings.map((listings) => (
               console.log("I am in the map, and I am rendering this listing", listings.name),
               <Grid item key={listings} xs={12} sm={6} md={4}>
-                {/* <CreatedListing
-                  name={data.name}
-                  description={data.des}
-                  id={data.id}
-                  buttonName={"view"}
-                  imageUrl={data.imageurl}
-                /> */}
                 <NoImageListing
                   name={listings.name}
                   description={listings.des}
