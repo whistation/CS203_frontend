@@ -31,8 +31,8 @@ export default function ListingPage() {
   const listingDefault = [
     {
       id: 1,
-      name: "Nothing Here Right Now!",
-      des: "Please click the Search Button for Results (Don't press the Enter Key)",
+      name: "Please wait for a while for the listings to load!",
+      des: "It is slow :(",
     },
   ];
   //set default before search to prompt for search
@@ -79,6 +79,8 @@ export default function ListingPage() {
 
   const [listingdata, setListingdata] = useState([]);
   const listingdatatemp = [];
+
+  var show = true;
 
   const handleSearching = () => {
     console.log("searching now");
@@ -161,7 +163,6 @@ export default function ListingPage() {
 
   // const [, updateState] = React.useState();
   // const forceUpdate = React.useCallback(() => updateState({}), []);
-  var show = true;
 
   // useEffect(() => {
   //   if (listingdata.length > 0) {

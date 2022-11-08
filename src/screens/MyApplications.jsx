@@ -20,6 +20,7 @@ export default function MyApplications() {
   const [listings, setListings] = useState([{}]);
   const [listingdata, setListingdata] = useState([]);
   const listingdatatemp = [];
+  var show = true;
 
   // getting all applications by user
   useEffect(() => {
@@ -39,6 +40,9 @@ export default function MyApplications() {
       }).then((res) => {
         console.log("get applicants success", res);
         setListings(res.data);
+        if (res.data.length > 0) {
+          show = false;
+        }
   })
 
       //   //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
@@ -84,7 +88,6 @@ export default function MyApplications() {
       // })
 
   }, []);
-  const show = false;
   // //checking if listingdata has been fixed
   // const [, updateState] = React.useState();
   // const forceUpdate = React.useCallback(() => updateState({}), []);

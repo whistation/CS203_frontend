@@ -40,6 +40,7 @@ export default function MyListings() {
 
   const userid = localStorage.getItem("userid");
   console.log(userid);
+  var show = true;
 
   //getting the listing data
   useEffect(() => {
@@ -54,6 +55,9 @@ export default function MyListings() {
     ).then((response) => {
       console.log("get listings success");
       setListings(response.data);
+      if (response.data.length > 0) {
+        show = false;
+      }
     })
     }, []);
 
@@ -100,7 +104,6 @@ export default function MyListings() {
     // }, (error) => {
     //   console.log("get listings failed", error);
     // });
-  const show = false;
   //const [show, setShow] = useState(true);
   
   // //checking if listingdata has been fixed
