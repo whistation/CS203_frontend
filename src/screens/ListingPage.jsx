@@ -31,7 +31,7 @@ export default function ListingPage() {
   const listingDefault = [
     {
       id: 1,
-      name: "Please wait for a while for the listings to load!",
+      name: "Please wait for listings to load!",
       des: "It is slow :(",
     },
   ];
