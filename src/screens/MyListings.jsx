@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from "../components/NavigationBar.jsx";
 import CreatedListing from "../components/CreatedListing.jsx";
+import NoImageListing from "../components/NoImageListing.jsx";
 import { TroubleshootOutlined } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
 import url from "../constants/global";
@@ -54,66 +55,66 @@ export default function MyListings() {
       console.log("get listings success");
       setListings(response.data);
 
-      //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
-      const listingstemp = response.data;
-      console.log(listingstemp);
+    //   //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
+    //   const listingstemp = response.data;
+    //   console.log(listingstemp);
 
-      //making the listingdata array
-      listingstemp.map((info, index) => {
-        var imageurl = "";
+    //   //making the listingdata array
+    //   listingstemp.map((info, index) => {
+    //     var imageurl = "";
 
-        //api call for the image
-        const getImage = async () => {
-          try {
-            const res = await axios.get(`${url}/listingpage/${info.id}/image`,
-              {
-                responseType: "arraybuffer"
-              },
-              {
-                auth: {
-                  username: "admin@lendahand.com",
-                  password: "password",
-                },
-              })
+    //     //api call for the image
+    //     const getImage = async () => {
+    //       try {
+    //         const res = await axios.get(`${url}/listingpage/${info.id}/image`,
+    //           {
+    //             responseType: "arraybuffer"
+    //           },
+    //           {
+    //             auth: {
+    //               username: "admin@lendahand.com",
+    //               password: "password",
+    //             },
+    //           })
 
-            const imagedata = res.data;
-            const contenttype = res.headers.get("content-type");
-            var blob = new Blob([imagedata], { type: contenttype });
-            imageurl = (URL || webkitURL).createObjectURL(blob);
-            listingdatatemp[index] = { "name": info.name, "des": info.des, "id": info.id, "imageurl": imageurl };
+    //         const imagedata = res.data;
+    //         const contenttype = res.headers.get("content-type");
+    //         var blob = new Blob([imagedata], { type: contenttype });
+    //         imageurl = (URL || webkitURL).createObjectURL(blob);
+    //         listingdatatemp[index] = { "name": info.name, "des": info.des, "id": info.id, "imageurl": imageurl };
 
-          } catch (error) {
-            imageurl = `url("https://www.kindpng.com/picc/m/55-553143_transparent-plant-cartoon-png-transparent-cartoon-plant-png.png")`;
-            listingdatatemp[index] = { "name": info.name, "des": info.des, "id": info.id, "imageurl": imageurl };
+    //       } catch (error) {
+    //         imageurl = `url("https://www.kindpng.com/picc/m/55-553143_transparent-plant-cartoon-png-transparent-cartoon-plant-png.png")`;
+    //         listingdatatemp[index] = { "name": info.name, "des": info.des, "id": info.id, "imageurl": imageurl };
 
-          }
+    //       }
 
-        }
-        getImage();
-      })
-      setListingdata(listingdatatemp);
+    //     }
+    //     getImage();
+    //   })
+    //   setListingdata(listingdatatemp);
 
 
-    }, (error) => {
-      console.log("get listings failed", error);
-    });
+    // }, (error) => {
+    //   console.log("get listings failed", error);
+    // });
   }, []);
-
-  const [show, setShow] = useState(true);
+  const show = false;
+  //const [show, setShow] = useState(true);
   
-  //checking if listingdata has been fixed
-  const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);
+  // //checking if listingdata has been fixed
+  // const [, updateState] = React.useState();
+  // const forceUpdate = React.useCallback(() => updateState({}), []);
 
-  useEffect(() => {
-    if (listingdata.length > 0) {
-      setShow(false);
-    }
-    console.log("listingdata has been updated")
-    console.log("show", show, "listingdata", listingdata)
-    console.log("force update")
-    forceUpdate();
-  }, [listingdata])
+  // useEffect(() => {
+  //   if (listingdata.length > 0) {
+  //     setShow(false);
+  //   }
+  //   console.log("listingdata has been updated")
+  //   console.log("show", show, "listingdata", listingdata)
+  //   console.log("force update")
+  //   forceUpdate();
+  // }, [listingdata])
 
   return (
     <ThemeProvider theme={theme}>
@@ -188,16 +189,21 @@ export default function MyListings() {
               background: "white",
             }}
           >
-            {console.log("I am in the return", "listingdata", listingdata)}
-            {listingdata.map((data) => (
-              console.log("I am in the map, and I am rendering this listing", data.name),
-              <Grid item key={data.id} xs={12} sm={6} md={4}>
-                <CreatedListing
+            {/* {console.log("I am in the return", "listings", listings)} */}
+            {listings.map((listings) => (
+              console.log("I am in the map, and I am rendering this listing", listings.name),
+              <Grid item key={listings} xs={12} sm={6} md={4}>
+                {/* <CreatedListing
                   name={data.name}
                   description={data.des}
                   id={data.id}
                   buttonName={"view"}
                   imageUrl={data.imageurl}
+                /> */}
+                <NoImageListing
+                  name={listings.name}
+                  description={listings.des}
+                  id={listings.id}
                 />
               </Grid>
             ))
