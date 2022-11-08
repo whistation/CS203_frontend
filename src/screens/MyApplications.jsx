@@ -12,7 +12,7 @@ import NavigationBar from "../components/NavigationBar";
 import Typography from "@mui/material/Typography";
 import url from "../constants/global";
 
-import AppliedListing from "../components/AppliedListing";
+import NoImageAppliedListing from "../components/NoImageAppliedListing";
 
 const theme = createTheme();
 
@@ -39,64 +39,65 @@ export default function MyApplications() {
       }).then((res) => {
         console.log("get applicants success", res);
         setListings(res.data);
+  })
 
-        //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
-        const listingstemp = res.data;
-        console.log("listingstemp", listingstemp);
+      //   //listingstemp temporarily stores the listing data so that I can use it right away without waiting for it to set
+      //   const listingstemp = res.data;
+      //   console.log("listingstemp", listingstemp);
 
-        //making the listingdata array
-        listingstemp.map((info, index) => {
-          var imageurl = "";
+      //   //making the listingdata array
+      //   listingstemp.map((info, index) => {
+      //     var imageurl = "";
 
-          //api call for the image
-          const getImage = async () => {
-            try {
-              const res = await axios.get(`${url}/listingpage/${info.listingId}/image`,
-                {
-                  responseType: "arraybuffer"
-                },
-                {
-                  auth: {
-                    username: "admin@lendahand.com",
-                    password: "password",
-                  },
-                })
+      //     //api call for the image
+      //     const getImage = async () => {
+      //       try {
+      //         const res = await axios.get(`${url}/listingpage/${info.listingId}/image`,
+      //           {
+      //             responseType: "arraybuffer"
+      //           },
+      //           {
+      //             auth: {
+      //               username: "admin@lendahand.com",
+      //               password: "password",
+      //             },
+      //           })
 
-              const imagedata = res.data;
-              const contenttype = res.headers.get("content-type");
-              var blob = new Blob([imagedata], { type: contenttype });
-              imageurl = (URL || webkitURL).createObjectURL(blob);
-              listingdatatemp[index] = { "name": info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl };
+      //         const imagedata = res.data;
+      //         const contenttype = res.headers.get("content-type");
+      //         var blob = new Blob([imagedata], { type: contenttype });
+      //         imageurl = (URL || webkitURL).createObjectURL(blob);
+      //         listingdatatemp[index] = { "name": info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl };
 
-            } catch (error) {
-              imageurl = `url("https://www.kindpng.com/picc/m/55-553143_transparent-plant-cartoon-png-transparent-cartoon-plant-png.png")`;
-              listingdatatemp[index] = { "name": info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl };
-            }
+      //       } catch (error) {
+      //         imageurl = `url("https://www.kindpng.com/picc/m/55-553143_transparent-plant-cartoon-png-transparent-cartoon-plant-png.png")`;
+      //         listingdatatemp[index] = { "name": info.listingName, "des": info.listingDes, "id": info.listingId, "imageurl": imageurl };
+      //       }
 
-          }
-          getImage();
-        })
-        setListingdata(listingdatatemp);
+      //     }
+      //     getImage();
+      //   })
+      //   setListingdata(listingdatatemp);
 
-      }, (error) => {
-        console.log("get applicants failed", error);
-      })
+      // }, (error) => {
+      //   console.log("get applicants failed", error);
+      // })
 
   }, []);
-
-  //checking if listingdata has been fixed
-  const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);
-  const [show, setShow] = useState(true)
-  useEffect(() => {
-    if (listingdata.length > 0) {
-      setShow(false);
-    }
-    console.log("listingdata has been updated")
-    console.log("show", show, "listingdata", listingdata)
-    console.log("force update")
-    forceUpdate();
-  }, [listingdata])
+  const show = false;
+  // //checking if listingdata has been fixed
+  // const [, updateState] = React.useState();
+  // const forceUpdate = React.useCallback(() => updateState({}), []);
+  // const [show, setShow] = useState(true)
+  // useEffect(() => {
+  //   if (listingdata.length > 0) {
+  //     setShow(false);
+  //   }
+  //   console.log("listingdata has been updated")
+  //   console.log("show", show, "listingdata", listingdata)
+  //   console.log("force update")
+  //   forceUpdate();
+  // }, [listingdata])
 
   return (
     <>
@@ -152,16 +153,12 @@ export default function MyApplications() {
                 background: "white",
               }}
             >
-              {console.log("I am in the return", "listingdata", listingdata)}
-              {listingdata.map((data) => (
-                console.log("I am in the map, and I am rendering this listing", data.name),
-                <Grid item key={data.id} xs={12} sm={6} md={4}>
-                  <AppliedListing
-                    name={data.name}
-                    description={data.des}
-                    id={data.id}
-                    buttonName={"view"}
-                    imageUrl={data.imageurl}
+              {listings.map((listings) => (
+                <Grid item key={listings.id} xs={12} sm={6} md={4}>
+                  <NoImageAppliedListing
+                    name={listings.listingName}
+                    description={listings.listingDes}
+                    id={listings.listingId}
                   />
                 </Grid>
               ))

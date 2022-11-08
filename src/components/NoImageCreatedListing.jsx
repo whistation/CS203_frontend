@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, setState } from "react";
 import Box from "@mui/material/Box";
 
-export default function NoImageListing({
+export default function NoImageCreatedListing({
   name,
   description,
   id,
@@ -34,14 +34,14 @@ export default function NoImageListing({
         <Button
           size="small"
           onClick={() =>
-            navigate("/listingpage/projectpage", {
+            navigate("/listingpage/viewapplicants", {
               state: {
                 listingId: id,
               },
             })
           }
         >
-          Apply
+          View
         </Button>
       </CardActions>
     </Card>

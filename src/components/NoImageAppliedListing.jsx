@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, setState } from "react";
 import Box from "@mui/material/Box";
 
-export default function NoImageListing({
+export default function NoImageAppliedListing({
   name,
   description,
   id,

@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from "../components/NavigationBar.jsx";
 import CreatedListing from "../components/CreatedListing.jsx";
-import NoImageListing from "../components/NoImageListing.jsx";
+import NoImageCreatedListing from "../components/NoImageCreatedListing.jsx";
 import { TroubleshootOutlined } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
 import url from "../constants/global";
@@ -192,8 +192,8 @@ export default function MyListings() {
           >
             {listings.map((listings) => (
               console.log("I am in the map, and I am rendering this listing", listings.name),
-              <Grid item key={listings} xs={12} sm={6} md={4}>
-                <NoImageListing
+              <Grid item key={listings.id} xs={12} sm={6} md={4}>
+                <NoImageCreatedListing
                   name={listings.name}
                   description={listings.des}
                   id={listings.id}
