@@ -41,7 +41,7 @@ export default function NoImageAppliedListing({
             })
           }
         >
-          Apply
+          Withdraw
         </Button>
       </CardActions>
     </Card>
